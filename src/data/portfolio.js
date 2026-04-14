@@ -114,39 +114,39 @@ export const portfolio = {
   portfolioPage: {
     id: 'portfolio',
     eyebrow: 'Selected Work',
-    title: 'A closer look at brand, campaign, and motion projects.',
+    title: 'A category-wise look at visual design and motion work.',
     intro:
-      'A curated collection of work spanning identity design, packaging, digital campaigns, and motion-first storytelling.',
-    projects: [
+      'Browse work grouped by format and output type, with placeholders ready to be replaced by final portfolio visuals.',
+    categories: [
       {
-        title: 'Aranyakaa Product Identity',
-        category: 'Branding and Packaging',
-        year: '2025',
-        description:
-          'Built a grounded visual identity and packaging system designed to communicate craft, freshness, and trust across product touchpoints.',
-        services: ['Logo Direction', 'Packaging Design', 'Brand Collateral'],
-        outcome:
-          'Created a more premium shelf presence and a more recognizable visual language across launch assets.',
+        title: 'Social Media Creatives',
+        count: 6,
+        aspect: 'square',
       },
       {
-        title: 'Global Campaign Visuals',
-        category: 'Agency Campaign Design',
-        year: '2024',
-        description:
-          'Designed campaign graphics for international clients, adapting brand systems into high-impact digital content for multiple markets.',
-        services: ['Campaign Design', 'Digital Creatives', 'Social Media Assets'],
-        outcome:
-          'Delivered flexible campaign kits that supported faster rollout across channels and formats.',
+        title: 'Brochure and Pamphlets',
+        count: 4,
+        aspect: 'portrait',
       },
       {
-        title: 'Motion Storytelling Series',
-        category: 'Motion Graphics',
-        year: '2025',
-        description:
-          'Produced motion-led visual assets that turned static brand narratives into short, engaging content for online promotion.',
-        services: ['Motion Design', 'Storyboard Support', 'Animated Social Content'],
-        outcome:
-          'Expanded campaign storytelling with movement, pacing, and stronger attention capture in digital spaces.',
+        title: 'Hoarding',
+        count: 3,
+        aspect: 'landscape',
+      },
+      {
+        title: 'Motion Graphics',
+        count: 5,
+        aspect: 'video',
+      },
+      {
+        title: 'Animation',
+        count: 4,
+        aspect: 'video',
+      },
+      {
+        title: 'Packages',
+        count: 5,
+        aspect: 'portrait',
       },
     ],
   },
