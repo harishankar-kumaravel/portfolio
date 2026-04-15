@@ -65,12 +65,30 @@ export const portfolio = {
           ],
         },
         {
+          company: 'elegance Enterprises',
+          role: 'Graphic Designer',
+          period: 'Sep 2025 - Present',
+          points: [
+            'Brand identity and packaging design for product-led storytelling.',
+            'Social media and marketing creatives tailored to campaign goals.',
+          ],
+        },
+        {
           company: 'Rhino Creative Agency',
           role: 'Graphic Designer',
           period: 'Jul 2024 - Aug 2025',
           points: [
             'Worked with global brands on campaign visuals and creative deliverables.',
             'Developed motion graphics and supporting digital assets.',
+          ],
+        },
+        {
+          company: 'F Gears (Uber Fashion merchandise pvt ltd)',
+          role: 'Motion Graphics Designer',
+          period: 'Dec 2023 - Mar 2024',
+          points: [
+            'Brand identity and packaging design for product-led storytelling.',
+            'Social media and marketing creatives tailored to campaign goals.',
           ],
         },
       ],
@@ -85,6 +103,9 @@ export const portfolio = {
         'Adobe After Effects',
         'Adobe Premiere Pro',
         'Figma',
+        'Cinema 4D',
+        'maya',
+        'shillouette', 
       ],
     },
     contact: {
