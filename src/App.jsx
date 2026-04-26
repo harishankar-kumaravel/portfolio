@@ -382,9 +382,9 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme')
-      return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      return saved !== 'light'
     }
-    return false
+    return true
   })
 
   const isPortfolioPage = currentHash === '#portfolio'
