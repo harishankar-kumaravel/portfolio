@@ -73,7 +73,16 @@ function ContactCard({ item }) {
   )
 }
 
-function PortfolioPlaceholder({ categoryTitle, index, aspect }) {
+function BrandCard({ item }) {
+  return (
+    <article className="liquid-glass liquid-glass-hover flex min-h-[128px] flex-1 basis-[210px] flex-col justify-between rounded-3xl p-6 shadow-glow">
+      <p className="text-xl font-bold text-foam">{item.name}</p>
+      <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-teal">{item.type}</p>
+    </article>
+  )
+}
+
+function PortfolioPlaceholder({ categoryTitle, index, aspect, image }) {
   const aspectClass =
     aspect === 'portrait'
       ? 'aspect-[4/5]'
@@ -84,12 +93,17 @@ function PortfolioPlaceholder({ categoryTitle, index, aspect }) {
           : 'aspect-[16/10]'
 
   return (
-    <div className="liquid-glass liquid-glass-hover overflow-hidden rounded-[24px] p-3 shadow-glow">
+    <div className="liquid-glass liquid-glass-hover flex min-w-[240px] flex-1 basis-[280px] overflow-hidden rounded-[24px] p-3 shadow-glow">
       <div
-        className={`relative ${aspectClass} overflow-hidden rounded-[18px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0.03))]`}
+        className={`relative ${aspectClass} w-full overflow-hidden rounded-[18px] border border-white/10 bg-[rgba(4,16,15,0.62)]`}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(88,255,222,0.24),transparent_24%),radial-gradient(circle_at_80%_20%,rgba(25,192,162,0.18),transparent_18%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]" />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:26px_26px] opacity-50" />
+        <img
+          className="h-full w-full object-contain"
+          src={image}
+          alt={`${categoryTitle} sample ${index}`}
+          loading="lazy"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(4,16,15,0.72))]" />
         <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-white/10 bg-[rgba(4,16,15,0.48)] px-4 py-3 backdrop-blur-xl">
           <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.24em] text-teal">
             {categoryTitle}
@@ -103,6 +117,7 @@ function PortfolioPlaceholder({ categoryTitle, index, aspect }) {
 
 function PortfolioCategory({ category }) {
   const placeholders = Array.from({ length: category.count }, (_, index) => index + 1)
+  const images = category.images || []
 
   return (
     <section className="liquid-glass animate-fade-up rounded-[32px] px-6 py-8 shadow-glow sm:px-8 lg:px-10">
@@ -118,13 +133,14 @@ function PortfolioCategory({ category }) {
         </span>
       </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-6 flex flex-wrap gap-4">
         {placeholders.map((index) => (
           <PortfolioPlaceholder
             key={`${category.title}-${index}`}
             categoryTitle={category.title}
             index={index}
             aspect={category.aspect}
+            image={images[(index - 1) % images.length]}
           />
         ))}
       </div>
@@ -226,7 +242,7 @@ export default function App() {
                   </div>
                 </div>
 
-                <aside className="grid gap-4 animate-fade-up [animation-delay:120ms] lg:grid-rows-2">
+                <aside className="grid gap-4 animate-fade-up [animation-delay:120ms] lg:grid-rows-1">
                   {hero.highlights.map((item) => (
                     <div
                       key={item.title}
@@ -270,6 +286,14 @@ export default function App() {
                         >
                           {item}
                         </span>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  {section.id === 'brands' ? (
+                    <div className="mt-6 flex flex-wrap gap-4">
+                      {section.items.map((item) => (
+                        <BrandCard key={item.name} item={item} />
                       ))}
                     </div>
                   ) : null}

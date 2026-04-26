@@ -11,6 +11,7 @@ export const portfolio = {
     { id: 'about', label: 'About' },
     { id: 'experience', label: 'Experience' },
     { id: 'skills', label: 'Skills' },
+    { id: 'brands', label: 'Brands' },
     { id: 'contact', label: 'Contact' },
   ],
   hero: {
@@ -37,10 +38,10 @@ export const portfolio = {
         title: 'Focus',
         body: 'Brand identity, packaging design, social campaigns, and motion visuals.',
       },
-      {
-        title: 'Approach',
-        body: 'Blending strategy and aesthetics to make each brand story visually distinct.',
-      },
+      // {
+      //   title: 'Approach',
+      //   body: 'Blending strategy and aesthetics to make each brand story visually distinct.',
+      // },
     ],
   },
   sections: {
@@ -108,6 +109,30 @@ export const portfolio = {
         'shillouette', 
       ],
     },
+    brands: {
+      id: 'brands',
+      eyebrow: 'Collaborations',
+      title: 'Brands I collaborate with.',
+      body: 'A growing mix of farm, fashion, agency, and product-led teams I support with identity, campaign, packaging, and motion design.',
+      items: [
+        {
+          name: 'Aranyakaa Farms',
+          type: 'Branding and packaging',
+        },
+        {
+          name: 'Elegance Enterprises',
+          type: 'Brand identity',
+        },
+        {
+          name: 'Rhino Creative Agency',
+          type: 'Campaign visuals',
+        },
+        {
+          name: 'F Gears',
+          type: 'Motion graphics',
+        },
+      ],
+    },
     contact: {
       id: 'contact',
       eyebrow: 'Contact',
@@ -143,31 +168,56 @@ export const portfolio = {
         title: 'Social Media Creatives',
         count: 6,
         aspect: 'square',
+        images: [
+          'https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&fit=crop&w=900&q=80',
+          'https://images.unsplash.com/photo-1607703703520-bb638e84caf2?auto=format&fit=crop&w=900&q=80',
+          'https://images.unsplash.com/photo-1609921212029-bb5a28e60960?auto=format&fit=crop&w=900&q=80',
+        ],
       },
       {
         title: 'Brochure and Pamphlets',
         count: 4,
         aspect: 'portrait',
+        images: [
+          'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=900&q=80',
+          'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
+        ],
       },
       {
         title: 'Hoarding',
         count: 3,
         aspect: 'landscape',
+        images: [
+          'https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1534670007418-fbb7f6cf32c3?auto=format&fit=crop&w=1200&q=80',
+        ],
       },
       {
         title: 'Motion Graphics',
         count: 5,
         aspect: 'video',
+        images: [
+          'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=80',
+        ],
       },
       {
         title: 'Animation',
         count: 4,
         aspect: 'video',
+        images: [
+          'https://images.unsplash.com/photo-1626544827763-d516dce335e2?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1633419461186-7d40a38105ec?auto=format&fit=crop&w=1200&q=80',
+        ],
       },
       {
         title: 'Packages',
         count: 5,
         aspect: 'portrait',
+        images: [
+          'https://images.unsplash.com/photo-1607344645866-009c320f204f?auto=format&fit=crop&w=900&q=80',
+          'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=900&q=80',
+        ],
       },
     ],
   },
