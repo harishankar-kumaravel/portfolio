@@ -83,7 +83,7 @@ function HeroFocusCard({ item }) {
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {item.stats.map((stat) => (
           <div key={stat.label} className="rounded-3xl border border-teal/10 theme-chip px-5 py-5">
-            <p className="font-display text-6xl leading-none text-foam">{stat.value}</p>
+            <p className="font-sans text-6xl leading-none text-foam">{stat.value}</p>
             <p className="mt-2 text-lg font-semibold text-mist/85">{stat.label}</p>
           </div>
         ))}
