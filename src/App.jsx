@@ -36,6 +36,72 @@ function HeroAction({ action }) {
   )
 }
 
+function HeroFocusCard({ item }) {
+  return (
+    <div className="liquid-glass liquid-glass-hover flex min-h-[520px] flex-col justify-between overflow-hidden rounded-[32px] p-6 shadow-glow lg:p-8">
+      <div>
+        <span className="inline-block text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-teal">
+          {item.title}
+        </span>
+        <h3 className="mt-4 text-3xl font-extrabold leading-tight text-foam sm:text-4xl">
+          {item.company}
+        </h3>
+        <p className="mt-2 text-xl text-mist/80">{item.period}</p>
+      </div>
+
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        {item.stats.map((stat) => (
+          <div key={stat.label} className="rounded-3xl border border-teal/20 bg-teal/10 px-5 py-5">
+            <p className="font-display text-6xl leading-none text-foam">{stat.value}</p>
+            <p className="mt-2 text-lg font-semibold text-mist/85">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          <p className="text-[0.78rem] font-extrabold uppercase tracking-[0.16em] text-teal">
+            Top Clients
+          </p>
+          <ul className="mt-4 space-y-2 text-lg leading-7 text-foam">
+            {item.clients.map((client) => (
+              <li key={client} className="flex gap-3">
+                <span className="mt-2 h-2 w-2 flex-none rounded-full bg-teal" />
+                <span>{client}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <a
+          className="inline-flex items-center justify-center rounded-full border border-teal/35 bg-white/5 px-5 py-3 text-sm font-bold text-foam transition hover:-translate-y-0.5 hover:border-teal/70 hover:text-teal"
+          href={item.linkedIn}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View LinkedIn
+        </a>
+      </div>
+
+      <div className="mt-8 border-t border-white/10 pt-5">
+        <p className="text-base font-bold text-foam">{item.quote}</p>
+        <p className="mt-2 text-sm leading-6 text-mist/70">{item.note}</p>
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-3">
+        {item.services.map((service) => (
+          <span
+            key={service}
+            className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-mist/80"
+          >
+            {service}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function ExperienceCard({ item }) {
   return (
     <article className="liquid-glass liquid-glass-hover rounded-3xl p-6 shadow-glow">
@@ -73,12 +139,81 @@ function ContactCard({ item }) {
   )
 }
 
-function BrandCard({ item }) {
+function AboutSection({ section }) {
+  const [portraitFailed, setPortraitFailed] = useState(false)
+  const showPortrait = section.portrait && !portraitFailed
+
   return (
-    <article className="liquid-glass liquid-glass-hover flex min-h-[128px] flex-1 basis-[210px] flex-col justify-between rounded-3xl p-6 shadow-glow">
-      <p className="text-xl font-bold text-foam">{item.name}</p>
-      <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-teal">{item.type}</p>
-    </article>
+    <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+      <div>
+        <SectionHeader eyebrow={section.eyebrow} title={section.title} />
+        <p className="mt-5 max-w-3xl text-lg leading-9 text-mist/85">{section.body}</p>
+      </div>
+
+      <div className="liquid-glass overflow-hidden rounded-[32px] p-3 shadow-glow">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(88,255,222,0.2),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]">
+          {showPortrait ? (
+            <img
+              className="h-full w-full object-cover"
+              src={section.portrait}
+              alt={`${section.name} portrait`}
+              onError={() => setPortraitFailed(true)}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <span className="font-display text-7xl text-foam/80">HK</span>
+            </div>
+          )}
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_54%,rgba(4,16,15,0.68))]" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function BrandLogo({ item }) {
+  const [logoFailed, setLogoFailed] = useState(false)
+  const showLogo = item.logoUrl && !logoFailed
+
+  return (
+    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-teal/25 bg-white/[0.06] text-center text-lg font-extrabold leading-none text-foam">
+      {showLogo ? (
+        <img
+          className="h-full w-full object-contain p-2"
+          src={item.logoUrl}
+          alt={`${item.name} logo`}
+          loading="lazy"
+          onError={() => setLogoFailed(true)}
+        />
+      ) : (
+        item.logo
+      )}
+    </div>
+  )
+}
+
+function BrandCard({ item }) {
+  const CardTag = item.linkedIn ? 'a' : 'article'
+
+  return (
+    <CardTag
+      className="liquid-glass liquid-glass-hover flex min-h-[190px] flex-col justify-between rounded-3xl p-5 no-underline shadow-glow"
+      href={item.linkedIn}
+      target={item.linkedIn ? '_blank' : undefined}
+      rel={item.linkedIn ? 'noreferrer' : undefined}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <BrandLogo item={item} />
+        <span className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs font-bold text-mist/70">
+          {item.location}
+        </span>
+      </div>
+
+      <div className="mt-6">
+        <p className="text-xl font-bold leading-tight text-foam">{item.name}</p>
+        <p className="mt-3 text-sm font-semibold uppercase tracking-[0.16em] text-teal">{item.type}</p>
+      </div>
+    </CardTag>
   )
 }
 
@@ -244,15 +379,7 @@ export default function App() {
 
                 <aside className="grid gap-4 animate-fade-up [animation-delay:120ms] lg:grid-rows-1">
                   {hero.highlights.map((item) => (
-                    <div
-                      key={item.title}
-                      className="liquid-glass liquid-glass-hover flex min-h-[220px] flex-col justify-end rounded-[32px] p-6 shadow-glow lg:p-8"
-                    >
-                      <span className="inline-block text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-teal">
-                        {item.title}
-                      </span>
-                      <p className="mt-3 text-base leading-8 text-mist/80">{item.body}</p>
-                    </div>
+                    <HeroFocusCard key={item.title} item={item} />
                   ))}
                 </aside>
               </section>
@@ -263,11 +390,17 @@ export default function App() {
                   id={section.id}
                   className={`${sectionShell}${section.id === 'contact' ? ' mb-6' : ''}`}
                 >
-                  <SectionHeader eyebrow={section.eyebrow} title={section.title} />
+                  {section.id === 'about' ? (
+                    <AboutSection section={section} />
+                  ) : (
+                    <>
+                      <SectionHeader eyebrow={section.eyebrow} title={section.title} />
 
-                  {section.body ? (
-                    <p className="mt-5 max-w-3xl text-base leading-8 text-mist/80">{section.body}</p>
-                  ) : null}
+                      {section.body ? (
+                        <p className="mt-5 max-w-3xl text-base leading-8 text-mist/80">{section.body}</p>
+                      ) : null}
+                    </>
+                  )}
 
                   {section.id === 'experience' ? (
                     <div className="mt-7 grid gap-4 xl:grid-cols-2">
@@ -291,7 +424,7 @@ export default function App() {
                   ) : null}
 
                   {section.id === 'brands' ? (
-                    <div className="mt-6 flex flex-wrap gap-4">
+                    <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                       {section.items.map((item) => (
                         <BrandCard key={item.name} item={item} />
                       ))}
