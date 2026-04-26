@@ -1,15 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        abyss: '#071412',
-        deep: '#0b1f1b',
-        panel: '#102925',
-        mist: '#b6ddd2',
-        teal: '#19c0a2',
-        foam: '#dffcf5',
+        abyss: 'var(--color-abyss)',
+        deep: 'var(--color-deep)',
+        panel: 'var(--color-panel)',
+        mist: 'var(--color-mist)',
+        teal: 'var(--color-teal)',
+        foam: 'var(--color-foam)',
       },
       fontFamily: {
         sans: ['Manrope', 'sans-serif'],

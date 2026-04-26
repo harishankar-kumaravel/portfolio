@@ -55,14 +55,11 @@ export const portfolio = {
           },
         ],
         clients: ['Tata Steel', 'Coromandel', 'Mizaj', 'And more'],
-        quote: "AI can't replace us.",
-        note: 'Because AI still does not know how to handle last-minute client changes.',
+        quote: "Designing for global brands is a rewarding challenge that pushes me to blend creativity with strategic thinking. Each project is an opportunity to craft visuals that not only look great but also resonate with diverse audiences and drive real business impact.",
+        note: 'This is a highlight from my time at Rhino Creative Agency, where I had the privilege of working on impactful projects for global brands.',
         linkedIn: 'https://www.linkedin.com/in/harishankar-k-1072b5232/',
       },
-      // {
-      //   title: 'Approach',
-      //   body: 'Blending strategy and aesthetics to make each brand story visually distinct.',
-      // },
+      
     ],
   },
   sections: {

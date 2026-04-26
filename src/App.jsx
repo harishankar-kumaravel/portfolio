@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from 'react'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { portfolio } from './data/portfolio'
 
 const sectionShell =
@@ -46,8 +46,8 @@ function SectionHeader({ eyebrow, title }) {
 function HeroAction({ action }) {
   const isPrimary = action.variant === 'primary'
   const className = isPrimary
-    ? 'inline-flex items-center justify-center rounded-full bg-teal px-5 py-3.5 font-bold text-abyss transition hover:bg-[#2ae1c0]'
-    : 'inline-flex items-center justify-center rounded-full border border-teal/30 bg-white/5 px-5 py-3.5 font-bold text-foam transition hover:border-teal/60 hover:text-teal'
+    ? 'inline-flex items-center justify-center rounded-full bg-teal px-5 py-3.5 font-bold text-white transition hover:bg-cyan-500 shadow-md hover:shadow-lg'
+    : 'inline-flex items-center justify-center rounded-full border border-teal/30 bg-white/5 dark:bg-white/10 px-5 py-3.5 font-bold text-foam transition hover:border-teal/60 hover:text-teal shadow-sm hover:shadow-md'
 
   return (
     <motion.a
@@ -82,7 +82,7 @@ function HeroFocusCard({ item }) {
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {item.stats.map((stat) => (
-          <div key={stat.label} className="rounded-3xl border border-teal/20 bg-teal/10 px-5 py-5">
+          <div key={stat.label} className="rounded-3xl border border-teal/10 bg-teal/5 px-5 py-5">
             <p className="font-display text-6xl leading-none text-foam">{stat.value}</p>
             <p className="mt-2 text-lg font-semibold text-mist/85">{stat.label}</p>
           </div>
@@ -107,7 +107,7 @@ function HeroFocusCard({ item }) {
         <motion.a
           whileHover={{ y: -2 }}
           whileTap={{ scale: 0.98 }}
-          className="inline-flex items-center justify-center rounded-full border border-teal/35 bg-white/5 px-5 py-3 text-sm font-bold text-foam transition hover:border-teal/70 hover:text-teal"
+          className="inline-flex items-center justify-center rounded-full border border-teal/25 bg-white/5 px-5 py-3 text-sm font-bold text-foam transition hover:border-teal/70 hover:text-teal shadow-sm"
           href={item.linkedIn}
           target="_blank"
           rel="noreferrer"
@@ -116,7 +116,7 @@ function HeroFocusCard({ item }) {
         </motion.a>
       </div>
 
-      <div className="mt-8 border-t border-white/10 pt-5">
+      <div className="mt-8 border-t border-teal/10 pt-5">
         <p className="text-base font-bold text-foam">{item.quote}</p>
         <p className="mt-2 text-sm leading-6 text-mist/70">{item.note}</p>
       </div>
@@ -125,7 +125,7 @@ function HeroFocusCard({ item }) {
         {item.services.map((service) => (
           <span
             key={service}
-            className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-mist/80"
+            className="rounded-full border border-teal/10 bg-teal/5 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-mist/80"
           >
             {service}
           </span>
@@ -193,7 +193,7 @@ function AboutSection({ section }) {
         <SectionHeader eyebrow={section.eyebrow} title={section.title} />
         <motion.p 
           variants={fadeInVariants}
-          className="mt-5 max-w-3xl text-lg leading-9 text-mist/85"
+          className="mt-5 max-w-3xl text-lg leading-9 text-mist/90"
         >
           {section.body}
         </motion.p>
@@ -206,7 +206,7 @@ function AboutSection({ section }) {
         transition={{ duration: 1 }}
         className="liquid-glass overflow-hidden rounded-[32px] p-3 shadow-glow"
       >
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(88,255,222,0.2),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] border border-teal/10 bg-[radial-gradient(circle_at_top,rgba(6,182,212,0.1),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.8),rgba(255,255,255,0.4))] dark:bg-[radial-gradient(circle_at_top,rgba(25,192,162,0.1),transparent_42%),linear-gradient(180deg,rgba(7,20,18,0.8),rgba(7,20,18,0.4))]">
           {showPortrait ? (
             <img
               className="h-full w-full object-cover"
@@ -219,7 +219,7 @@ function AboutSection({ section }) {
               <span className="font-display text-7xl text-foam/80">HK</span>
             </div>
           )}
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_54%,rgba(4,16,15,0.68))]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_54%,var(--glass-bg))] opacity-20 dark:opacity-60" />
         </div>
       </motion.div>
     </div>
@@ -231,7 +231,7 @@ function BrandLogo({ item }) {
   const showLogo = item.logoUrl && !logoFailed
 
   return (
-    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-teal/25 bg-white/[0.06] text-center text-lg font-extrabold leading-none text-foam shadow-inner">
+    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-teal/20 bg-white/20 dark:bg-white/10 text-center text-lg font-extrabold leading-none text-foam shadow-sm">
       {showLogo ? (
         <img
           className="h-full w-full object-contain p-2 transition-transform duration-500 hover:scale-110"
@@ -263,7 +263,7 @@ function BrandCard({ item }) {
       >
         <div className="flex items-start justify-between gap-4">
           <BrandLogo item={item} />
-          <span className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs font-bold text-mist/70">
+          <span className="rounded-full border border-teal/10 bg-teal/5 px-3 py-1 text-xs font-bold text-mist/70">
             {item.location}
           </span>
         </div>
@@ -284,8 +284,8 @@ function BrandsMarquee({ items }) {
   return (
     <div className="relative mt-8 w-full overflow-hidden py-4">
       {/* Gradient masks for smooth fade in/out */}
-      <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-[#04100f] to-transparent" />
-      <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-[#04100f] to-transparent" />
+      <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-abyss to-transparent" />
+      <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-abyss to-transparent" />
       
       <div className="animate-marquee flex gap-6">
         {marqueeItems.map((item, index) => (
@@ -312,7 +312,7 @@ function PortfolioPlaceholder({ categoryTitle, index, aspect, image }) {
       className="liquid-glass liquid-glass-hover flex min-w-[240px] flex-1 basis-[280px] overflow-hidden rounded-[24px] p-3 shadow-glow"
     >
       <div
-        className={`relative ${aspectClass} w-full overflow-hidden rounded-[18px] border border-white/10 bg-[rgba(4,16,15,0.62)]`}
+        className={`relative ${aspectClass} w-full overflow-hidden rounded-[18px] border border-teal/10 bg-panel`}
       >
         <img
           className="h-full w-full object-contain transition-transform duration-700 hover:scale-105"
@@ -320,12 +320,12 @@ function PortfolioPlaceholder({ categoryTitle, index, aspect, image }) {
           alt={`${categoryTitle} sample ${index}`}
           loading="lazy"
         />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(4,16,15,0.72))]" />
-        <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-white/10 bg-[rgba(4,16,15,0.48)] px-4 py-3 backdrop-blur-xl">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,var(--glass-bg))] " />
+        <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-teal/10 bg-white/60 dark:bg-black/40 px-4 py-3 backdrop-blur-xl shadow-sm">
           <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.24em] text-teal">
             {categoryTitle}
           </p>
-          <p className="mt-2 text-sm text-mist/80">Placeholder {index}</p>
+          <p className="mt-2 text-sm font-semibold text-mist">Placeholder {index}</p>
         </div>
       </div>
     </motion.div>
@@ -353,7 +353,7 @@ function PortfolioCategory({ category }) {
         </motion.div>
         <motion.span 
           variants={fadeInVariants}
-          className="rounded-full border border-teal/25 bg-white/10 px-4 py-2 text-sm font-semibold text-foam backdrop-blur-md"
+          className="rounded-full border border-teal/25 bg-white/5 dark:bg-white/10 px-4 py-2 text-sm font-semibold text-foam backdrop-blur-md"
         >
           {category.count} placeholders
         </motion.span>
@@ -379,9 +379,27 @@ export default function App() {
   const [currentHash, setCurrentHash] = useState(() =>
     typeof window !== 'undefined' ? window.location.hash : '',
   )
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme')
+      return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    }
+    return false
+  })
+
   const isPortfolioPage = currentHash === '#portfolio'
   const homeNavigation = navigation.filter((item) => !item.page)
   const orderedSections = homeNavigation.map((item) => sections[item.id]).filter(Boolean)
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+    }
+  }, [isDarkMode])
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -398,15 +416,21 @@ export default function App() {
   }, [])
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top_left,rgba(88,255,222,0.18),transparent_20%),radial-gradient(circle_at_85%_18%,rgba(36,130,109,0.22),transparent_24%),radial-gradient(circle_at_50%_100%,rgba(9,95,79,0.18),transparent_30%),linear-gradient(180deg,#04100f_0%,#071715_38%,#0a2220_100%)] text-mist">
-      <div className="pointer-events-none fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:36px_36px] [mask-image:linear-gradient(180deg,rgba(0,0,0,0.28),transparent_78%)]" />
-      <div className="pointer-events-none fixed inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,rgba(98,255,228,0.26),transparent_58%)] blur-3xl" />
-      <div className="pointer-events-none fixed -left-16 top-24 h-64 w-64 rounded-full bg-teal/20 blur-[120px]" />
-      <div className="pointer-events-none fixed right-[-4rem] top-[18rem] h-80 w-80 rounded-full bg-cyan-300/10 blur-[140px]" />
-      <div className="pointer-events-none fixed bottom-[-5rem] left-1/3 h-72 w-72 rounded-full bg-emerald-300/10 blur-[150px]" />
+    <div className="min-h-screen overflow-x-hidden text-mist transition-colors duration-300 bg-abyss">
+      {/* Background elements */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(6,182,212,0.15),transparent_35%),radial-gradient(circle_at_85%_18%,rgba(6,182,212,0.1),transparent_40%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(25,192,162,0.12),transparent_35%),radial-gradient(circle_at_85%_18%,rgba(25,192,162,0.08),transparent_40%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.12)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(25,192,162,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(25,192,162,0.04)_1px,transparent_1px)] bg-[size:36px_36px] [mask-image:linear-gradient(180deg,rgba(255,255,255,1),transparent_85%)] dark:[mask-image:linear-gradient(180deg,rgba(0,0,0,0.3),transparent_85%)]" />
+        <div className="absolute inset-x-0 top-0 h-[500px] bg-[radial-gradient(circle_at_top,rgba(6,182,212,0.25),transparent_70%)] dark:bg-[radial-gradient(circle_at_top,rgba(25,192,162,0.15),transparent_70%)] blur-3xl" />
+        
+        {/* Animated Orbs */}
+        <div className="absolute -left-24 top-24 h-96 w-96 rounded-full bg-cyan-400/20 dark:bg-teal-400/10 blur-[120px]" />
+        <div className="absolute right-[-6rem] top-[15rem] h-[500px] w-[500px] rounded-full bg-cyan-300/15 dark:bg-teal-300/5 blur-[140px]" />
+        <div className="absolute bottom-[-10rem] left-1/4 h-[600px] w-[600px] rounded-full bg-cyan-200/20 dark:bg-emerald-300/5 blur-[160px]" />
+      </div>
 
-      <div className="relative w-full px-3 py-3 sm:px-5 lg:px-8">
-        <header className="liquid-glass sticky top-3 z-20 flex min-h-[92px] w-full flex-col gap-6 rounded-[32px] px-6 py-6 shadow-glow md:flex-row md:items-center md:justify-between lg:px-10">
+      <div className="relative z-10 w-full px-3 py-3 sm:px-5 lg:px-8">
+        <header className="liquid-glass sticky top-3 z-30 flex min-h-[92px] w-full flex-col gap-6 rounded-[32px] px-6 py-6 shadow-glow md:flex-row md:items-center md:justify-between lg:px-10">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -421,20 +445,42 @@ export default function App() {
             <p className="mt-2 text-base text-mist/80">{meta.role}</p>
           </motion.div>
 
-          <nav className="flex flex-wrap gap-4 text-sm font-medium text-mist sm:text-base">
-            {navigation.map((item, index) => (
-              <motion.a
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-                key={item.id}
-                className="transition hover:text-teal"
-                href={item.page === 'portfolio' ? '#portfolio' : item.page === 'home' ? '#' : `#${item.id}`}
-              >
-                {item.label}
-              </motion.a>
-            ))}
-          </nav>
+          <div className="flex flex-wrap items-center gap-6">
+            <nav className="flex flex-wrap gap-4 text-sm font-medium text-mist sm:text-base">
+              {navigation.map((item, index) => (
+                <motion.a
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 * index }}
+                  key={item.id}
+                  className="transition hover:text-teal"
+                  href={item.page === 'portfolio' ? '#portfolio' : item.page === 'home' ? '#' : `#${item.id}`}
+                >
+                  {item.label}
+                </motion.a>
+              ))}
+            </nav>
+
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-teal/20 bg-white/10 text-teal backdrop-blur-md transition-colors hover:border-teal/50"
+              aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              type="button"
+            >
+              {isDarkMode ? (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591 1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+              )}
+            </motion.button>
+          </div>
         </header>
 
         <main className="w-full">
@@ -566,11 +612,11 @@ export default function App() {
 
                     {section.id === 'skills' ? (
                       <div className="mt-6 flex flex-wrap gap-3">
-                        {section.items.map((item, idx) => (
+                        {section.items.map((item) => (
                           <motion.span
                             key={item}
                             variants={fadeInVariants}
-                            whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.15)" }}
+                            whileHover={{ scale: 1.05, backgroundColor: "rgba(6,182,212,0.1)" }}
                             className="rounded-full border border-teal/25 bg-white/10 px-4 py-3 font-bold text-foam backdrop-blur-md cursor-default"
                           >
                             {item}

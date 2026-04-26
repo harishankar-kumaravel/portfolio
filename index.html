@@ -8,7 +8,7 @@
   <meta name="keywords" content="Harishankar K, Harishankar portfolio, hybrid visual designer, visual designer India, graphic designer, branding designer, motion graphics designer, packaging designer, social media creatives, Harishankar K designer">
   <meta name="author" content="Harishankar K">
   <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#071412">
+  <meta name="theme-color" content="#ffffff">
   <link rel="canonical" href="https://harishankar.co.in/">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="apple-touch-icon" href="/profile.png">
@@ -50,8 +50,17 @@
       ]
     }
   </script>
-  <script type="module" crossorigin src="/assets/index-Dcc_KFhW.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BcM4EGrL.css">
+  <script>
+    (function () {
+      var savedTheme = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+  <script type="module" crossorigin src="/assets/index-BJV7FvKE.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CFFbc0nV.css">
 </head>
 <body>
   <div id="root"></div>
