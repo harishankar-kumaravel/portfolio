@@ -441,11 +441,11 @@ export default function App() {
             <h1 className="font-display text-5xl leading-[0.95] tracking-[-0.02em] text-foam sm:text-6xl">
               {meta.title}
             </h1>
-            <p className="mt-2 text-base text-mist/80">{meta.role}</p>
+            <p className="mt-2 text-base font-medium text-mist">{meta.role}</p>
           </motion.div>
 
           <div className="flex flex-wrap items-center gap-6">
-            <nav className="flex flex-wrap gap-4 text-sm font-medium text-mist sm:text-base">
+            <nav className="flex flex-wrap gap-4 text-sm font-bold text-mist sm:text-base">
               {navigation.map((item, index) => (
                 <motion.a
                   initial={{ opacity: 0, y: -10 }}
@@ -545,7 +545,7 @@ export default function App() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
-                        className="mt-6 max-w-3xl text-base leading-8 text-mist/80 lg:text-lg"
+                        className="mt-6 max-w-3xl text-base font-medium leading-8 text-mist lg:text-lg"
                       >
                         {hero.description}
                       </motion.p>
