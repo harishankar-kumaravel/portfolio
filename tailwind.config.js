@@ -13,8 +13,8 @@ export default {
         foam: 'var(--color-foam)',
       },
       fontFamily: {
-        sans: ['Manrope', 'sans-serif'],
-        display: ['"Cormorant Garamond"', 'serif'],
+        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        display: ['Syne', 'sans-serif'],
       },
       boxShadow: {
         glow: '0 22px 80px rgba(5, 31, 27, 0.45)',
