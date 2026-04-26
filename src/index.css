@@ -11,7 +11,7 @@
     --color-panel: #ffffff;
     --color-mist: #4b5563;
     --color-teal: #0ea5a4;
-    --color-foam: #151b1f;
+    --color-foam: rgb(0 149 113);
     --glass-bg: rgba(255, 255, 255, 0.78);
     --glass-border: rgba(21, 27, 31, 0.08);
     --glass-shadow: rgba(21, 27, 31, 0.12);
@@ -27,7 +27,7 @@
     --color-panel: #111f1d;
     --color-mist: #9bc7c1;
     --color-teal: #2dd4bf;
-    --color-foam: #e6f7f7;
+    --color-foam: rgb(0 149 113);
     --glass-bg: rgba(7, 20, 18, 0.6);
     --glass-border: rgba(25, 192, 162, 0.2);
     --glass-shadow: rgba(25, 192, 162, 0.15);
