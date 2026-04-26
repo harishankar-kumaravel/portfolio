@@ -46,8 +46,8 @@ function SectionHeader({ eyebrow, title }) {
 function HeroAction({ action }) {
   const isPrimary = action.variant === 'primary'
   const className = isPrimary
-    ? 'inline-flex items-center justify-center rounded-full bg-teal px-5 py-3.5 font-bold text-white transition hover:bg-cyan-500 shadow-md hover:shadow-lg'
-    : 'inline-flex items-center justify-center rounded-full border border-teal/30 bg-white/5 dark:bg-white/10 px-5 py-3.5 font-bold text-foam transition hover:border-teal/60 hover:text-teal shadow-sm hover:shadow-md'
+    ? 'inline-flex items-center justify-center rounded-full bg-teal px-5 py-3.5 font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg dark:text-abyss'
+    : 'inline-flex items-center justify-center rounded-full border border-teal/25 theme-card-soft px-5 py-3.5 font-bold text-foam shadow-sm transition hover:-translate-y-0.5 hover:border-teal/60 hover:text-teal hover:shadow-md'
 
   return (
     <motion.a
@@ -82,7 +82,7 @@ function HeroFocusCard({ item }) {
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {item.stats.map((stat) => (
-          <div key={stat.label} className="rounded-3xl border border-teal/10 bg-teal/5 px-5 py-5">
+          <div key={stat.label} className="rounded-3xl border border-teal/10 theme-chip px-5 py-5">
             <p className="font-display text-6xl leading-none text-foam">{stat.value}</p>
             <p className="mt-2 text-lg font-semibold text-mist/85">{stat.label}</p>
           </div>
@@ -107,7 +107,7 @@ function HeroFocusCard({ item }) {
         <motion.a
           whileHover={{ y: -2 }}
           whileTap={{ scale: 0.98 }}
-          className="inline-flex items-center justify-center rounded-full border border-teal/25 bg-white/5 px-5 py-3 text-sm font-bold text-foam transition hover:border-teal/70 hover:text-teal shadow-sm"
+          className="inline-flex items-center justify-center rounded-full border border-teal/25 theme-card-soft px-5 py-3 text-sm font-bold text-foam shadow-sm transition hover:border-teal/70 hover:text-teal"
           href={item.linkedIn}
           target="_blank"
           rel="noreferrer"
@@ -125,7 +125,7 @@ function HeroFocusCard({ item }) {
         {item.services.map((service) => (
           <span
             key={service}
-            className="rounded-full border border-teal/10 bg-teal/5 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-mist/80"
+            className="rounded-full border border-teal/10 theme-chip px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-mist/80"
           >
             {service}
           </span>
@@ -206,7 +206,7 @@ function AboutSection({ section }) {
         transition={{ duration: 1 }}
         className="liquid-glass overflow-hidden rounded-[32px] p-3 shadow-glow"
       >
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] border border-teal/10 bg-[radial-gradient(circle_at_top,rgba(6,182,212,0.1),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.8),rgba(255,255,255,0.4))] dark:bg-[radial-gradient(circle_at_top,rgba(25,192,162,0.1),transparent_42%),linear-gradient(180deg,rgba(7,20,18,0.8),rgba(7,20,18,0.4))]">
+        <div className="theme-image-panel relative aspect-[4/5] overflow-hidden rounded-[24px] border border-teal/10">
           {showPortrait ? (
             <img
               className="h-full w-full object-cover"
@@ -219,7 +219,7 @@ function AboutSection({ section }) {
               <span className="font-display text-7xl text-foam/80">HK</span>
             </div>
           )}
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_54%,var(--glass-bg))] opacity-20 dark:opacity-60" />
+          <div className="theme-overlay-fade pointer-events-none absolute inset-0 opacity-40 dark:opacity-75" />
         </div>
       </motion.div>
     </div>
@@ -231,7 +231,7 @@ function BrandLogo({ item }) {
   const showLogo = item.logoUrl && !logoFailed
 
   return (
-    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-teal/20 bg-white/20 dark:bg-white/10 text-center text-lg font-extrabold leading-none text-foam shadow-sm">
+    <div className="theme-card-soft flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-teal/20 text-center text-lg font-extrabold leading-none text-foam shadow-sm">
       {showLogo ? (
         <img
           className="h-full w-full object-contain p-2 transition-transform duration-500 hover:scale-110"
@@ -263,7 +263,7 @@ function BrandCard({ item }) {
       >
         <div className="flex items-start justify-between gap-4">
           <BrandLogo item={item} />
-          <span className="rounded-full border border-teal/10 bg-teal/5 px-3 py-1 text-xs font-bold text-mist/70">
+          <span className="theme-chip rounded-full border border-teal/10 px-3 py-1 text-xs font-bold text-mist/70">
             {item.location}
           </span>
         </div>
@@ -320,8 +320,8 @@ function PortfolioPlaceholder({ categoryTitle, index, aspect, image }) {
           alt={`${categoryTitle} sample ${index}`}
           loading="lazy"
         />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,var(--glass-bg))] " />
-        <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-teal/10 bg-white/60 dark:bg-black/40 px-4 py-3 backdrop-blur-xl shadow-sm">
+        <div className="theme-overlay-fade pointer-events-none absolute inset-0" />
+        <div className="theme-card-soft absolute inset-x-4 bottom-4 rounded-2xl border border-teal/10 px-4 py-3 shadow-sm backdrop-blur-xl">
           <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.24em] text-teal">
             {categoryTitle}
           </p>
@@ -353,7 +353,7 @@ function PortfolioCategory({ category }) {
         </motion.div>
         <motion.span 
           variants={fadeInVariants}
-          className="rounded-full border border-teal/25 bg-white/5 dark:bg-white/10 px-4 py-2 text-sm font-semibold text-foam backdrop-blur-md"
+          className="theme-card-soft rounded-full border border-teal/25 px-4 py-2 text-sm font-semibold text-foam backdrop-blur-md"
         >
           {category.count} placeholders
         </motion.span>
@@ -416,17 +416,16 @@ export default function App() {
   }, [])
 
   return (
-    <div className="min-h-screen overflow-x-hidden text-mist transition-colors duration-300 bg-abyss">
+    <div className="theme-page-bg min-h-screen overflow-x-hidden text-mist transition-colors duration-300">
       {/* Background elements */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(6,182,212,0.15),transparent_35%),radial-gradient(circle_at_85%_18%,rgba(6,182,212,0.1),transparent_40%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(25,192,162,0.12),transparent_35%),radial-gradient(circle_at_85%_18%,rgba(25,192,162,0.08),transparent_40%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.12)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(25,192,162,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(25,192,162,0.04)_1px,transparent_1px)] bg-[size:36px_36px] [mask-image:linear-gradient(180deg,rgba(255,255,255,1),transparent_85%)] dark:[mask-image:linear-gradient(180deg,rgba(0,0,0,0.3),transparent_85%)]" />
-        <div className="absolute inset-x-0 top-0 h-[500px] bg-[radial-gradient(circle_at_top,rgba(6,182,212,0.25),transparent_70%)] dark:bg-[radial-gradient(circle_at_top,rgba(25,192,162,0.15),transparent_70%)] blur-3xl" />
+        <div className="theme-grid-bg absolute inset-0" />
+        <div className="theme-hero-glow absolute inset-x-0 top-0 h-[500px] blur-3xl" />
         
         {/* Animated Orbs */}
-        <div className="absolute -left-24 top-24 h-96 w-96 rounded-full bg-cyan-400/20 dark:bg-teal-400/10 blur-[120px]" />
-        <div className="absolute right-[-6rem] top-[15rem] h-[500px] w-[500px] rounded-full bg-cyan-300/15 dark:bg-teal-300/5 blur-[140px]" />
-        <div className="absolute bottom-[-10rem] left-1/4 h-[600px] w-[600px] rounded-full bg-cyan-200/20 dark:bg-emerald-300/5 blur-[160px]" />
+        <div className="theme-orb-a absolute -left-24 top-24 h-96 w-96 rounded-full blur-[120px]" />
+        <div className="theme-orb-b absolute right-[-6rem] top-[15rem] h-[500px] w-[500px] rounded-full blur-[140px]" />
+        <div className="theme-orb-c absolute bottom-[-10rem] left-1/4 h-[600px] w-[600px] rounded-full blur-[160px]" />
       </div>
 
       <div className="relative z-10 w-full px-3 py-3 sm:px-5 lg:px-8">
@@ -465,7 +464,7 @@ export default function App() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-teal/20 bg-white/10 text-teal backdrop-blur-md transition-colors hover:border-teal/50"
+              className="theme-card-soft flex h-12 w-12 items-center justify-center rounded-full border border-teal/20 text-teal backdrop-blur-md transition-colors hover:border-teal/50"
               aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               type="button"
@@ -616,8 +615,8 @@ export default function App() {
                           <motion.span
                             key={item}
                             variants={fadeInVariants}
-                            whileHover={{ scale: 1.05, backgroundColor: "rgba(6,182,212,0.1)" }}
-                            className="rounded-full border border-teal/25 bg-white/10 px-4 py-3 font-bold text-foam backdrop-blur-md cursor-default"
+                            whileHover={{ scale: 1.05 }}
+                            className="theme-card-soft cursor-default rounded-full border border-teal/25 px-4 py-3 font-bold text-foam backdrop-blur-md"
                           >
                             {item}
                           </motion.span>
