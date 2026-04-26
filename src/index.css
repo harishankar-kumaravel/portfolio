@@ -6,28 +6,28 @@
 
 @layer base {
   :root {
-    --color-abyss: #f5f3ea;
-    --color-deep: #e9efe8;
+    --color-abyss: #f7f7f4;
+    --color-deep: #ecefeb;
     --color-panel: #ffffff;
-    --color-mist: #005a5a;
-    --color-teal: #00bebe;
-    --color-foam: #002525;
-    --glass-bg: rgba(255, 255, 255, 0.94);
-    --glass-border: rgba(0, 82, 85, 0.16);
-    --glass-shadow: rgba(0, 82, 85, 0.14);
-    --page-grid: rgba(0, 139, 139, 0.07);
-    --hero-glow-a: rgba(0, 190, 190, 0.13);
-    --hero-glow-b: rgba(0, 139, 139, 0.1);
-    --chip-bg: rgba(0, 190, 190, 0.1);
+    --color-mist: #4b5563;
+    --color-teal: #0ea5a4;
+    --color-foam: #151b1f;
+    --glass-bg: rgba(255, 255, 255, 0.78);
+    --glass-border: rgba(21, 27, 31, 0.08);
+    --glass-shadow: rgba(21, 27, 31, 0.12);
+    --page-grid: rgba(14, 165, 164, 0.06);
+    --hero-glow-a: rgba(14, 165, 164, 0.1);
+    --hero-glow-b: rgba(184, 145, 77, 0.1);
+    --chip-bg: rgba(14, 165, 164, 0.09);
   }
 
   .dark {
-    --color-abyss: #071412;
-    --color-deep: #0b1f1b;
-    --color-panel: #102925;
-    --color-mist: #25ffff;
-    --color-teal: #00ffff;
-    --color-foam: #25ffff;
+    --color-abyss: #0b0f0f;
+    --color-deep: #0f1c1a;
+    --color-panel: #111f1d;
+    --color-mist: #9bc7c1;
+    --color-teal: #2dd4bf;
+    --color-foam: #e6f7f7;
     --glass-bg: rgba(7, 20, 18, 0.6);
     --glass-border: rgba(25, 192, 162, 0.2);
     --glass-shadow: rgba(25, 192, 162, 0.15);
@@ -64,7 +64,7 @@
   }
 
   .liquid-glass {
-    background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(250, 249, 244, 0.94) 100%);
+    background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(255, 255, 255, 0.72) 100%);
     background-size: 180% 180%;
     animation: liquid-flow 11s ease-in-out infinite;
     backdrop-filter: blur(18px) saturate(125%);
@@ -152,11 +152,13 @@
   }
 
   .theme-card-soft {
-    background: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
   }
 
   .dark .theme-card-soft {
     background: rgba(255, 255, 255, 0.06);
+    box-shadow: none;
   }
 
   .theme-image-panel {
@@ -172,7 +174,7 @@
   }
 
   .theme-overlay-fade {
-    background: linear-gradient(180deg, transparent 58%, rgba(16, 32, 28, 0.18));
+    background: linear-gradient(180deg, transparent 58%, rgba(21, 27, 31, 0.2));
   }
 
   .dark .theme-overlay-fade {
