@@ -1,0 +1,22 @@
+{
+  "name": "Harishankar K Portfolio",
+  "short_name": "Harishankar K",
+  "description": "Portfolio of Harishankar K, hybrid visual designer focused on branding, graphic design, packaging, and motion graphics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#071412",
+  "theme_color": "#071412",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/profile.png",
+      "sizes": "1024x1536",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
