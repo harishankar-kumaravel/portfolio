@@ -9,25 +9,25 @@
     --color-abyss: #f5f3ea;
     --color-deep: #e9efe8;
     --color-panel: #ffffff;
-    --color-mist: #4d5b56;
-    --color-teal: #078174;
-    --color-foam: #10201c;
+    --color-mist: #005a5a;
+    --color-teal: #00bebe;
+    --color-foam: #002525;
     --glass-bg: rgba(255, 255, 255, 0.94);
-    --glass-border: rgba(16, 32, 28, 0.16);
-    --glass-shadow: rgba(42, 55, 50, 0.16);
-    --page-grid: rgba(16, 32, 28, 0.045);
-    --hero-glow-a: rgba(7, 129, 116, 0.12);
-    --hero-glow-b: rgba(168, 128, 55, 0.11);
-    --chip-bg: rgba(7, 129, 116, 0.1);
+    --glass-border: rgba(0, 82, 85, 0.16);
+    --glass-shadow: rgba(0, 82, 85, 0.14);
+    --page-grid: rgba(0, 139, 139, 0.07);
+    --hero-glow-a: rgba(0, 190, 190, 0.13);
+    --hero-glow-b: rgba(0, 139, 139, 0.1);
+    --chip-bg: rgba(0, 190, 190, 0.1);
   }
 
   .dark {
     --color-abyss: #071412;
     --color-deep: #0b1f1b;
     --color-panel: #102925;
-    --color-mist: #b6ddd2;
-    --color-teal: #19c0a2;
-    --color-foam: #dffcf5;
+    --color-mist: #25ffff;
+    --color-teal: #00ffff;
+    --color-foam: #25ffff;
     --glass-bg: rgba(7, 20, 18, 0.6);
     --glass-border: rgba(25, 192, 162, 0.2);
     --glass-shadow: rgba(25, 192, 162, 0.15);
