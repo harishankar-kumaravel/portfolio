@@ -6,17 +6,5 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#06b6d4",
-  "icons": [
-    {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
-    },
-    {
-      "src": "/profile.png",
-      "sizes": "1024x1536",
-      "type": "image/png",
-      "purpose": "any"
-    }
-  ]
+  "icons": []
 }

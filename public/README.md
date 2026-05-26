@@ -1,3 +1,3 @@
-Place your portrait PNG here as `profile.png`.
+Local portfolio images are intentionally not stored here.
 
-The About Me section uses `/profile.png` and keeps the portrait frame at a 4:5 ratio.
+The portfolio page uses remote Google Drive thumbnails, and the About Me section falls back to initials when no portrait URL is configured.

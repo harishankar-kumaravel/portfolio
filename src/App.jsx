@@ -296,7 +296,136 @@ function BrandsMarquee({ items }) {
   )
 }
 
-function PortfolioPlaceholder({ categoryTitle, index, aspect, image }) {
+function MediaThumbnail({ media, categoryTitle, index }) {
+  const [hasError, setHasError] = useState(false)
+
+  if (hasError || !media.thumbnail) {
+    return (
+      <div className="flex h-full w-full items-center justify-center px-5 text-center">
+        <span className="text-sm font-extrabold uppercase tracking-[0.18em] text-foam/80">
+          {media.type === 'video' ? 'Video' : media.type === 'animation' ? 'Animation' : 'Portfolio'}
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <img
+      className="h-full w-full select-none object-contain transition-transform duration-700 hover:scale-105"
+      src={media.thumbnail}
+      alt={media.name || `${categoryTitle} sample ${index}`}
+      loading="eager"
+      draggable="false"
+      onContextMenu={(event) => event.preventDefault()}
+      onError={() => setHasError(true)}
+    />
+  )
+}
+
+function getDrivePreviewUrl(media) {
+  return media.id ? `https://drive.google.com/file/d/${media.id}/preview` : media.href
+}
+
+function PortfolioLightbox({ media, onClose }) {
+  useEffect(() => {
+    if (!media || typeof window === 'undefined') {
+      return undefined
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose()
+      }
+
+      if ((event.ctrlKey || event.metaKey) && ['s', 'S'].includes(event.key)) {
+        event.preventDefault()
+      }
+    }
+    const previousOverflow = document.body.style.overflow
+
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [media, onClose])
+
+  if (!media) {
+    return null
+  }
+
+  const isPlayable = media.type === 'video' || media.type === 'animation'
+  const previewUrl = getDrivePreviewUrl(media)
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        key="portfolio-lightbox"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-abyss/90 px-3 py-4 backdrop-blur-2xl sm:px-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        onContextMenu={(event) => event.preventDefault()}
+        role="dialog"
+        aria-modal="true"
+        aria-label={media.name || 'Portfolio preview'}
+      >
+        <motion.div
+          className="relative flex h-full max-h-[94vh] w-full max-w-7xl flex-col overflow-hidden rounded-[28px] border border-teal/20 bg-panel shadow-glow"
+          initial={{ opacity: 0, scale: 0.96, y: 16 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.96, y: 16 }}
+          transition={{ duration: 0.25 }}
+          onClick={(event) => event.stopPropagation()}
+        >
+          <div className="flex items-center justify-between gap-4 border-b border-teal/10 px-4 py-3 sm:px-5">
+            <div className="min-w-0">
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-teal">
+                {isPlayable ? (media.type === 'video' ? 'Video Preview' : 'Animation Preview') : 'Image Preview'}
+              </p>
+              <h3 className="mt-1 truncate text-base font-bold text-foam sm:text-lg">{media.name}</h3>
+            </div>
+            <button
+              className="theme-card-soft flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-teal/20 text-2xl leading-none text-foam transition hover:border-teal/60 hover:text-teal"
+              type="button"
+              onClick={onClose}
+              aria-label="Close preview"
+            >
+              &times;
+            </button>
+          </div>
+
+          <div className="flex min-h-0 flex-1 items-center justify-center bg-abyss/55 p-3 sm:p-5">
+            {isPlayable ? (
+              <iframe
+                className="h-full min-h-[62vh] w-full rounded-[18px] border-0 bg-black"
+                src={previewUrl}
+                title={media.name || 'Drive video preview'}
+                allow="autoplay; fullscreen; encrypted-media"
+                allowFullScreen
+                referrerPolicy="no-referrer"
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
+              />
+            ) : (
+              <img
+                className="max-h-full max-w-full select-none object-contain"
+                src={media.thumbnail}
+                alt={media.name || 'Portfolio work'}
+                draggable="false"
+                onContextMenu={(event) => event.preventDefault()}
+              />
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
+function PortfolioPlaceholder({ categoryTitle, index, aspect, item, onOpen }) {
   const aspectClass =
     aspect === 'portrait'
       ? 'aspect-[4/5]'
@@ -305,36 +434,39 @@ function PortfolioPlaceholder({ categoryTitle, index, aspect, image }) {
         : aspect === 'video'
           ? 'aspect-video'
           : 'aspect-[16/10]'
+  const media = typeof item === 'string' ? { name: `Work ${index}`, thumbnail: item } : item
+  const isPlayable = media.type === 'video' || media.type === 'animation'
 
   return (
     <motion.div 
       variants={fadeInVariants}
       className="liquid-glass liquid-glass-hover flex min-w-[240px] flex-1 basis-[280px] overflow-hidden rounded-[24px] p-3 shadow-glow"
     >
-      <div
-        className={`relative ${aspectClass} w-full overflow-hidden rounded-[18px] border border-teal/10 bg-panel`}
+      <button
+        className={`relative ${aspectClass} block w-full cursor-zoom-in overflow-hidden rounded-[18px] border border-teal/10 bg-panel p-0 text-left`}
+        type="button"
+        onClick={() => onOpen(media)}
+        onContextMenu={(event) => event.preventDefault()}
+        title={media.name}
       >
-        <img
-          className="h-full w-full object-contain transition-transform duration-700 hover:scale-105"
-          src={image}
-          alt={`${categoryTitle} sample ${index}`}
-          loading="lazy"
-        />
+        <MediaThumbnail media={media} categoryTitle={categoryTitle} index={index} />
         <div className="theme-overlay-fade pointer-events-none absolute inset-0" />
-        <div className="theme-card-soft absolute inset-x-4 bottom-4 rounded-2xl border border-teal/10 px-4 py-3 shadow-sm backdrop-blur-xl">
-          <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.24em] text-teal">
-            {categoryTitle}
-          </p>
-          <p className="mt-2 text-sm font-semibold text-mist">Placeholder {index}</p>
-        </div>
-      </div>
+        {isPlayable ? (
+          <div className="theme-card-soft absolute right-4 top-4 rounded-full border border-teal/20 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.12em] text-foam shadow-sm backdrop-blur-xl">
+            {media.type === 'video' ? 'Video' : 'Animation'}
+          </div>
+        ) : null}
+      </button>
     </motion.div>
   )
 }
 
-function PortfolioCategory({ category }) {
-  const placeholders = Array.from({ length: category.count }, (_, index) => index + 1)
-  const images = category.images || []
+function PortfolioCategory({ category, onOpenMedia }) {
+  const items = category.items || (category.images || []).map((image) => ({ thumbnail: image }))
+
+  if (!items.length) {
+    return null
+  }
 
   return (
     <motion.section 
@@ -355,18 +487,19 @@ function PortfolioCategory({ category }) {
           variants={fadeInVariants}
           className="theme-card-soft rounded-full border border-teal/25 px-4 py-2 text-sm font-semibold text-foam backdrop-blur-md"
         >
-          {category.count} placeholders
+          {items.length} items
         </motion.span>
       </div>
 
       <div className="mt-6 flex flex-wrap gap-4">
-        {placeholders.map((index) => (
+        {items.map((item, index) => (
           <PortfolioPlaceholder
-            key={`${category.title}-${index}`}
+            key={item.id || `${category.title}-${index}`}
             categoryTitle={category.title}
-            index={index}
+            index={index + 1}
             aspect={category.aspect}
-            image={images[(index - 1) % images.length]}
+            item={item}
+            onOpen={onOpenMedia}
           />
         ))}
       </div>
@@ -386,6 +519,7 @@ export default function App() {
     }
     return true
   })
+  const [selectedMedia, setSelectedMedia] = useState(null)
 
   const isPortfolioPage = currentHash === '#portfolio'
   const homeNavigation = navigation.filter((item) => !item.page)
@@ -506,7 +640,11 @@ export default function App() {
 
                 <div className="mt-6 grid gap-6">
                   {portfolioPage.categories.map((category) => (
-                    <PortfolioCategory key={category.title} category={category} />
+                    <PortfolioCategory
+                      key={category.title}
+                      category={category}
+                      onOpenMedia={setSelectedMedia}
+                    />
                   ))}
                 </div>
               </motion.section>
@@ -648,6 +786,8 @@ export default function App() {
           <p>&copy; {meta.copyright}</p>
         </footer>
       </div>
+
+      <PortfolioLightbox media={selectedMedia} onClose={() => setSelectedMedia(null)} />
     </div>
   )
 }
