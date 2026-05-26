@@ -71,7 +71,7 @@ export const portfolio = {
       name: 'Harishankar K',
       title: 'I shape visual identities with clarity, motion, and story.',
       body: 'I am Harishankar K, a hybrid visual designer focused on branding, graphic design, packaging, social creatives, and motion-led storytelling. My work blends clean visual systems with expressive details, helping brands communicate with confidence across digital and print spaces.',
-      portrait: null,
+      portrait: '/profile-photo.jpg',
     },
     experience: {
       id: 'experience',
