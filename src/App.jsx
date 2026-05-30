@@ -178,6 +178,112 @@ function ContactCard({ item }) {
   )
 }
 
+function ServiceCard({ item }) {
+  return (
+    <motion.article
+      variants={fadeInVariants}
+      whileHover={{ y: -5 }}
+      className="liquid-glass liquid-glass-hover rounded-3xl p-6 shadow-glow"
+    >
+      <span className="font-display text-4xl text-teal/70">{item.number}</span>
+      <h3 className="mt-7 text-xl font-bold text-foam">{item.title}</h3>
+      <p className="mt-3 text-sm leading-7 text-mist/80">{item.description}</p>
+    </motion.article>
+  )
+}
+
+function CaseStudyCard({ item }) {
+  const isPlayable = item.type === 'video' || item.type === 'animation'
+
+  return (
+    <motion.article
+      variants={fadeInVariants}
+      className="liquid-glass liquid-glass-hover overflow-hidden rounded-[30px] shadow-glow"
+    >
+      <div className="theme-image-panel relative overflow-hidden border-b border-teal/10">
+        {isPlayable ? (
+          <iframe
+            className="aspect-video w-full border-0 bg-black"
+            src={getDrivePreviewUrl(item)}
+            title={`${item.title} video preview`}
+            loading="lazy"
+            allow="autoplay; fullscreen; encrypted-media"
+            allowFullScreen
+          />
+        ) : (
+          <>
+            <img
+              className="block h-auto w-full object-contain transition-transform duration-700 hover:scale-105"
+              src={item.thumbnail}
+              alt={`${item.title} preview`}
+              loading="lazy"
+            />
+            <div className="theme-overlay-fade pointer-events-none absolute inset-0" />
+          </>
+        )}
+      </div>
+      <div className="p-6">
+        <p className="text-[0.7rem] font-extrabold uppercase tracking-[0.18em] text-teal">
+          {item.category}
+        </p>
+        <h3 className="mt-3 text-2xl font-bold leading-tight text-foam">{item.title}</h3>
+        <dl className="mt-6 space-y-4 text-sm leading-7 text-mist/80">
+          <div>
+            <dt className="font-extrabold uppercase tracking-[0.12em] text-teal">Challenge</dt>
+            <dd className="mt-1">{item.challenge}</dd>
+          </div>
+          <div>
+            <dt className="font-extrabold uppercase tracking-[0.12em] text-teal">Goal</dt>
+            <dd className="mt-1">{item.goal}</dd>
+          </div>
+          <div>
+            <dt className="font-extrabold uppercase tracking-[0.12em] text-teal">Final Output</dt>
+            <dd className="mt-1">{item.output}</dd>
+          </div>
+          <div>
+            <dt className="font-extrabold uppercase tracking-[0.12em] text-teal">Result</dt>
+            <dd className="mt-1">{item.result}</dd>
+          </div>
+        </dl>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {item.process.map((step) => (
+            <span
+              key={step}
+              className="theme-chip rounded-full border border-teal/10 px-3 py-2 text-xs font-bold text-mist/80"
+            >
+              {step}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.article>
+  )
+}
+
+function MotionShowcase({ section }) {
+  return (
+    <div className="mt-7 grid gap-4 lg:grid-cols-2">
+      {section.items.map((item) => (
+        <motion.article
+          key={item.id}
+          variants={fadeInVariants}
+          className="liquid-glass overflow-hidden rounded-[28px] p-3 shadow-glow"
+        >
+          <iframe
+            className="aspect-video w-full rounded-[20px] border-0 bg-black"
+            src={`https://drive.google.com/file/d/${item.id}/preview`}
+            title={item.title}
+            loading="lazy"
+            allow="autoplay; fullscreen; encrypted-media"
+            allowFullScreen
+          />
+          <h3 className="px-3 pb-2 pt-4 text-lg font-bold text-foam">{item.title}</h3>
+        </motion.article>
+      ))}
+    </div>
+  )
+}
+
 function AboutSection({ section }) {
   const [portraitFailed, setPortraitFailed] = useState(false)
   const showPortrait = section.portrait && !portraitFailed
@@ -197,6 +303,16 @@ function AboutSection({ section }) {
         >
           {section.body}
         </motion.p>
+        <motion.div variants={fadeInVariants} className="mt-7 grid gap-3 sm:grid-cols-3">
+          {section.facts.map((fact) => (
+            <div key={fact.label} className="theme-card-soft rounded-2xl border border-teal/10 px-4 py-4">
+              <p className="text-lg font-extrabold text-foam">{fact.value}</p>
+              <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-mist/70">
+                {fact.label}
+              </p>
+            </div>
+          ))}
+        </motion.div>
       </motion.div>
 
       <motion.div 
@@ -296,6 +412,10 @@ function BrandsMarquee({ items }) {
   )
 }
 
+function getDriveThumbnailUrl(media, width = 1600) {
+  return media.id ? `https://drive.google.com/thumbnail?id=${media.id}&sz=w${width}` : media.thumbnail
+}
+
 function MediaThumbnail({ media, categoryTitle, index }) {
   const [hasError, setHasError] = useState(false)
 
@@ -311,10 +431,10 @@ function MediaThumbnail({ media, categoryTitle, index }) {
 
   return (
     <img
-      className="h-full w-full select-none object-contain transition-transform duration-700 hover:scale-105"
-      src={media.thumbnail}
+      className="block h-auto w-full select-none object-contain transition-transform duration-700 hover:scale-105"
+      src={getDriveThumbnailUrl(media, 900)}
       alt={media.name || `${categoryTitle} sample ${index}`}
-      loading="eager"
+      loading="lazy"
       draggable="false"
       onContextMenu={(event) => event.preventDefault()}
       onError={() => setHasError(true)}
@@ -323,7 +443,15 @@ function MediaThumbnail({ media, categoryTitle, index }) {
 }
 
 function getDrivePreviewUrl(media) {
-  return media.id ? `https://drive.google.com/file/d/${media.id}/preview` : media.href
+  if (media.href) {
+    return media.href.replace(/\/view(\?.*)?$/, '/preview')
+  }
+
+  if (media.id) {
+    return `https://drive.google.com/file/d/${media.id}/preview`
+  }
+
+  return media.thumbnail
 }
 
 function PortfolioLightbox({ media, onClose }) {
@@ -381,21 +509,34 @@ function PortfolioLightbox({ media, onClose }) {
           transition={{ duration: 0.25 }}
           onClick={(event) => event.stopPropagation()}
         >
-          <div className="flex items-center justify-between gap-4 border-b border-teal/10 px-4 py-3 sm:px-5">
+          <div className="flex flex-col gap-3 border-b border-teal/10 px-4 py-3 sm:px-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
               <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-teal">
                 {isPlayable ? (media.type === 'video' ? 'Video Preview' : 'Animation Preview') : 'Image Preview'}
               </p>
               <h3 className="mt-1 truncate text-base font-bold text-foam sm:text-lg">{media.name}</h3>
             </div>
-            <button
-              className="theme-card-soft flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-teal/20 text-2xl leading-none text-foam transition hover:border-teal/60 hover:text-teal"
-              type="button"
-              onClick={onClose}
-              aria-label="Close preview"
-            >
-              &times;
-            </button>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {isPlayable ? (
+                <a
+                  className="theme-card-soft inline-flex h-11 items-center justify-center rounded-full border border-teal/20 px-4 text-sm font-bold text-foam transition hover:border-teal/60 hover:text-teal"
+                  href={previewUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open in new tab
+                </a>
+              ) : null}
+              <button
+                className="theme-card-soft flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-teal/20 text-2xl leading-none text-foam transition hover:border-teal/60 hover:text-teal"
+                type="button"
+                onClick={onClose}
+                aria-label="Close preview"
+              >
+                &times;
+              </button>
+            </div>
           </div>
 
           <div className="flex min-h-0 flex-1 items-center justify-center bg-abyss/55 p-3 sm:p-5">
@@ -407,12 +548,11 @@ function PortfolioLightbox({ media, onClose }) {
                 allow="autoplay; fullscreen; encrypted-media"
                 allowFullScreen
                 referrerPolicy="no-referrer"
-                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
               />
             ) : (
               <img
                 className="max-h-full max-w-full select-none object-contain"
-                src={media.thumbnail}
+                src={getDriveThumbnailUrl(media)}
                 alt={media.name || 'Portfolio work'}
                 draggable="false"
                 onContextMenu={(event) => event.preventDefault()}
@@ -425,36 +565,34 @@ function PortfolioLightbox({ media, onClose }) {
   )
 }
 
-function PortfolioPlaceholder({ categoryTitle, index, aspect, item, onOpen }) {
-  const aspectClass =
-    aspect === 'portrait'
-      ? 'aspect-[4/5]'
-      : aspect === 'square'
-        ? 'aspect-square'
-        : aspect === 'video'
-          ? 'aspect-video'
-          : 'aspect-[16/10]'
+function PortfolioPlaceholder({ categoryTitle, index, item, onOpen }) {
   const media = typeof item === 'string' ? { name: `Work ${index}`, thumbnail: item } : item
   const isPlayable = media.type === 'video' || media.type === 'animation'
 
   return (
     <motion.div 
       variants={fadeInVariants}
-      className="liquid-glass liquid-glass-hover flex min-w-[240px] flex-1 basis-[280px] overflow-hidden rounded-[24px] p-3 shadow-glow"
+      className="liquid-glass liquid-glass-hover flex min-w-[240px] flex-1 basis-[280px] self-start overflow-hidden rounded-[24px] p-3 shadow-glow"
     >
       <button
-        className={`relative ${aspectClass} block w-full cursor-zoom-in overflow-hidden rounded-[18px] border border-teal/10 bg-panel p-0 text-left`}
+        className={`relative block w-full overflow-hidden rounded-[18px] border border-teal/10 bg-panel p-0 text-left ${isPlayable ? 'cursor-pointer' : 'cursor-zoom-in'}`}
         type="button"
         onClick={() => onOpen(media)}
         onContextMenu={(event) => event.preventDefault()}
         title={media.name}
+        aria-label={isPlayable ? `Play ${media.name}` : `Preview ${media.name}`}
       >
         <MediaThumbnail media={media} categoryTitle={categoryTitle} index={index} />
         <div className="theme-overlay-fade pointer-events-none absolute inset-0" />
         {isPlayable ? (
-          <div className="theme-card-soft absolute right-4 top-4 rounded-full border border-teal/20 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.12em] text-foam shadow-sm backdrop-blur-xl">
-            {media.type === 'video' ? 'Video' : 'Animation'}
-          </div>
+          <>
+            <div className="theme-card-soft absolute right-4 top-4 rounded-full border border-teal/20 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.12em] text-foam shadow-sm backdrop-blur-xl">
+              {media.type === 'video' ? 'Video' : 'Animation'}
+            </div>
+            <div className="theme-card-soft absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-teal/30 text-2xl text-foam shadow-glow backdrop-blur-xl">
+              <span className="ml-1" aria-hidden="true">&#9654;</span>
+            </div>
+          </>
         ) : null}
       </button>
     </motion.div>
@@ -491,13 +629,12 @@ function PortfolioCategory({ category, onOpenMedia }) {
         </motion.span>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-4">
+      <div className="mt-6 flex flex-wrap items-start gap-4">
         {items.map((item, index) => (
           <PortfolioPlaceholder
             key={item.id || `${category.title}-${index}`}
             categoryTitle={category.title}
             index={index + 1}
-            aspect={category.aspect}
             item={item}
             onOpen={onOpenMedia}
           />
@@ -692,7 +829,7 @@ export default function App() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.7 }}
-                      className="mt-7 flex flex-col gap-3 sm:flex-row"
+                      className="mt-7 flex flex-col flex-wrap gap-3 sm:flex-row"
                     >
                       {hero.actions.map((action) => (
                         <HeroAction key={action.label} action={action} />
@@ -746,6 +883,35 @@ export default function App() {
                         ))}
                       </div>
                     ) : null}
+
+                    {section.id === 'services' ? (
+                      <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        {section.items.map((item) => (
+                          <ServiceCard key={item.title} item={item} />
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {section.id === 'case-studies' ? (
+                      <>
+                        <div className="mt-7 grid gap-5 xl:grid-cols-3">
+                          {section.items.map((item) => (
+                            <CaseStudyCard key={item.title} item={item} />
+                          ))}
+                        </div>
+                        <motion.a
+                          variants={fadeInVariants}
+                          whileHover={{ y: -2 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="mt-7 inline-flex items-center justify-center rounded-full bg-teal px-5 py-3.5 font-bold text-white shadow-md transition hover:shadow-lg dark:text-abyss"
+                          href={section.action.href}
+                        >
+                          {section.action.label}
+                        </motion.a>
+                      </>
+                    ) : null}
+
+                    {section.id === 'motion' ? <MotionShowcase section={section} /> : null}
 
                     {section.id === 'skills' ? (
                       <div className="mt-6 flex flex-wrap gap-3">

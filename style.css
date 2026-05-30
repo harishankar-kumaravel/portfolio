@@ -21,7 +21,7 @@ html {
 
 body {
   margin: 0;
-  font-family: "Manrope", sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--text);
   background:
     radial-gradient(circle at top left, rgba(191, 90, 54, 0.18), transparent 28%),
@@ -78,7 +78,7 @@ body::before {
 .brand h1,
 .hero h2,
 .section-heading h2 {
-  font-family: "Cormorant Garamond", serif;
+  font-family: "Satoshi", sans-serif;
   letter-spacing: -0.02em;
 }
 

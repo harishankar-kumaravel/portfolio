@@ -10,9 +10,11 @@ export const portfolio = {
   navigation: [
     { id: 'home', label: 'Home', page: 'home' },
     { id: 'portfolio', label: 'Portfolio', page: 'portfolio' },
+    { id: 'services', label: 'Services' },
+    { id: 'case-studies', label: 'Case Studies' },
+    { id: 'motion', label: 'Motion' },
     { id: 'about', label: 'About' },
     { id: 'experience', label: 'Experience' },
-    { id: 'skills', label: 'Skills' },
     { id: 'brands', label: 'Brands' },
     { id: 'contact', label: 'Contact' },
   ],
@@ -23,13 +25,31 @@ export const portfolio = {
       'I create visual systems, campaign assets, and motion-led storytelling that help businesses communicate with confidence across print and digital spaces.',
     actions: [
       {
-        label: 'View Behance',
-        href: 'https://www.behance.net/Harishankar_K',
-        external: true,
+        label: 'Explore Portfolio',
+        href: '#portfolio',
+        external: false,
         variant: 'primary',
       },
       {
-        label: 'Contact Me',
+        label: 'Case Studies',
+        href: '#case-studies',
+        external: false,
+        variant: 'secondary',
+      },
+      {
+        label: 'Motion Work',
+        href: '#motion',
+        external: false,
+        variant: 'secondary',
+      },
+      {
+        label: 'Services',
+        href: '#services',
+        external: false,
+        variant: 'secondary',
+      },
+      {
+        label: "Let's Work Together",
         href: '#contact',
         external: false,
         variant: 'secondary',
@@ -65,6 +85,118 @@ export const portfolio = {
     ],
   },
   sections: {
+    services: {
+      id: 'services',
+      eyebrow: 'Services',
+      title: 'Visual design support from first idea to final rollout.',
+      body: 'I help brands build a clear visual language and carry it consistently across the places where audiences meet them.',
+      items: [
+        {
+          title: 'Brand Identity Design',
+          description: 'Identity systems, visual direction, and brand assets built for recognizable communication.',
+          number: '01',
+        },
+        {
+          title: 'Packaging Design',
+          description: 'Product packaging and presentation systems shaped for clarity, character, and shelf presence.',
+          number: '02',
+        },
+        {
+          title: 'Motion Graphics',
+          description: 'Motion-led visual storytelling for launches, campaigns, explainers, and social content.',
+          number: '03',
+        },
+        {
+          title: 'Social Media Creatives',
+          description: 'Flexible content systems and campaign-ready visuals designed for digital channels.',
+          number: '04',
+        },
+        {
+          title: 'Marketing Collaterals',
+          description: 'Brochures, posters, banners, and print assets that keep brand communication consistent.',
+          number: '05',
+        },
+        {
+          title: 'Campaign Visuals',
+          description: 'Scalable visual concepts that adapt across digital, print, and point-of-sale formats.',
+          number: '06',
+        },
+      ],
+    },
+    'case-studies': {
+      id: 'case-studies',
+      eyebrow: 'Featured Case Studies',
+      title: 'Selected work, with the thinking behind the visuals.',
+      body: 'A closer look at how each design direction responds to a communication need and expands into a practical set of brand assets.',
+      items: [
+        {
+         title: 'Durashine Supreme Tamil Campaign',
+          category: 'Social Media & Regional Marketing Campaign',
+          thumbnail: 'https://drive.google.com/thumbnail?id=1TOnj7lGCJxTf8gkqtrg05ZYE1eqk7IYJ&sz=w1600',
+          challenge: 'Create a culturally relevant campaign that promotes Durashine Supreme roofing solutions while standing out in crowded social feeds. The communication needed to connect with Tamil-speaking audiences and showcase both product quality and aspirational home-building goals.',
+  goal: 'Develop a visually engaging regional-language campaign that combines product credibility, emotional appeal, and clear messaging to increase brand awareness and audience engagement.',
+  process: [
+    'Regional content strategy',
+    'Tamil copywriting',
+    'Visual concept development',
+    'Product and lifestyle integration',
+    'Social media adaptations'
+  ],
+  output: 'Campaign key visuals, Tamil social media creatives, promotional assets, and platform-specific digital adaptations highlighting Durashine Supreme roofing and cladding solutions.',
+  result: 'Delivered a cohesive regional campaign system that improved audience engagement, strengthened brand recall, and created a recognizable visual identity across multiple social media formats.'
+},
+        {
+          title: 'Real Estate Campaign Visuals',
+          category: 'Campaign and marketing',
+          thumbnail: 'https://drive.google.com/thumbnail?id=1D7SZ32EiSdsZo_tbVE4dxzC_p-_g2bs7&sz=w1600',
+          challenge: 'Translate a property-focused message into polished marketing visuals that quickly communicate value.',
+          goal: 'Balance information, aspiration, and brand consistency across campaign touchpoints.',
+          process: ['Content hierarchy', 'Layout development', 'Format rollout'],
+          output: 'Social creatives, campaign layouts, banners, and supporting marketing materials.',
+          result: 'A flexible visual direction built for clear communication across digital and display formats.',
+        },
+        {
+  title: 'Gromor Nano DAP USP Animation',
+  category: 'Motion Graphics & Product Marketing',
+  thumbnail: 'https://drive.google.com/thumbnail?id=1cZ89kVXQzrRvCjbm8i7cz_9gY9PAdRY1&sz=w1600',
+  type: 'video',
+  id: '1cZ89kVXQzrRvCjbm8i7cz_9gY9PAdRY1',
+  href: 'https://drive.google.com/file/d/1cZ89kVXQzrRvCjbm8i7cz_9gY9PAdRY1/view?usp=drive_link',
+  challenge: 'Communicate the unique benefits of Gromor Nano DAP in a simple and engaging format that could quickly educate farmers while maintaining brand consistency across regional markets.',
+  goal: 'Create a visually appealing animated explainer that demonstrates product effectiveness, highlights key USPs, and improves audience understanding through clear storytelling.',
+  process: [
+    'USP breakdown and content structuring',
+    'Storyboard development',
+    'Illustration and asset creation',
+    '2D motion graphics animation',
+    'Typography and visual transitions',
+    'Final rendering and platform optimization'
+  ],
+  output: 'Animated product explainer video showcasing Gromor Nano DAP features, benefits, application visuals, and branded motion graphics assets for digital marketing campaigns.',
+  result: 'Delivered a concise and engaging motion graphics film that simplified complex product information, strengthened product recall, and provided a scalable communication asset for social media, presentations, and dealer outreach.'
+},
+      ],
+      action: {
+        label: 'Explore Full Portfolio',
+        href: '#portfolio',
+      },
+    },
+    motion: {
+      id: 'motion',
+      eyebrow: 'Motion Showcase',
+      title: 'Movement is part of the first impression.',
+      body: 'Selected motion work is embedded here so the pace, transitions, and storytelling can be experienced directly.',
+      items: [
+        {
+          title: 'Dream Alliance Campaign',
+          id: '1WBrFDwCCQ0wJn0SG82FVWGGzPKLYv9eO',
+        },
+        {
+          title: 'Brand Motion Edit',
+          id: '1Hbo68sp-0UeDdg92qsmUw76sDqCsarTb',
+        },
+      ],
+    },
     about: {
       id: 'about',
       eyebrow: 'About Me',
@@ -72,6 +204,11 @@ export const portfolio = {
       title: 'I shape visual identities with clarity, motion, and story.',
       body: 'I am Harishankar K, a hybrid visual designer focused on branding, graphic design, packaging, social creatives, and motion-led storytelling. My work blends clean visual systems with expressive details, helping brands communicate with confidence across digital and print spaces.',
       portrait: '/profile-photo.jpg',
+      facts: [
+        { value: '2+', label: 'Years of experience' },
+        { value: '25+', label: 'Brands and clients' },
+        { value: 'Print + Digital', label: 'Cross-channel design' },
+      ],
     },
     experience: {
       id: 'experience',
@@ -88,7 +225,7 @@ export const portfolio = {
           ],
         },
         {
-          company: 'elegance Enterprises',
+          company: 'Elegance Enterprises',
           role: 'Graphic Designer',
           period: 'Sep 2025 - Present',
           points: [
