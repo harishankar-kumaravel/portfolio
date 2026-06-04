@@ -125,7 +125,7 @@ function parseDriveItems(html) {
       id,
       name,
       type,
-      thumbnail: `https://drive.google.com/thumbnail?id=${id}&sz=w1600`,
+      thumbnail: `https://lh3.googleusercontent.com/d/${id}=w1600`,
       href: `https://drive.google.com/file/d/${id}/view`,
     })
   }

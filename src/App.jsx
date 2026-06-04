@@ -214,9 +214,10 @@ function CaseStudyCard({ item }) {
           <>
             <img
               className="block h-auto w-full object-contain transition-transform duration-700 hover:scale-105"
-              src={item.thumbnail}
+              src={getDriveThumbnailUrl(item)}
               alt={`${item.title} preview`}
               loading="lazy"
+              referrerPolicy="no-referrer"
             />
             <div className="theme-overlay-fade pointer-events-none absolute inset-0" />
           </>
@@ -413,7 +414,12 @@ function BrandsMarquee({ items }) {
 }
 
 function getDriveThumbnailUrl(media, width = 1600) {
-  return media.id ? `https://drive.google.com/thumbnail?id=${media.id}&sz=w${width}` : media.thumbnail
+  if (!media) return ''
+  const id = media.id || (typeof media.thumbnail === 'string' && media.thumbnail.match(/[?&]id=([A-Za-z0-9_-]{20,})/)?.[1])
+  if (id) {
+    return `https://lh3.googleusercontent.com/d/${id}=w${width}`
+  }
+  return media.thumbnail
 }
 
 function MediaThumbnail({ media, categoryTitle, index }) {
@@ -436,6 +442,7 @@ function MediaThumbnail({ media, categoryTitle, index }) {
       alt={media.name || `${categoryTitle} sample ${index}`}
       loading="lazy"
       draggable="false"
+      referrerPolicy="no-referrer"
       onContextMenu={(event) => event.preventDefault()}
       onError={() => setHasError(true)}
     />
@@ -555,6 +562,7 @@ function PortfolioLightbox({ media, onClose }) {
                 src={getDriveThumbnailUrl(media)}
                 alt={media.name || 'Portfolio work'}
                 draggable="false"
+                referrerPolicy="no-referrer"
                 onContextMenu={(event) => event.preventDefault()}
               />
             )}
@@ -572,7 +580,7 @@ function PortfolioPlaceholder({ categoryTitle, index, item, onOpen }) {
   return (
     <motion.div 
       variants={fadeInVariants}
-      className="liquid-glass liquid-glass-hover flex min-w-[240px] flex-1 basis-[280px] self-start overflow-hidden rounded-[24px] p-3 shadow-glow"
+      className="liquid-glass liquid-glass-hover mb-4 inline-block w-full break-inside-avoid overflow-hidden rounded-[24px] p-3 shadow-glow"
     >
       <button
         className={`relative block w-full overflow-hidden rounded-[18px] border border-teal/10 bg-panel p-0 text-left ${isPlayable ? 'cursor-pointer' : 'cursor-zoom-in'}`}
@@ -629,7 +637,7 @@ function PortfolioCategory({ category, onOpenMedia }) {
         </motion.span>
       </div>
 
-      <div className="mt-6 flex flex-wrap items-start gap-4">
+      <div className="mt-6 columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5">
         {items.map((item, index) => (
           <PortfolioPlaceholder
             key={item.id || `${category.title}-${index}`}
