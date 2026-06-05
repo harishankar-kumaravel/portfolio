@@ -9,5 +9,12 @@ export default defineConfig({
     outDir: '../dist',
     emptyOutDir: true,
   },
-  plugins: [react()],
+  plugins: [
+    react({
+      exclude: [
+        /src\/data\/portfolio\.js/,
+        /src\/data\/drivePortfolio\.js/
+      ]
+    })
+  ],
 })
