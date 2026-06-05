@@ -136,6 +136,13 @@ function HeroFocusCard({ item }) {
 }
 
 function RecruiterQuickCard() {
+  const profile = portfolio.quickProfile || {
+    roleSought: 'Visual / Motion Designer',
+    experience: '2+ Years (Agency & Brand)',
+    location: 'India (Remote / Relocation)',
+    keySoftware: 'After Effects, Premiere Pro, Photoshop, Illustrator, Maya'
+  }
+
   return (
     <motion.div
       variants={fadeInVariants}
@@ -155,19 +162,19 @@ function RecruiterQuickCard() {
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-teal/10 pb-2">
             <span className="text-sm text-mist/75">Role sought</span>
-            <span className="text-sm font-bold text-foam">Visual / Motion Designer</span>
+            <span className="text-sm font-bold text-foam">{profile.roleSought}</span>
           </div>
           <div className="flex items-center justify-between border-b border-teal/10 pb-2">
             <span className="text-sm text-mist/75">Experience</span>
-            <span className="text-sm font-bold text-foam">2+ Years (Agency & Brand)</span>
+            <span className="text-sm font-bold text-foam">{profile.experience}</span>
           </div>
           <div className="flex items-center justify-between border-b border-teal/10 pb-2">
             <span className="text-sm text-mist/75">Location</span>
-            <span className="text-sm font-bold text-foam">India (Remote / Relocation)</span>
+            <span className="text-sm font-bold text-foam">{profile.location}</span>
           </div>
           <div className="flex items-center justify-between gap-4">
             <span className="text-sm text-mist/75 whitespace-nowrap">Key Software</span>
-            <span className="text-sm font-bold text-foam text-right">After Effects, Premiere Pro, Photoshop, Illustrator, Maya</span>
+            <span className="text-sm font-bold text-foam text-right">{profile.keySoftware}</span>
           </div>
         </div>
       </div>

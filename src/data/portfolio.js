@@ -7,6 +7,12 @@ export const portfolio = {
     label: 'Visual Portfolio',
     copyright: '2026 Harishankar K',
   },
+  quickProfile: {
+    roleSought: 'Visual / Motion Designer',
+    experience: '2+ Years (Agency & Brand)',
+    location: 'India (Remote / Relocation)',
+    keySoftware: 'After Effects, Premiere Pro, Photoshop, Illustrator, Maya',
+  },
   navigation: [
     { id: 'home', label: 'Home', page: 'home' },
     { id: 'portfolio', label: 'Portfolio', page: 'portfolio' },
