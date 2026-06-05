@@ -6,7 +6,7 @@ const sectionShell =
   'liquid-glass liquid-glass-hover mt-6 rounded-[36px] px-6 py-10 shadow-glow sm:px-8 lg:px-12'
 
 const sectionTitleClass =
-  'font-display text-4xl leading-none tracking-[-0.02em] text-foam sm:text-5xl md:text-6xl'
+  'font-display text-4xl leading-snug tracking-[-0.02em] text-foam sm:text-5xl sm:leading-snug md:text-6xl md:leading-tight font-black'
 
 const fadeInVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -22,7 +22,7 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.08,
     }
   }
 }
@@ -35,7 +35,7 @@ function SectionHeader({ eyebrow, title }) {
       viewport={{ once: true, margin: "-100px" }}
       variants={fadeInVariants}
     >
-      <p className="mb-2 text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-teal">
+      <p className="mb-2.5 text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-teal">
         {eyebrow}
       </p>
       <h2 className={sectionTitleClass}>{title}</h2>
@@ -46,8 +46,8 @@ function SectionHeader({ eyebrow, title }) {
 function HeroAction({ action }) {
   const isPrimary = action.variant === 'primary'
   const className = isPrimary
-    ? 'inline-flex items-center justify-center rounded-full bg-teal px-5 py-3.5 font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg dark:text-abyss'
-    : 'inline-flex items-center justify-center rounded-full border border-teal/25 theme-card-soft px-5 py-3.5 font-bold text-foam shadow-sm transition hover:-translate-y-0.5 hover:border-teal/60 hover:text-teal hover:shadow-md'
+    ? 'inline-flex items-center justify-center rounded-full bg-teal px-6 py-4 font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg dark:text-abyss text-base'
+    : 'inline-flex items-center justify-center rounded-full border border-teal/25 theme-card-soft px-6 py-4 font-bold text-foam shadow-sm transition hover:-translate-y-0.5 hover:border-teal/60 hover:text-teal hover:shadow-md text-base'
 
   return (
     <motion.a
@@ -68,7 +68,7 @@ function HeroFocusCard({ item }) {
     <motion.div 
       variants={fadeInVariants}
       whileHover={{ y: -5, scale: 1.01 }}
-      className="liquid-glass liquid-glass-hover flex min-h-[520px] flex-col justify-between overflow-hidden rounded-[32px] p-6 shadow-glow lg:p-8"
+      className="liquid-glass liquid-glass-hover flex flex-col justify-between overflow-hidden rounded-[32px] p-6 shadow-glow lg:p-8 border border-teal/20"
     >
       <div>
         <span className="inline-block text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-teal">
@@ -77,14 +77,14 @@ function HeroFocusCard({ item }) {
         <h3 className="mt-4 text-3xl font-extrabold leading-tight text-foam sm:text-4xl">
           {item.company}
         </h3>
-        <p className="mt-2 text-xl text-mist/80">{item.period}</p>
+        <p className="mt-2 text-xl text-mist/85 font-medium">{item.period}</p>
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {item.stats.map((stat) => (
           <div key={stat.label} className="rounded-3xl border border-teal/10 theme-chip px-5 py-5">
-            <p className="font-sans text-6xl leading-none text-foam">{stat.value}</p>
-            <p className="mt-2 text-lg font-semibold text-mist/85">{stat.label}</p>
+            <p className="font-display text-5xl leading-none text-foam font-black">{stat.value}</p>
+            <p className="mt-2 text-sm font-semibold text-mist/80">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -94,11 +94,11 @@ function HeroFocusCard({ item }) {
           <p className="text-[0.78rem] font-extrabold uppercase tracking-[0.16em] text-teal">
             Top Clients
           </p>
-          <ul className="mt-4 space-y-2 text-lg leading-7 text-foam">
+          <ul className="mt-3 space-y-2 text-base leading-7 text-foam">
             {item.clients.map((client) => (
-              <li key={client} className="flex gap-3">
-                <span className="mt-2 h-2 w-2 flex-none rounded-full bg-teal" />
-                <span>{client}</span>
+              <li key={client} className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 flex-none rounded-full bg-teal" />
+                <span className="font-medium">{client}</span>
               </li>
             ))}
           </ul>
@@ -117,15 +117,15 @@ function HeroFocusCard({ item }) {
       </div>
 
       <div className="mt-8 border-t border-teal/10 pt-5">
-        <p className="text-base font-bold text-foam">{item.quote}</p>
-        <p className="mt-2 text-sm leading-6 text-mist/70">{item.note}</p>
+        <p className="text-base font-bold text-foam italic">"{item.quote}"</p>
+        <p className="mt-3 text-sm leading-6 text-mist/75">{item.note}</p>
       </div>
 
       <div className="mt-6 flex flex-wrap gap-3">
         {item.services.map((service) => (
           <span
             key={service}
-            className="rounded-full border border-teal/10 theme-chip px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-mist/80"
+            className="rounded-full border border-teal/10 theme-chip px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-mist/80"
           >
             {service}
           </span>
@@ -135,45 +135,198 @@ function HeroFocusCard({ item }) {
   )
 }
 
-function ExperienceCard({ item }) {
+function RecruiterQuickCard() {
   return (
-    <motion.article 
+    <motion.div
       variants={fadeInVariants}
-      className="liquid-glass liquid-glass-hover rounded-3xl p-6 shadow-glow"
+      whileHover={{ y: -5, scale: 1.01 }}
+      className="liquid-glass liquid-glass-hover flex flex-col justify-between rounded-[32px] p-6 shadow-glow border border-teal/20"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h3 className="text-2xl font-bold text-foam">{item.company}</h3>
-        <p className="m-0 text-base text-mist/75">{item.role}</p>
+      <div className="flex flex-col gap-6">
+        <div>
+          <span className="inline-block text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-teal">
+            Hiring Fast Track
+          </span>
+          <h3 className="mt-4 text-2xl font-bold leading-tight text-foam">
+            Quick Profile
+          </h3>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-teal/10 pb-2">
+            <span className="text-sm text-mist/75">Role sought</span>
+            <span className="text-sm font-bold text-foam">Visual / Motion Designer</span>
+          </div>
+          <div className="flex items-center justify-between border-b border-teal/10 pb-2">
+            <span className="text-sm text-mist/75">Experience</span>
+            <span className="text-sm font-bold text-foam">2+ Years (Agency & Brand)</span>
+          </div>
+          <div className="flex items-center justify-between border-b border-teal/10 pb-2">
+            <span className="text-sm text-mist/75">Location</span>
+            <span className="text-sm font-bold text-foam">India (Remote / Relocation)</span>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm text-mist/75 whitespace-nowrap">Key Software</span>
+            <span className="text-sm font-bold text-foam text-right">After Effects, Premiere Pro, Photoshop, Illustrator, Maya</span>
+          </div>
+        </div>
       </div>
-      <span className="mt-3 inline-block text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-teal">
-        {item.period}
-      </span>
-      <ul className="mt-4 space-y-2 pl-5 text-base leading-7 text-mist/80 marker:text-teal">
-        {item.points.map((point) => (
-          <li key={point}>{point}</li>
-        ))}
-      </ul>
-    </motion.article>
+
+      <div className="mt-6 pt-4 border-t border-teal/10 flex items-center justify-between gap-3">
+        <span className="text-xs text-mist/60">Portfolio Updated 2026</span>
+        <a
+          href="https://www.linkedin.com/in/harishankar-k-1072b5232/"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm font-bold text-teal hover:underline"
+        >
+          LinkedIn Profile &rarr;
+        </a>
+      </div>
+    </motion.div>
+  )
+}
+
+function Timeline({ items }) {
+  return (
+    <div className="relative mt-8 border-l border-teal/20 pl-6 ml-4 md:ml-8 space-y-12">
+      {/* Decorative vertical glow line */}
+      <div className="absolute top-0 bottom-0 left-0 w-[2px] bg-gradient-to-b from-teal via-teal/50 to-transparent pointer-events-none" />
+
+      {items.map((item) => (
+        <motion.div
+          key={item.company}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInVariants}
+          className="relative"
+        >
+          {/* Timeline Node */}
+          <div className="absolute -left-[31px] top-1.5 flex h-[12px] w-[12px] items-center justify-center">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-45"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-teal"></span>
+            </span>
+          </div>
+
+          <div className="liquid-glass liquid-glass-hover rounded-3xl p-6 shadow-glow">
+            <div className="flex flex-wrap items-baseline justify-between gap-3">
+              <div>
+                <h3 className="text-xl font-bold text-foam leading-tight">{item.company}</h3>
+                <p className="mt-1 text-sm font-semibold text-teal">{item.role}</p>
+              </div>
+              <span className="rounded-full border border-teal/25 bg-teal/5 px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider text-teal">
+                {item.period}
+              </span>
+            </div>
+            
+            <ul className="mt-4 space-y-2.5 pl-4 text-base leading-7 text-mist/85 list-disc marker:text-teal/70">
+              {item.points.map((point, idx) => (
+                <li key={idx} className="pl-1">
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  )
+}
+
+function SkillBadge({ name }) {
+  let glowColor = 'hover:border-teal/50 hover:shadow-[0_0_20px_rgba(20,184,166,0.2)]'
+  let iconBg = 'bg-teal/10 text-teal'
+  
+  if (name.includes('Photoshop')) {
+    glowColor = 'hover:border-blue-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.25)]'
+    iconBg = 'bg-blue-500/10 text-blue-500'
+  } else if (name.includes('Illustrator')) {
+    glowColor = 'hover:border-amber-500/50 hover:shadow-[0_0_20px_rgba(245,158,11,0.25)]'
+    iconBg = 'bg-amber-500/10 text-amber-500'
+  } else if (name.includes('After Effects')) {
+    glowColor = 'hover:border-purple-500/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.25)]'
+    iconBg = 'bg-purple-500/10 text-purple-500'
+  } else if (name.includes('Premiere')) {
+    glowColor = 'hover:border-violet-500/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.25)]'
+    iconBg = 'bg-violet-500/10 text-violet-500'
+  } else if (name.includes('Figma')) {
+    glowColor = 'hover:border-rose-500/50 hover:shadow-[0_0_20px_rgba(244,63,94,0.25)]'
+    iconBg = 'bg-rose-500/10 text-rose-500'
+  } else if (name.includes('Cinema 4D')) {
+    glowColor = 'hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.25)]'
+    iconBg = 'bg-cyan-500/10 text-cyan-500'
+  } else if (name.toLowerCase().includes('maya')) {
+    glowColor = 'hover:border-sky-500/50 hover:shadow-[0_0_20px_rgba(14,165,233,0.25)]'
+    iconBg = 'bg-sky-500/10 text-sky-500'
+  } else if (name.toLowerCase().includes('shillouette') || name.toLowerCase().includes('silhouette')) {
+    glowColor = 'hover:border-red-500/50 hover:shadow-[0_0_20px_rgba(239,68,68,0.25)]'
+    iconBg = 'bg-red-500/10 text-red-500'
+  }
+
+  return (
+    <motion.div
+      variants={fadeInVariants}
+      whileHover={{ y: -3, scale: 1.02 }}
+      className={`theme-card-soft cursor-default rounded-3xl border border-teal/20 px-5 py-4 flex items-center gap-4 transition-all duration-300 ${glowColor} backdrop-blur-md`}
+    >
+      <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl font-display font-black text-sm ${iconBg}`}>
+        {name.split(' ').pop().substring(0, 2).toUpperCase()}
+      </div>
+      <div>
+        <p className="font-bold text-foam text-base leading-none">{name}</p>
+        <p className="text-xs text-mist/60 mt-1">Design tool</p>
+      </div>
+    </motion.div>
   )
 }
 
 function ContactCard({ item }) {
+  let icon = null
+  
+  if (item.label.toLowerCase() === 'email') {
+    icon = (
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5 text-teal">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+      </svg>
+    )
+  } else if (item.label.toLowerCase() === 'phone') {
+    icon = (
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5 text-teal">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.622c0-1.137.705-2.14 1.773-2.511 1.025-.36 2.062.099 2.52 1.077l1.584 3.327c.4-.077.01.906-.277 1.18-.363.363-.429.9-.13 1.396l2.388 4.419a1.6 1.6 0 0 0 1.58.888c.456-.053.905-.316 1.247-.659l1.414-1.414a1.125 1.125 0 0 1 1.59 0l3.327 3.327c.977.458 1.437 1.495 1.078 2.52-.372 1.067-1.375 1.773-2.511 1.773-5.28 0-9.75-4.47-9.75-9.75 0-1.137.705-2.14 1.773-2.511z" />
+      </svg>
+    )
+  } else {
+    icon = (
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5 text-teal">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+      </svg>
+    )
+  }
+
   return (
     <motion.div 
       variants={fadeInVariants}
-      className="liquid-glass liquid-glass-hover min-w-[220px] flex-1 rounded-3xl p-6 shadow-glow"
+      whileHover={{ y: -4 }}
+      className="liquid-glass liquid-glass-hover min-w-[220px] flex-1 rounded-3xl p-6 shadow-glow flex items-start gap-4"
     >
-      <span className="inline-block text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-teal">
-        {item.label}
-      </span>
-      <a
-        className="mt-3 block break-words text-base text-foam no-underline"
-        href={item.href}
-        target={item.external ? '_blank' : undefined}
-        rel={item.external ? 'noreferrer' : undefined}
-      >
-        {item.value}
-      </a>
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal/10">
+        {icon}
+      </div>
+      <div className="min-w-0">
+        <span className="inline-block text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-teal">
+          {item.label}
+        </span>
+        <a
+          className="mt-1 block break-words text-base font-bold text-foam no-underline hover:text-teal hover:underline transition-colors"
+          href={item.href}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noreferrer' : undefined}
+        >
+          {item.value}
+        </a>
+      </div>
     </motion.div>
   )
 }
@@ -183,10 +336,10 @@ function ServiceCard({ item }) {
     <motion.article
       variants={fadeInVariants}
       whileHover={{ y: -5 }}
-      className="liquid-glass liquid-glass-hover rounded-3xl p-6 shadow-glow"
+      className="liquid-glass liquid-glass-hover rounded-3xl p-6 shadow-glow border border-teal/20"
     >
-      <span className="font-display text-4xl text-teal/70">{item.number}</span>
-      <h3 className="mt-7 text-xl font-bold text-foam">{item.title}</h3>
+      <span className="font-display text-4xl text-teal/70 font-black">{item.number}</span>
+      <h3 className="mt-6 text-xl font-bold text-foam">{item.title}</h3>
       <p className="mt-3 text-sm leading-7 text-mist/80">{item.description}</p>
     </motion.article>
   )
@@ -198,7 +351,7 @@ function CaseStudyCard({ item }) {
   return (
     <motion.article
       variants={fadeInVariants}
-      className="liquid-glass liquid-glass-hover overflow-hidden rounded-[30px] shadow-glow"
+      className="liquid-glass liquid-glass-hover overflow-hidden rounded-[30px] shadow-glow border border-teal/20"
     >
       <div className="theme-image-panel relative overflow-hidden border-b border-teal/10">
         {isPlayable ? (
@@ -250,7 +403,7 @@ function CaseStudyCard({ item }) {
           {item.process.map((step) => (
             <span
               key={step}
-              className="theme-chip rounded-full border border-teal/10 px-3 py-2 text-xs font-bold text-mist/80"
+              className="theme-chip rounded-full border border-teal/10 px-3 py-1.5 text-xs font-bold text-mist/80"
             >
               {step}
             </span>
@@ -268,7 +421,7 @@ function MotionShowcase({ section }) {
         <motion.article
           key={item.id}
           variants={fadeInVariants}
-          className="liquid-glass overflow-hidden rounded-[28px] p-3 shadow-glow"
+          className="liquid-glass overflow-hidden rounded-[28px] p-3 shadow-glow border border-teal/20"
         >
           <iframe
             className="aspect-video w-full rounded-[20px] border-0 bg-black"
@@ -307,7 +460,7 @@ function AboutSection({ section }) {
         <motion.div variants={fadeInVariants} className="mt-7 grid gap-3 sm:grid-cols-3">
           {section.facts.map((fact) => (
             <div key={fact.label} className="theme-card-soft rounded-2xl border border-teal/10 px-4 py-4">
-              <p className="text-lg font-extrabold text-foam">{fact.value}</p>
+              <p className="text-xl font-extrabold text-foam">{fact.value}</p>
               <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-mist/70">
                 {fact.label}
               </p>
@@ -321,7 +474,7 @@ function AboutSection({ section }) {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 1 }}
-        className="liquid-glass overflow-hidden rounded-[32px] p-3 shadow-glow"
+        className="liquid-glass overflow-hidden rounded-[32px] p-3 shadow-glow border border-teal/20"
       >
         <div className="theme-image-panel relative aspect-[4/5] overflow-hidden rounded-[24px] border border-teal/10">
           {showPortrait ? (
@@ -373,14 +526,14 @@ function BrandCard({ item }) {
       className="min-w-[280px]"
     >
       <CardTag
-        className="liquid-glass liquid-glass-hover flex h-full flex-col justify-between rounded-3xl p-5 no-underline shadow-glow"
+        className="liquid-glass liquid-glass-hover flex h-full flex-col justify-between rounded-3xl p-5 no-underline shadow-glow border border-teal/20"
         href={item.linkedIn}
         target={item.linkedIn ? '_blank' : undefined}
         rel={item.linkedIn ? 'noreferrer' : undefined}
       >
         <div className="flex items-start justify-between gap-4">
           <BrandLogo item={item} />
-          <span className="theme-chip rounded-full border border-teal/10 px-3 py-1 text-xs font-bold text-mist/70">
+          <span className="theme-chip rounded-full border border-teal/10 px-3 py-1 text-xs font-bold text-mist/75">
             {item.location}
           </span>
         </div>
@@ -395,12 +548,10 @@ function BrandCard({ item }) {
 }
 
 function BrandsMarquee({ items }) {
-  // Triple the items to ensure seamless loop
   const marqueeItems = [...items, ...items, ...items]
   
   return (
     <div className="relative mt-8 w-full overflow-hidden py-4">
-      {/* Gradient masks for smooth fade in/out */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-abyss to-transparent" />
       <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-abyss to-transparent" />
       
@@ -427,7 +578,7 @@ function MediaThumbnail({ media, categoryTitle, index }) {
 
   if (hasError || !media.thumbnail) {
     return (
-      <div className="flex h-full w-full items-center justify-center px-5 text-center">
+      <div className="flex h-full w-full items-center justify-center px-5 text-center min-h-[220px]">
         <span className="text-sm font-extrabold uppercase tracking-[0.18em] text-foam/80">
           {media.type === 'video' ? 'Video' : media.type === 'animation' ? 'Animation' : 'Portfolio'}
         </span>
@@ -521,7 +672,6 @@ function PortfolioLightbox({ media, onClose }) {
               <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-teal">
                 {isPlayable ? (media.type === 'video' ? 'Video Preview' : 'Animation Preview') : 'Image Preview'}
               </p>
-              <h3 className="mt-1 truncate text-base font-bold text-foam sm:text-lg">{media.name}</h3>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
@@ -580,7 +730,7 @@ function PortfolioPlaceholder({ categoryTitle, index, item, onOpen }) {
   return (
     <motion.div 
       variants={fadeInVariants}
-      className="liquid-glass liquid-glass-hover mb-4 inline-block w-full break-inside-avoid overflow-hidden rounded-[24px] p-3 shadow-glow"
+      className="liquid-glass liquid-glass-hover mb-4 inline-block w-full break-inside-avoid overflow-hidden rounded-[24px] p-3 shadow-glow border border-teal/20"
     >
       <button
         className={`relative block w-full overflow-hidden rounded-[18px] border border-teal/10 bg-panel p-0 text-left ${isPlayable ? 'cursor-pointer' : 'cursor-zoom-in'}`}
@@ -620,7 +770,7 @@ function PortfolioCategory({ category, onOpenMedia }) {
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       variants={staggerContainer}
-      className="liquid-glass rounded-[32px] px-6 py-8 shadow-glow sm:px-8 lg:px-10"
+      className="liquid-glass rounded-[32px] px-6 py-8 shadow-glow sm:px-8 lg:px-10 border border-teal/20"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <motion.div variants={fadeInVariants}>
@@ -637,7 +787,7 @@ function PortfolioCategory({ category, onOpenMedia }) {
         </motion.span>
       </div>
 
-      <div className="mt-6 columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5">
+      <div className="mt-8 columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5">
         {items.map((item, index) => (
           <PortfolioPlaceholder
             key={item.id || `${category.title}-${index}`}
@@ -665,6 +815,7 @@ export default function App() {
     return true
   })
   const [selectedMedia, setSelectedMedia] = useState(null)
+  const [activeCategoryIndex, setActiveCategoryIndex] = useState(0)
 
   const isPortfolioPage = currentHash === '#portfolio'
   const homeNavigation = navigation.filter((item) => !item.page)
@@ -708,7 +859,7 @@ export default function App() {
       </div>
 
       <div className="relative z-10 w-full px-3 py-3 sm:px-5 lg:px-8">
-        <header className="liquid-glass sticky top-3 z-30 flex min-h-[92px] w-full flex-col gap-6 rounded-[32px] px-6 py-6 shadow-glow md:flex-row md:items-center md:justify-between lg:px-10">
+        <header className="liquid-glass relative md:sticky top-3 z-30 flex min-h-[92px] w-full flex-col gap-6 rounded-[32px] px-6 py-6 shadow-glow md:flex-row md:items-center md:justify-between lg:px-10 border border-teal/20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -717,10 +868,10 @@ export default function App() {
             <p className="mb-2 text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-teal">
               {meta.label}
             </p>
-            <h1 className="font-display text-5xl leading-[0.95] tracking-[-0.02em] text-foam sm:text-6xl">
+            <h1 className="font-display text-5xl leading-tight tracking-[-0.02em] text-foam sm:text-6xl font-black">
               {meta.title}
             </h1>
-            <p className="mt-2 text-base font-medium text-mist">{meta.role}</p>
+            <p className="mt-2 text-base font-semibold text-mist">{meta.role}</p>
           </motion.div>
 
           <div className="flex flex-wrap items-center gap-6">
@@ -771,26 +922,54 @@ export default function App() {
                 exit={{ opacity: 0, y: -20 }}
                 className="py-8 md:py-12"
               >
-                <div className="liquid-glass rounded-[36px] px-6 py-10 shadow-glow sm:px-8 lg:px-12">
+                <div className="liquid-glass rounded-[36px] px-6 py-10 shadow-glow sm:px-8 lg:px-12 border border-teal/20">
                   <SectionHeader eyebrow={portfolioPage.eyebrow} title={portfolioPage.title} />
                   <motion.p 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 }}
-                    className="mt-5 max-w-3xl text-base leading-8 text-mist/80"
+                    className="mt-5 max-w-3xl text-base leading-8 text-mist/85 font-medium"
                   >
                     {portfolioPage.intro}
                   </motion.p>
+                  
+                  {/* Category Filter Tabs with active count */}
+                  <div className="mt-8 flex flex-wrap gap-2.5 border-t border-teal/10 pt-8">
+                    {portfolioPage.categories.map((category, index) => (
+                      <button
+                        key={category.title}
+                        type="button"
+                        onClick={() => setActiveCategoryIndex(index)}
+                        className={`relative rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-300 ${
+                          activeCategoryIndex === index
+                            ? 'bg-teal text-white dark:text-abyss shadow-glow-teal'
+                            : 'theme-card-soft border border-teal/20 text-foam hover:border-teal/50 hover:text-teal'
+                        }`}
+                      >
+                        {category.title}
+                        <span className="ml-2 text-xs opacity-75">
+                          ({category.items?.length || category.images?.length || 0})
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="mt-6 grid gap-6">
-                  {portfolioPage.categories.map((category) => (
-                    <PortfolioCategory
-                      key={category.title}
-                      category={category}
-                      onOpenMedia={setSelectedMedia}
-                    />
-                  ))}
+                <div className="mt-6">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={portfolioPage.categories[activeCategoryIndex].title}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -15 }}
+                      transition={{ duration: 0.35 }}
+                    >
+                      <PortfolioCategory
+                        category={portfolioPage.categories[activeCategoryIndex]}
+                        onOpenMedia={setSelectedMedia}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
               </motion.section>
             ) : (
@@ -800,14 +979,29 @@ export default function App() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
+                {/* Hero Section */}
                 <section className="grid min-h-[calc(100vh-8rem)] gap-6 py-8 lg:grid-cols-[1.45fr_0.9fr] lg:items-stretch lg:py-10">
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8 }}
-                    className="liquid-glass flex flex-col justify-between rounded-[40px] px-6 py-10 shadow-glow sm:px-8 lg:px-12"
+                    className="liquid-glass flex flex-col justify-between rounded-[40px] px-6 py-10 shadow-glow sm:px-8 lg:px-12 border border-teal/20"
                   >
                     <div>
+                      {/* Immediate Joiner & Availability Indicator */}
+                      <motion.div
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15 }}
+                        className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal/20 bg-teal/5 px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wider text-teal"
+                      >
+                        <span className="relative flex h-2.5 w-2.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal"></span>
+                        </span>
+                        Available for Freelance & Full-time Roles
+                      </motion.div>
+
                       <motion.p 
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -816,19 +1010,21 @@ export default function App() {
                       >
                         {hero.eyebrow}
                       </motion.p>
+                      
                       <motion.h2 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3, duration: 0.8 }}
-                        className="font-display text-5xl leading-[0.92] tracking-[-0.02em] text-foam sm:text-6xl lg:max-w-[11ch] lg:text-[6.5rem] xl:text-[7.4rem]"
+                        className="font-display text-5xl leading-snug tracking-[-0.02em] text-foam sm:text-6xl sm:leading-snug lg:max-w-[12ch] lg:text-[5.8rem] lg:leading-[1.2] xl:text-[6.5rem] xl:leading-[1.2] font-black"
                       >
                         {hero.heading}
                       </motion.h2>
+                      
                       <motion.p 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
-                        className="mt-6 max-w-3xl text-base font-medium leading-8 text-mist lg:text-lg"
+                        className="mt-6 max-w-3xl text-base font-semibold leading-8 text-mist lg:text-lg"
                       >
                         {hero.description}
                       </motion.p>
@@ -837,7 +1033,7 @@ export default function App() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.7 }}
-                      className="mt-7 flex flex-col flex-wrap gap-3 sm:flex-row"
+                      className="mt-8 flex flex-col flex-wrap gap-3.5 sm:flex-row"
                     >
                       {hero.actions.map((action) => (
                         <HeroAction key={action.label} action={action} />
@@ -845,18 +1041,21 @@ export default function App() {
                     </motion.div>
                   </motion.div>
 
+                  {/* Sidebar Cards Stack */}
                   <motion.aside 
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className="grid gap-4 lg:grid-rows-1"
+                    className="grid gap-6 lg:grid-rows-2"
                   >
                     {hero.highlights.map((item) => (
                       <HeroFocusCard key={item.title} item={item} />
                     ))}
+                    <RecruiterQuickCard />
                   </motion.aside>
                 </section>
 
+                {/* Subsections */}
                 {orderedSections.map((section) => (
                   <motion.section
                     key={section.id}
@@ -876,7 +1075,7 @@ export default function App() {
                         {section.body ? (
                           <motion.p 
                             variants={fadeInVariants}
-                            className="mt-5 max-w-3xl text-base leading-8 text-mist/80"
+                            className="mt-5 max-w-3xl text-base leading-8 text-mist/85 font-medium"
                           >
                             {section.body}
                           </motion.p>
@@ -885,11 +1084,7 @@ export default function App() {
                     )}
 
                     {section.id === 'experience' ? (
-                      <div className="mt-7 grid gap-4 xl:grid-cols-2">
-                        {section.items.map((item) => (
-                          <ExperienceCard key={item.company} item={item} />
-                        ))}
-                      </div>
+                      <Timeline items={section.items} />
                     ) : null}
 
                     {section.id === 'services' ? (
@@ -907,31 +1102,26 @@ export default function App() {
                             <CaseStudyCard key={item.title} item={item} />
                           ))}
                         </div>
-                        <motion.a
-                          variants={fadeInVariants}
-                          whileHover={{ y: -2 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="mt-7 inline-flex items-center justify-center rounded-full bg-teal px-5 py-3.5 font-bold text-white shadow-md transition hover:shadow-lg dark:text-abyss"
-                          href={section.action.href}
-                        >
-                          {section.action.label}
-                        </motion.a>
+                        <div className="mt-8 flex justify-start">
+                          <motion.a
+                            variants={fadeInVariants}
+                            whileHover={{ y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="inline-flex items-center justify-center rounded-full bg-teal px-6 py-4 font-bold text-white shadow-md transition hover:shadow-lg dark:text-abyss text-base"
+                            href={section.action.href}
+                          >
+                            {section.action.label}
+                          </motion.a>
+                        </div>
                       </>
                     ) : null}
 
                     {section.id === 'motion' ? <MotionShowcase section={section} /> : null}
 
                     {section.id === 'skills' ? (
-                      <div className="mt-6 flex flex-wrap gap-3">
+                      <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                         {section.items.map((item) => (
-                          <motion.span
-                            key={item}
-                            variants={fadeInVariants}
-                            whileHover={{ scale: 1.05 }}
-                            className="theme-card-soft cursor-default rounded-full border border-teal/25 px-4 py-3 font-bold text-foam backdrop-blur-md"
-                          >
-                            {item}
-                          </motion.span>
+                          <SkillBadge key={item} name={item} />
                         ))}
                       </div>
                     ) : null}
@@ -943,7 +1133,7 @@ export default function App() {
                     ) : null}
 
                     {section.id === 'contact' ? (
-                      <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                      <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                         {section.items.map((item) => (
                           <ContactCard key={item.label} item={item} />
                         ))}
@@ -956,8 +1146,8 @@ export default function App() {
           </AnimatePresence>
         </main>
 
-        <footer className="px-2 py-5 text-center text-base text-mist/65">
-          <p>&copy; {meta.copyright}</p>
+        <footer className="px-2 py-8 text-center text-base text-mist/65">
+          <p>&copy; {meta.copyright} &bull; Visual Design Portfolio</p>
         </footer>
       </div>
 

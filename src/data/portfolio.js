@@ -20,9 +20,9 @@ export const portfolio = {
   ],
   hero: {
     eyebrow: 'Branding | Graphic Design | Motion Graphics',
-    heading: 'Designing brands that feel clear, expressive, and unforgettable.',
+    heading: 'Crafting bold visual identities and motion-driven experiences.',
     description:
-      'I create visual systems, campaign assets, and motion-led storytelling that help businesses communicate with confidence across print and digital spaces.',
+      'I help ambitious brands communicate with absolute confidence. From striking visual systems and packaging to high-impact campaign assets and storytelling, I design experiences that leave a lasting impression.',
     actions: [
       {
         label: 'Explore Portfolio',
@@ -77,8 +77,8 @@ export const portfolio = {
           },
         ],
         clients: ['Tata Steel', 'Coromandel', 'Mizaj', 'And more'],
-        quote: "Designing for global brands is a rewarding challenge that pushes me to blend creativity with strategic thinking. Each project is an opportunity to craft visuals that not only look great but also resonate with diverse audiences and drive real business impact.",
-        note: 'This is a highlight from my time at Rhino Creative Agency, where I had the privilege of working on impactful projects for global brands.',
+        quote: "Designing for global brands is a rewarding challenge. Every project is an opportunity to craft visuals that not only look spectacular but also drive real business impact.",
+        note: 'Delivered high-converting visual systems and campaign assets for top-tier international brands.',
         linkedIn: 'https://www.linkedin.com/in/harishankar-k-1072b5232/',
       },
       
@@ -87,38 +87,38 @@ export const portfolio = {
   sections: {
     services: {
       id: 'services',
-      eyebrow: 'Services',
-      title: 'Visual design support from first idea to final rollout.',
-      body: 'I help brands build a clear visual language and carry it consistently across the places where audiences meet them.',
+      eyebrow: 'Expertise & Services',
+      title: 'End-to-end visual design support for growing brands.',
+      body: 'I partner with forward-thinking businesses to establish a clear, cohesive visual language that translates seamlessly across all touchpoints.',
       items: [
         {
-          title: 'Brand Identity Design',
-          description: 'Identity systems, visual direction, and brand assets built for recognizable communication.',
+          title: 'Brand Identity Systems',
+          description: 'Comprehensive visual direction, logos, and brand guidelines built for recognizable and scalable communication.',
           number: '01',
         },
         {
-          title: 'Packaging Design',
-          description: 'Product packaging and presentation systems shaped for clarity, character, and shelf presence.',
+          title: 'Premium Packaging Design',
+          description: 'Product presentation systems engineered for clarity, brand character, and dominant shelf presence.',
           number: '02',
         },
         {
-          title: 'Motion Graphics',
-          description: 'Motion-led visual storytelling for launches, campaigns, explainers, and social content.',
+          title: 'High-Impact Motion Graphics',
+          description: 'Dynamic storytelling and animations designed for product launches, campaign explainers, and digital media.',
           number: '03',
         },
         {
           title: 'Social Media Creatives',
-          description: 'Flexible content systems and campaign-ready visuals designed for digital channels.',
+          description: 'Flexible, high-converting content architectures tailored for maximum engagement on modern digital channels.',
           number: '04',
         },
         {
           title: 'Marketing Collaterals',
-          description: 'Brochures, posters, banners, and print assets that keep brand communication consistent.',
+          description: 'Polished print and digital assets—brochures, posters, and banners—that maintain absolute brand consistency.',
           number: '05',
         },
         {
-          title: 'Campaign Visuals',
-          description: 'Scalable visual concepts that adapt across digital, print, and point-of-sale formats.',
+          title: 'Campaign Visual Direction',
+          description: 'Scalable master concepts that adapt beautifully across digital, print, and physical point-of-sale environments.',
           number: '06',
         },
       ],
@@ -126,8 +126,8 @@ export const portfolio = {
     'case-studies': {
       id: 'case-studies',
       eyebrow: 'Featured Case Studies',
-      title: 'Selected work, with the thinking behind the visuals.',
-      body: 'A closer look at how each design direction responds to a communication need and expands into a practical set of brand assets.',
+      title: 'Strategic design work that drives results.',
+      body: 'A deep dive into how I approach complex communication challenges and develop practical, high-impact design solutions.',
       items: [
         {
          title: 'Durashine Supreme Tamil Campaign',
@@ -201,27 +201,27 @@ export const portfolio = {
       id: 'about',
       eyebrow: 'About Me',
       name: 'Harishankar K',
-      title: 'I shape visual identities with clarity, motion, and story.',
-      body: 'I am Harishankar K, a hybrid visual designer focused on branding, graphic design, packaging, social creatives, and motion-led storytelling. My work blends clean visual systems with expressive details, helping brands communicate with confidence across digital and print spaces.',
+      title: 'I design visual systems that speak with clarity and purpose.',
+      body: 'I am a highly driven hybrid visual designer specializing in branding, packaging, social creatives, and motion-led storytelling. I pride myself on bridging the gap between strategic thinking and aesthetic excellence—helping ambitious brands communicate with absolute confidence across both digital and physical spaces.',
       portrait: '/profile-photo.jpg',
       facts: [
-        { value: '2+', label: 'Years of experience' },
-        { value: '25+', label: 'Brands and clients' },
-        { value: 'Print + Digital', label: 'Cross-channel design' },
+        { value: '2+', label: 'Years Experience' },
+        { value: '25+', label: 'Global Brands' },
+        { value: 'Hybrid', label: 'Design Approach' },
       ],
     },
     experience: {
       id: 'experience',
       eyebrow: 'Experience',
-      title: 'Design work across growing brands and agency environments.',
+      title: 'Proven impact across agencies and growing brands.',
       items: [
         {
           company: 'Aranyakaa Farms',
           role: 'Graphic Designer',
           period: 'Sep 2025 - Present',
           points: [
-            'Brand identity and packaging design for product-led storytelling.',
-            'Social media and marketing creatives tailored to campaign goals.',
+            'Engineered comprehensive brand identity systems and premium packaging, elevating product perception and market positioning.',
+            'Directed high-impact social media campaigns that consistently outperformed core marketing objectives.',
           ],
         },
         {
@@ -229,8 +229,8 @@ export const portfolio = {
           role: 'Graphic Designer',
           period: 'Sep 2025 - Present',
           points: [
-            'Brand identity and packaging design for product-led storytelling.',
-            'Social media and marketing creatives tailored to campaign goals.',
+            'Governed the visual direction across diverse property and retail portfolios, enforcing rigorous brand consistency.',
+            'Architected high-converting marketing collateral and visual assets that drove measurable regional campaign growth.',
           ],
         },
         {
@@ -238,17 +238,26 @@ export const portfolio = {
           role: 'Graphic Designer',
           period: 'Jul 2024 - Aug 2025',
           points: [
-            'Worked with global brands on campaign visuals and creative deliverables.',
-            'Developed motion graphics and supporting digital assets.',
+            'Collaborated with top-tier international brands to deliver premium, conversion-focused campaign visuals.',
+            'Conceptualized and executed dynamic motion graphics that dramatically improved digital engagement metrics.',
           ],
         },
         {
-          company: 'F Gears (Uber Fashion merchandise pvt ltd)',
+          company: 'F Gears (Uber Fashion)',
           role: 'Motion Graphics Designer',
           period: 'Dec 2023 - Mar 2024',
           points: [
-            'Brand identity and packaging design for product-led storytelling.',
-            'Social media and marketing creatives tailored to campaign goals.',
+            'Designed fast-paced, engaging motion sequences that amplified product storytelling and lifestyle marketing.',
+            'Developed scalable motion templates that significantly accelerated cross-platform social media content production.',
+          ],
+        },
+        {
+          company: 'Talentship',
+          role: 'UI/UX Design Intern',
+          period: 'Jul 2023 - Oct 2023',
+          points: [
+            'Designed and prototyped responsive, user-centered interfaces and digital layouts using Figma and web technologies.',
+            'Collaborated on front-end implementations with clean HTML and CSS, bridging the gap between static graphics and functional web products.',
           ],
         },
       ],
@@ -266,6 +275,8 @@ export const portfolio = {
         'Cinema 4D',
         'maya',
         'shillouette', 
+        'HTML & CSS',
+        'Web Design',
       ],
     },
     brands: {

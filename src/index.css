@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Satoshi:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,45 +7,35 @@
 
 @layer base {
   :root {
-    /* Shared fallbacks */
-    --color-abyss: #f0fdfa;
-    --color-mist: #1e293b;
-    --color-teal: #0891b2;
-    --glass-border: rgba(8, 145, 178, 0.25);
-    --glass-shadow: rgba(8, 145, 178, 0.12);
-  }
-
-  .light {
-    --color-abyss: #f0fdfa;
-    --color-deep: #ecfeff;
+    --color-abyss: #f8fafc;
+    --color-deep: #f1f5f9;
     --color-panel: #ffffff;
-    --color-mist: #1e293b;
-    --color-text-strong: #0f172a;
-    --color-teal: #0891b2;
-    --color-foam: #0e7490;
-    --glass-bg: rgba(255, 255, 255, 0.72);
-    --glass-border: rgba(8, 145, 178, 0.25);
-    --glass-shadow: rgba(8, 145, 178, 0.12);
-    --page-grid: rgba(8, 145, 178, 0.08);
-    --hero-glow-a: rgba(6, 182, 212, 0.18);
-    --hero-glow-b: rgba(20, 184, 166, 0.12);
-    --chip-bg: rgba(6, 182, 212, 0.08);
+    --color-mist: #334155;
+    --color-teal: #0891b2; /* mapped to cyan-600 */
+    --color-foam: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(8, 145, 178, 0.15);
+    --glass-shadow: rgba(8, 145, 178, 0.08);
+    --page-grid: rgba(8, 145, 178, 0.06);
+    --hero-glow-a: rgba(8, 145, 178, 0.12);
+    --hero-glow-b: rgba(139, 92, 246, 0.08);
+    --chip-bg: rgba(8, 145, 178, 0.06);
   }
 
   .dark {
-    --color-abyss: #071412;
-    --color-deep: #0b1f1b;
-    --color-panel: #102925;
-    --color-mist: #b6ddd2;
-    --color-teal: #19c0a2;
-    --color-foam: #dffcf5;
-    --glass-bg: rgba(7, 20, 18, 0.6);
-    --glass-border: rgba(25, 192, 162, 0.2);
-    --glass-shadow: rgba(25, 192, 162, 0.15);
-    --page-grid: rgba(25, 192, 162, 0.04);
-    --hero-glow-a: rgba(25, 192, 162, 0.12);
-    --hero-glow-b: rgba(36, 130, 109, 0.08);
-    --chip-bg: rgba(25, 192, 162, 0.08);
+    --color-abyss: #0B0E14;
+    --color-deep: #11151C;
+    --color-panel: #161B22;
+    --color-mist: #94A3B8;
+    --color-teal: #06B6D4; /* mapped to cyan-500 */
+    --color-foam: #F8FAFC;
+    --glass-bg: rgba(11, 14, 20, 0.65);
+    --glass-border: rgba(6, 182, 212, 0.18);
+    --glass-shadow: rgba(6, 182, 212, 0.12);
+    --page-grid: rgba(6, 182, 212, 0.04);
+    --hero-glow-a: rgba(6, 182, 212, 0.15);
+    --hero-glow-b: rgba(139, 92, 246, 0.12);
+    --chip-bg: rgba(6, 182, 212, 0.08);
   }
 
   * {
@@ -60,197 +51,228 @@
     font-family: 'Inter', sans-serif;
     background-color: var(--color-abyss);
     color: var(--color-mist);
-    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-x: hidden;
+  }
+
+  /* Custom Premium Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-abyss);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 99px;
+    border: 2px solid var(--color-abyss);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-teal);
   }
 
   a {
     color: inherit;
-    transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 0.3s ease;
   }
 }
 
 @layer utilities {
-  .animate-fade-up {
-    will-change: opacity, transform;
-  }
-
   .liquid-glass {
     background: linear-gradient(
       135deg, 
       var(--glass-bg) 0%, 
-      rgba(6, 182, 212, 0.12) 25%,
-      rgba(255, 255, 255, 0.4) 50%,
-      rgba(6, 182, 212, 0.18) 75%,
+      rgba(6, 182, 212, 0.04) 50%,
       var(--glass-bg) 100%
     );
-    background-size: 200% 200%;
-    backdrop-filter: blur(14px) saturate(125%);
+    backdrop-filter: blur(20px) saturate(140%);
     border: 1px solid var(--glass-border);
     box-shadow:
-      0 12px 40px var(--glass-shadow),
-      0 2px 10px rgba(8, 145, 178, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                backdrop-filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      0 20px 40px -15px var(--glass-shadow),
+      inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .dark .liquid-glass {
     background: linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.08) 0%,
-      rgba(25, 192, 162, 0.06) 25%,
-      rgba(255, 255, 255, 0.04) 50%,
-      rgba(36, 130, 109, 0.08) 75%,
-      rgba(255, 255, 255, 0.06) 100%
+      rgba(17, 21, 28, 0.6) 0%,
+      rgba(6, 182, 212, 0.05) 50%,
+      rgba(17, 21, 28, 0.8) 100%
     );
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(6, 182, 212, 0.15);
     box-shadow:
-      0 0 0 1px rgba(120, 255, 228, 0.06),
-      0 22px 80px rgba(5, 31, 27, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 20px 50px -12px rgba(0, 0, 0, 0.8),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .theme-page-bg {
     background:
-      radial-gradient(circle at 10% 7%, var(--hero-glow-a), transparent 24%),
+      radial-gradient(circle at 10% 7%, var(--hero-glow-a), transparent 25%),
       radial-gradient(circle at 88% 16%, var(--hero-glow-b), transparent 28%),
       linear-gradient(180deg, var(--color-abyss), var(--color-deep) 100%);
-    transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background 0.5s ease;
   }
 
   .dark .theme-page-bg {
     background:
-      radial-gradient(circle at top left, rgba(88, 255, 222, 0.18), transparent 20%),
-      radial-gradient(circle at 85% 18%, rgba(36, 130, 109, 0.22), transparent 24%),
-      radial-gradient(circle at 50% 100%, rgba(9, 95, 79, 0.18), transparent 30%),
-      linear-gradient(180deg, #04100f 0%, #071715 38%, #0a2220 100%);
+      radial-gradient(circle at top left, rgba(6, 182, 212, 0.18), transparent 25%),
+      radial-gradient(circle at 85% 18%, rgba(139, 92, 246, 0.15), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(6, 182, 212, 0.12), transparent 35%),
+      linear-gradient(180deg, #07090C 0%, #0B0E14 40%, #11151C 100%);
   }
 
   .theme-grid-bg {
     background-image:
       linear-gradient(var(--page-grid) 1px, transparent 1px),
       linear-gradient(90deg, var(--page-grid) 1px, transparent 1px);
-    background-size: 36px 36px;
-    mask-image: linear-gradient(180deg, rgba(255, 255, 255, 1), transparent 85%);
+    background-size: 40px 40px;
+    mask-image: linear-gradient(180deg, rgba(255, 255, 255, 1), transparent 90%);
     transition: background-image 0.5s ease;
   }
 
   .dark .theme-grid-bg {
-    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 85%);
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 90%);
   }
 
   .theme-hero-glow {
-    background: radial-gradient(circle at top, rgba(6, 182, 212, 0.25), transparent 70%);
+    background: radial-gradient(circle at top, rgba(6, 182, 212, 0.22), transparent 70%);
     transition: background 0.5s ease;
   }
 
   .dark .theme-hero-glow {
-    background: radial-gradient(circle at top, rgba(25, 192, 162, 0.15), transparent 70%);
+    background: radial-gradient(circle at top, rgba(6, 182, 212, 0.15), transparent 70%);
   }
 
+  /* Animated Glowing Background Orbs */
   .theme-orb-a {
-    background: rgba(6, 182, 212, 0.2);
-    transition: background 0.5s ease;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, transparent 70%);
+    animation: orb-float-a 25s ease-in-out infinite alternate;
   }
 
   .theme-orb-b {
-    background: rgba(6, 182, 212, 0.15);
-    transition: background 0.5s ease;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, transparent 70%);
+    animation: orb-float-b 30s ease-in-out infinite alternate;
   }
 
   .theme-orb-c {
-    background: rgba(6, 182, 212, 0.2);
-    transition: background 0.5s ease;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, transparent 70%);
+    animation: orb-float-c 28s ease-in-out infinite alternate;
   }
 
   .dark .theme-orb-a {
-    background: rgba(25, 192, 162, 0.12);
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.16) 0%, transparent 75%);
   }
 
   .dark .theme-orb-b {
-    background: rgba(25, 192, 162, 0.08);
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 75%);
   }
 
   .dark .theme-orb-c {
-    background: rgba(25, 192, 162, 0.08);
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 75%);
   }
 
   .theme-chip {
     background: var(--chip-bg);
-    transition: background 0.5s ease;
+    transition: background 0.4s ease;
   }
 
   .theme-card-soft {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: background 0.5s ease;
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: background 0.4s ease;
   }
 
   .dark .theme-card-soft {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(17, 21, 28, 0.45);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .theme-image-panel {
-    background: radial-gradient(circle at top, rgba(6, 182, 212, 0.1), transparent 42%), 
-                linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+    background: radial-gradient(circle at top, rgba(6, 182, 212, 0.1), transparent 45%), 
+                linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5));
     transition: background 0.5s ease;
   }
 
   .dark .theme-image-panel {
-    background: radial-gradient(circle at top, rgba(25, 192, 162, 0.1), transparent 42%), 
-                linear-gradient(180deg, rgba(7, 20, 18, 0.8), rgba(7, 20, 18, 0.4));
+    background: radial-gradient(circle at top, rgba(6, 182, 212, 0.1), transparent 45%), 
+                linear-gradient(180deg, rgba(17, 21, 28, 0.8), rgba(17, 21, 28, 0.4));
   }
 
   .theme-overlay-fade {
-    background: linear-gradient(180deg, transparent 54%, var(--glass-bg));
+    background: linear-gradient(180deg, transparent 50%, var(--glass-bg));
     transition: background 0.5s ease;
   }
 
   .liquid-glass-hover {
-    transition: all 0.4s cubic-bezier(0.21, 0.45, 0.32, 0.9);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .liquid-glass-hover:hover {
-    background-position: 100% 100%;
-    backdrop-filter: blur(16px) saturate(135%);
-    border-color: rgba(6, 182, 212, 0.25);
+    background: linear-gradient(
+      135deg, 
+      var(--glass-bg) 0%, 
+      rgba(6, 182, 212, 0.08) 50%,
+      var(--glass-bg) 100%
+    );
+    backdrop-filter: blur(24px) saturate(150%);
+    border-color: rgba(6, 182, 212, 0.35);
     box-shadow:
-      0 0 0 1px rgba(6, 182, 212, 0.1),
-      0 15px 50px rgba(6, 182, 212, 0.12),
-      0 8px 24px rgba(0, 0, 0, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    transform: translateY(-3px);
+      0 30px 60px -15px rgba(6, 182, 212, 0.15),
+      0 10px 20px -5px rgba(0, 0, 0, 0.03),
+      inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
   }
 
-  .portfolio-section {
-    content-visibility: auto;
-    contain-intrinsic-size: 900px;
+  .dark .liquid-glass-hover:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(17, 21, 28, 0.8) 0%,
+      rgba(6, 182, 212, 0.08) 50%,
+      rgba(17, 21, 28, 0.9) 100%
+    );
+    border-color: rgba(6, 182, 212, 0.35);
+    box-shadow:
+      0 30px 60px -12px rgba(0, 0, 0, 0.9),
+      0 0 20px rgba(6, 182, 212, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
-  .portfolio-card-shell {
-    content-visibility: auto;
-    contain: layout paint style;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 10px 28px var(--glass-shadow);
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-  }
-
-  .portfolio-card-shell:hover {
-    border-color: rgba(6, 182, 212, 0.28);
-    box-shadow: 0 12px 34px rgba(6, 182, 212, 0.12);
-    transform: translateY(-2px);
-  }
-
-  @keyframes liquid-flow {
-    0%, 100% {
-      background-position: 0% 50%;
+  /* Keyframe Animations for background orbs */
+  @keyframes orb-float-a {
+    0% {
+      transform: translate(0, 0) scale(1);
     }
     50% {
-      background-position: 100% 50%;
+      transform: translate(40px, -60px) scale(1.1);
+    }
+    100% {
+      transform: translate(-20px, 30px) scale(0.95);
+    }
+  }
+
+  @keyframes orb-float-b {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(-50px, 40px) scale(0.9);
+    }
+    100% {
+      transform: translate(30px, -20px) scale(1.08);
+    }
+  }
+
+  @keyframes orb-float-c {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(30px, 50px) scale(1.1);
+    }
+    100% {
+      transform: translate(-40px, -30px) scale(0.9);
     }
   }
 
@@ -266,7 +288,7 @@
   .animate-marquee {
     display: flex;
     width: max-content;
-    animation: marquee 70s linear infinite;
+    animation: marquee 85s linear infinite;
   }
 
   .animate-marquee:hover {
