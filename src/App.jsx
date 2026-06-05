@@ -27,6 +27,39 @@ const staggerContainer = {
   }
 }
 
+function useMouseGlow() {
+  const [coords, setCoords] = useState({ x: 0, y: 0 })
+  const [isHovered, setIsHovered] = useState(false)
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    setCoords({ x, y })
+  }
+
+  const hoverProps = {
+    onMouseMove: handleMouseMove,
+    onMouseEnter: () => setIsHovered(true),
+    onMouseLeave: () => setIsHovered(false),
+  }
+
+  const glowStyle = isHovered
+    ? {
+        background: `radial-gradient(150px circle at ${coords.x}px ${coords.y}px, rgba(6, 182, 212, 0.12), transparent 80%)`,
+      }
+    : {}
+
+  const borderStyle = isHovered
+    ? {
+        maskImage: `radial-gradient(120px circle at ${coords.x}px ${coords.y}px, black 30%, transparent 80%)`,
+        WebkitMaskImage: `radial-gradient(120px circle at ${coords.x}px ${coords.y}px, black 30%, transparent 80%)`,
+      }
+    : {}
+
+  return { hoverProps, glowStyle, borderStyle, isHovered }
+}
+
 function SectionHeader({ eyebrow, title }) {
   return (
     <motion.div
@@ -312,16 +345,35 @@ function ContactCard({ item }) {
     )
   }
 
+  const { hoverProps, glowStyle, borderStyle, isHovered } = useMouseGlow()
+
   return (
     <motion.div 
       variants={fadeInVariants}
       whileHover={{ y: -4 }}
-      className="liquid-glass liquid-glass-hover min-w-[220px] flex-1 rounded-3xl p-6 shadow-glow flex items-start gap-4"
+      {...hoverProps}
+      className="relative liquid-glass liquid-glass-hover min-w-[220px] flex-1 rounded-3xl p-6 shadow-glow flex items-start gap-4"
     >
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal/10">
+      {/* Premium cursor follow glow effect */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300"
+          style={glowStyle}
+        />
+      )}
+      
+      {/* Animated glowing border */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-20 rounded-3xl border border-teal/40 transition-opacity duration-300"
+          style={borderStyle}
+        />
+      )}
+
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal/10 relative z-30">
         {icon}
       </div>
-      <div className="min-w-0">
+      <div className="min-w-0 relative z-30">
         <span className="inline-block text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-teal">
           {item.label}
         </span>
@@ -339,28 +391,65 @@ function ContactCard({ item }) {
 }
 
 function ServiceCard({ item }) {
+  const { hoverProps, glowStyle, borderStyle, isHovered } = useMouseGlow()
+
   return (
     <motion.article
       variants={fadeInVariants}
       whileHover={{ y: -5 }}
-      className="liquid-glass liquid-glass-hover rounded-3xl p-6 shadow-glow border border-teal/20"
+      {...hoverProps}
+      className="relative liquid-glass liquid-glass-hover rounded-3xl p-6 shadow-glow border border-teal/20"
     >
-      <span className="font-display text-4xl text-teal/70 font-black">{item.number}</span>
-      <h3 className="mt-6 text-xl font-bold text-foam">{item.title}</h3>
-      <p className="mt-3 text-sm leading-7 text-mist/80">{item.description}</p>
+      {/* Premium cursor follow glow effect */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300"
+          style={glowStyle}
+        />
+      )}
+      
+      {/* Animated glowing border */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-20 rounded-3xl border border-teal/40 transition-opacity duration-300"
+          style={borderStyle}
+        />
+      )}
+
+      <span className="font-display text-4xl text-teal/70 font-black relative z-30">{item.number}</span>
+      <h3 className="mt-6 text-xl font-bold text-foam relative z-30">{item.title}</h3>
+      <p className="mt-3 text-sm leading-7 text-mist/80 relative z-30">{item.description}</p>
     </motion.article>
   )
 }
 
 function CaseStudyCard({ item }) {
   const isPlayable = item.type === 'video' || item.type === 'animation'
+  const { hoverProps, glowStyle, borderStyle, isHovered } = useMouseGlow()
 
   return (
     <motion.article
       variants={fadeInVariants}
-      className="liquid-glass liquid-glass-hover overflow-hidden rounded-[30px] shadow-glow border border-teal/20"
+      {...hoverProps}
+      className="relative liquid-glass liquid-glass-hover overflow-hidden rounded-[30px] shadow-glow border border-teal/20"
     >
-      <div className="theme-image-panel relative overflow-hidden border-b border-teal/10">
+      {/* Premium cursor follow glow effect */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300"
+          style={glowStyle}
+        />
+      )}
+      
+      {/* Animated glowing border */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-20 rounded-[30px] border border-teal/40 transition-opacity duration-300"
+          style={borderStyle}
+        />
+      )}
+
+      <div className="theme-image-panel relative overflow-hidden border-b border-teal/10 z-30">
         {isPlayable ? (
           <iframe
             className="aspect-video w-full border-0 bg-black"
@@ -383,7 +472,7 @@ function CaseStudyCard({ item }) {
           </>
         )}
       </div>
-      <div className="p-6">
+      <div className="p-6 relative z-30">
         <p className="text-[0.7rem] font-extrabold uppercase tracking-[0.18em] text-teal">
           {item.category}
         </p>
@@ -582,6 +671,7 @@ function getDriveThumbnailUrl(media, width = 1600) {
 
 function MediaThumbnail({ media, categoryTitle, index }) {
   const [hasError, setHasError] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   if (hasError || !media.thumbnail) {
     return (
@@ -594,16 +684,39 @@ function MediaThumbnail({ media, categoryTitle, index }) {
   }
 
   return (
-    <img
-      className="block h-auto w-full select-none object-contain transition-transform duration-700 hover:scale-105"
-      src={getDriveThumbnailUrl(media, 900)}
-      alt={media.name || `${categoryTitle} sample ${index}`}
-      loading="lazy"
-      draggable="false"
-      referrerPolicy="no-referrer"
-      onContextMenu={(event) => event.preventDefault()}
-      onError={() => setHasError(true)}
-    />
+    <div className={`relative w-full overflow-hidden bg-panel/30 ${!isLoaded ? 'min-h-[220px]' : ''}`}>
+      {/* Glassmorphic Shimmer Loader */}
+      {!isLoaded && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6">
+          {/* Moving shimmer bar */}
+          <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-teal/10 to-transparent" />
+          
+          {/* Glassmorphic inner shape */}
+          <div className="w-12 h-12 rounded-full border border-teal/20 bg-teal/5 flex items-center justify-center mb-3">
+            <svg className="w-5 h-5 text-teal/40 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-teal/50 animate-pulse">
+            Loading visual...
+          </span>
+        </div>
+      )}
+
+      <img
+        className={`block h-auto w-full select-none object-contain transition-all duration-700 hover:scale-105 ${
+          isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+        }`}
+        src={getDriveThumbnailUrl(media, 900)}
+        alt={media.name || `${categoryTitle} sample ${index}`}
+        loading="lazy"
+        draggable="false"
+        referrerPolicy="no-referrer"
+        onContextMenu={(event) => event.preventDefault()}
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setHasError(true)}
+      />
+    </div>
   )
 }
 
@@ -733,12 +846,30 @@ function PortfolioLightbox({ media, onClose }) {
 function PortfolioPlaceholder({ categoryTitle, index, item, onOpen }) {
   const media = typeof item === 'string' ? { name: `Work ${index}`, thumbnail: item } : item
   const isPlayable = media.type === 'video' || media.type === 'animation'
+  const { hoverProps, glowStyle, borderStyle, isHovered } = useMouseGlow()
 
   return (
     <motion.div 
       variants={fadeInVariants}
-      className="liquid-glass liquid-glass-hover mb-4 inline-block w-full break-inside-avoid overflow-hidden rounded-[24px] p-3 shadow-glow border border-teal/20"
+      {...hoverProps}
+      className="relative liquid-glass liquid-glass-hover mb-4 inline-block w-full break-inside-avoid overflow-hidden rounded-[24px] p-3 shadow-glow border border-teal/20"
     >
+      {/* Premium cursor follow glow effect */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300"
+          style={glowStyle}
+        />
+      )}
+      
+      {/* Animated glowing border */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-20 rounded-[24px] border border-teal/40 transition-opacity duration-300"
+          style={borderStyle}
+        />
+      )}
+
       <button
         className={`relative block w-full overflow-hidden rounded-[18px] border border-teal/10 bg-panel p-0 text-left ${isPlayable ? 'cursor-pointer' : 'cursor-zoom-in'}`}
         type="button"

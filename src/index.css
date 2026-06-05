@@ -294,4 +294,18 @@
   .animate-marquee:hover {
     animation-play-state: paused;
   }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2.2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }
+

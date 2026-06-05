@@ -212,7 +212,7 @@ export const portfolio = {
       name: 'Harishankar K',
       title: 'I design visual systems that speak with clarity and purpose.',
       body: 'I am a highly driven hybrid visual designer specializing in branding, packaging, social creatives, and motion-led storytelling. I pride myself on bridging the gap between strategic thinking and aesthetic excellence—helping ambitious brands communicate with absolute confidence across both digital and physical spaces.',
-      portrait: '/profile-photo.jpg',
+      portrait: '/profile-photo.png',
       facts: [
         { value: '2+', label: 'Years Experience' },
         { value: '25+', label: 'Global Brands' },
