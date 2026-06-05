@@ -907,7 +907,7 @@ export default function Home() {
     .filter(Boolean);
 
   return (
-    <div className="theme-page-bg min-h-screen relative font-sans transition-colors duration-500 selection:bg-teal selection:text-white dark:selection:text-abyss">
+    <div className="theme-page-bg min-h-screen overflow-x-hidden text-mist transition-colors duration-300 relative font-sans selection:bg-teal selection:text-white dark:selection:text-abyss">
       {/* Background elements */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="theme-grid-bg absolute inset-0" />
@@ -919,274 +919,299 @@ export default function Home() {
         <div className="theme-orb-c absolute bottom-[-10rem] left-1/4 h-[600px] w-[600px] rounded-full blur-[160px]" />
       </div>
 
-      {/* HEADER NAVBAR */}
-      <header className="sticky top-0 z-40 w-full bg-abyss/45 backdrop-blur-md border-b border-teal/10">
-        <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-          <a href="#" className="font-display text-lg font-black tracking-tight text-foam">
-            {meta.title}
-          </a>
+      <div className="relative z-10 w-full px-3 py-3 sm:px-5 lg:px-8">
+        <header className="liquid-glass relative md:sticky top-3 z-30 flex min-h-[92px] w-full flex-col gap-6 rounded-[32px] px-6 py-6 shadow-glow md:flex-row md:items-center md:justify-between lg:px-10 border border-teal/20">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="mb-2 text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-teal">
+              {meta.label}
+            </p>
+            <h1 className="font-display text-5xl leading-tight tracking-[-0.02em] text-foam sm:text-6xl font-black">
+              {meta.title}
+            </h1>
+            <p className="mt-2 text-base font-semibold text-mist">{meta.role}</p>
+          </motion.div>
 
-          <nav className="hidden md:flex gap-6 text-sm font-semibold">
-            {navigation.map((item) => (
-              <a
-                key={item.id}
-                href={item.page ? `#${item.page}` : `#${item.id}`}
-                className="text-mist hover:text-teal transition"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+          <div className="flex flex-wrap items-center gap-6">
+            <nav className="flex flex-wrap gap-4 text-sm font-bold text-mist sm:text-base">
+              {navigation.map((item, index) => (
+                <motion.a
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 * index }}
+                  key={item.id}
+                  className="transition hover:text-teal"
+                  href={item.page === 'portfolio' ? '#portfolio' : item.page === 'home' ? '#' : `#${item.id}`}
+                >
+                  {item.label}
+                </motion.a>
+              ))}
+            </nav>
 
-          <div className="flex items-center gap-4">
-            {/* Dark Mode toggle switch */}
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="theme-card-soft flex h-9 w-9 items-center justify-center rounded-full border border-teal/15 text-foam hover:border-teal/40 transition text-sm"
-              aria-label="Toggle dark mode"
+              className="theme-card-soft flex h-12 w-12 items-center justify-center rounded-full border border-teal/20 text-teal backdrop-blur-md transition-colors hover:border-teal/50"
+              aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              type="button"
             >
-              {isDarkMode ? '🌙' : '☀️'}
-            </button>
-            <a
-              href="#contact"
-              className="inline-flex items-center justify-center rounded-full bg-teal px-4 py-2 text-xs font-bold text-white shadow-sm hover:-translate-y-0.5 transition dark:text-abyss"
-            >
-              Hire Me
-            </a>
+              {isDarkMode ? (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591 1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+              )}
+            </motion.button>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* MAIN CONTAINER */}
-      <main className="max-w-7xl mx-auto px-4 py-12 sm:px-6 sm:py-20 lg:px-8 relative z-10">
-        <AnimatePresence mode="wait">
-          {!isPortfolioPage ? (
-            <motion.div
-              key="home-sections"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-24 sm:space-y-36"
-            >
-              {/* HERO SECTION */}
-              <section className="grid gap-10 lg:grid-cols-12 lg:items-center">
-                {/* Hero Left Content */}
-                <div className="lg:col-span-7 space-y-6">
-                  {/* Status chip */}
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="inline-flex items-center gap-2 rounded-full border border-teal/20 bg-teal/5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-teal"
-                  >
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-teal"></span>
-                    </span>
-                    Available for Freelance & Full-time Roles
-                  </motion.div>
-
-                  <motion.p 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="mb-3 text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-teal"
-                  >
-                    {hero.eyebrow}
-                  </motion.p>
-                  
-                  <motion.h2 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.8 }}
-                    className="font-display text-5xl leading-snug tracking-[-0.02em] text-foam sm:text-6xl sm:leading-snug lg:max-w-[12ch] lg:text-[5.8rem] lg:leading-[1.2] xl:text-[6.5rem] xl:leading-[1.2] font-black"
-                  >
-                    {hero.heading}
-                  </motion.h2>
-                  
+        <main className="w-full">
+          <AnimatePresence mode="wait">
+            {isPortfolioPage ? (
+              <motion.section 
+                key="portfolio-page"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="py-8 md:py-12"
+              >
+                <div className="liquid-glass rounded-[36px] px-6 py-10 shadow-glow sm:px-8 lg:px-12 border border-teal/20">
+                  <SectionHeader eyebrow={portfolioPage.eyebrow} title={portfolioPage.title} />
                   <motion.p 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                    className="mt-6 max-w-3xl text-base font-semibold leading-8 text-mist lg:text-lg"
+                    transition={{ delay: 0.3 }}
+                    className="mt-5 max-w-3xl text-base leading-8 text-mist/85 font-medium"
                   >
-                    {hero.description}
+                    {portfolioPage.intro}
                   </motion.p>
-
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7 }}
-                    className="mt-8 flex flex-col flex-wrap gap-3.5 sm:flex-row"
-                  >
-                    {hero.actions.map((action) => (
-                      <HeroAction key={action.label} action={action} />
+                  
+                  {/* Category Filter Tabs with active count */}
+                  <div className="mt-8 flex flex-wrap gap-2.5 border-t border-teal/10 pt-8">
+                    {portfolioPage.categories.map((category, index) => (
+                      <button
+                        key={category.title}
+                        type="button"
+                        onClick={() => setActiveCategoryIndex(index)}
+                        className={`relative rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-300 ${
+                          activeCategoryIndex === index
+                            ? 'bg-teal text-white dark:text-abyss shadow-glow-teal'
+                            : 'theme-card-soft border border-teal/20 text-foam hover:border-teal/50 hover:text-teal'
+                        }`}
+                      >
+                        {category.title}
+                        <span className="ml-2 text-xs opacity-75">
+                          ({category.items?.length || category.images?.length || 0})
+                        </span>
+                      </button>
                     ))}
-                  </motion.div>
+                  </div>
                 </div>
 
-                {/* Hero Right Aside Stack */}
-                <motion.aside 
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  className="lg:col-span-5 grid gap-6 lg:grid-rows-2"
-                >
-                  {hero.highlights.map((item) => (
-                    <HeroFocusCard key={item.title} item={item} />
-                  ))}
-                  <RecruiterQuickCard profile={portfolioData.quickProfile} />
-                </motion.aside>
-              </section>
+                <div className="mt-6">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={portfolioPage.categories[activeCategoryIndex].title}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -15 }}
+                      transition={{ duration: 0.35 }}
+                    >
+                      <PortfolioCategory
+                        category={portfolioPage.categories[activeCategoryIndex]}
+                        onOpenMedia={setSelectedMedia}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </motion.section>
+            ) : (
+              <motion.div
+                key="home-page"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                {/* Hero Section */}
+                <section className="grid min-h-[calc(100vh-8rem)] gap-6 py-8 lg:grid-cols-[1.45fr_0.9fr] lg:items-stretch lg:py-10">
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8 }}
+                    className="liquid-glass flex flex-col justify-between rounded-[40px] px-6 py-10 shadow-glow sm:px-8 lg:px-12 border border-teal/20"
+                  >
+                    <div>
+                      {/* Immediate Joiner & Availability Indicator */}
+                      <motion.div
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15 }}
+                        className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal/20 bg-teal/5 px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wider text-teal"
+                      >
+                        <span className="relative flex h-2.5 w-2.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal"></span>
+                        </span>
+                        Available for Freelance & Full-time Roles
+                      </motion.div>
 
-              {/* DYNAMIC ORDERED SUBSECTIONS */}
-              {orderedSections.map((section) => (
-                <motion.section
-                  key={section.id}
-                  id={section.id}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-100px" }}
-                  variants={staggerContainer}
-                  className={`${sectionShell}${section.id === 'contact' ? ' mb-6' : ''}`}
-                >
-                  {section.id === 'about' ? (
-                    <AboutSection section={section} />
-                  ) : (
-                    <>
-                      <SectionHeader eyebrow={section.eyebrow} title={section.title} />
-                      {section.body ? (
-                        <motion.p 
-                          variants={fadeInVariants}
-                          className="mt-5 max-w-3xl text-base leading-8 text-mist/85 font-medium"
-                        >
-                          {section.body}
-                        </motion.p>
-                      ) : null}
-                    </>
-                  )}
-
-                  {section.id === 'services' && (
-                    <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                      {section.items.map((item: ServiceItem) => (
-                        <ServiceCard key={item.title} item={item} />
-                      ))}
+                      <motion.p 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="mb-3 text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-teal"
+                      >
+                        {hero.eyebrow}
+                      </motion.p>
+                      
+                      <motion.h2 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3, duration: 0.8 }}
+                        className="font-display text-5xl leading-snug tracking-[-0.02em] text-foam sm:text-6xl sm:leading-snug lg:max-w-[12ch] lg:text-[5.8rem] lg:leading-[1.2] xl:text-[6.5rem] xl:leading-[1.2] font-black"
+                      >
+                        {hero.heading}
+                      </motion.h2>
+                      
+                      <motion.p 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5, duration: 0.8 }}
+                        className="mt-6 max-w-3xl text-base font-semibold leading-8 text-mist lg:text-lg"
+                      >
+                        {hero.description}
+                      </motion.p>
                     </div>
-                  )}
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                      className="mt-8 flex flex-col flex-wrap gap-3.5 sm:flex-row"
+                    >
+                      {hero.actions.map((action) => (
+                        <HeroAction key={action.label} action={action} />
+                      ))}
+                    </motion.div>
+                  </motion.div>
 
-                  {section.id === 'case-studies' && (
-                    <>
-                      <div className="mt-7 grid gap-5 xl:grid-cols-3">
-                        {section.items.map((item: CaseStudyItem) => (
-                          <CaseStudyCard key={item.title} item={item} />
+                  {/* Sidebar Cards Stack */}
+                  <motion.aside 
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="grid gap-6 lg:grid-rows-2"
+                  >
+                    {hero.highlights.map((item) => (
+                      <HeroFocusCard key={item.title} item={item} />
+                    ))}
+                    <RecruiterQuickCard profile={portfolioData.quickProfile} />
+                  </motion.aside>
+                </section>
+
+                {/* Subsections */}
+                {orderedSections.map((section) => (
+                  <motion.section
+                    key={section.id}
+                    id={section.id}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={staggerContainer}
+                    className={`${sectionShell}${section.id === 'contact' ? ' mb-6' : ''}`}
+                  >
+                    {section.id === 'about' ? (
+                      <AboutSection section={section} />
+                    ) : (
+                      <>
+                        <SectionHeader eyebrow={section.eyebrow} title={section.title} />
+
+                        {section.body ? (
+                          <motion.p 
+                            variants={fadeInVariants}
+                            className="mt-5 max-w-3xl text-base leading-8 text-mist/85 font-medium"
+                          >
+                            {section.body}
+                          </motion.p>
+                        ) : null}
+                      </>
+                    )}
+
+                    {section.id === 'experience' ? (
+                      <Timeline items={section.items} />
+                    ) : null}
+
+                    {section.id === 'services' ? (
+                      <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        {section.items.map((item: any) => (
+                          <ServiceCard key={item.title} item={item} />
                         ))}
                       </div>
-                      <div className="mt-8 flex justify-start">
-                        <motion.a
-                          variants={fadeInVariants}
-                          whileHover={{ y: -2 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="inline-flex items-center justify-center rounded-full bg-teal px-6 py-4 font-bold text-white shadow-md transition hover:shadow-lg dark:text-abyss text-base"
-                          href={section.action.href}
-                        >
-                          {section.action.label}
-                        </motion.a>
+                    ) : null}
+
+                    {section.id === 'case-studies' ? (
+                      <>
+                        <div className="mt-7 grid gap-5 xl:grid-cols-3">
+                          {section.items.map((item: any) => (
+                            <CaseStudyCard key={item.title} item={item} />
+                          ))}
+                        </div>
+                        <div className="mt-8 flex justify-start">
+                          <motion.a
+                            variants={fadeInVariants}
+                            whileHover={{ y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="inline-flex items-center justify-center rounded-full bg-teal px-6 py-4 font-bold text-white shadow-md transition hover:shadow-lg dark:text-abyss text-base"
+                            href={section.action.href}
+                          >
+                            {section.action.label}
+                          </motion.a>
+                        </div>
+                      </>
+                    ) : null}
+
+                    {section.id === 'motion' ? <MotionShowcase section={section} /> : null}
+
+                    {section.id === 'skills' ? (
+                      <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+                        {section.items.map((item: any) => (
+                          <SkillBadge key={item} name={item} />
+                        ))}
                       </div>
-                    </>
-                  )}
+                    ) : null}
 
-                  {section.id === 'motion' && <MotionShowcase section={section} />}
+                    {section.id === 'brands' ? (
+                      <motion.div variants={fadeInVariants}>
+                        <BrandsMarquee items={section.items} />
+                      </motion.div>
+                    ) : null}
 
-                  {section.id === 'experience' && <Timeline items={section.items} />}
-
-                  {section.id === 'skills' && (
-                    <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-                      {section.items.map((item: string) => (
-                        <SkillBadge key={item} name={item} />
-                      ))}
-                    </div>
-                  )}
-
-                  {section.id === 'brands' && (
-                    <motion.div variants={fadeInVariants}>
-                      <BrandsMarquee items={section.items} />
-                    </motion.div>
-                  )}
-
-                  {section.id === 'contact' && (
-                    <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                      {section.items.map((item: ContactItem) => (
-                        <ContactCard key={item.label} item={item} />
-                      ))}
-                    </div>
-                  )}
-                </motion.section>
-              ))}
-            </motion.div>
-          ) : (
-            /* DYNAMIC CATEGORY PORTFOLIO PAGE */
-            <motion.div
-              key="portfolio-categories"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-16"
-            >
-              {/* Category Page Title */}
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-                <div>
-                  <p className="text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-teal">
-                    {portfolioPage.eyebrow}
-                  </p>
-                  <h2 className="text-4xl sm:text-5xl font-black text-foam tracking-tight leading-tight mt-2">{portfolioPage.title}</h2>
-                  <p className="mt-4 text-base max-w-2xl leading-7 text-mist/85 font-medium">{portfolioPage.intro}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <a
-                    href="#"
-                    className="inline-flex items-center justify-center rounded-full border border-teal/20 px-5 py-3 text-sm font-bold text-foam shadow-sm hover:border-teal/55 hover:text-teal transition"
-                  >
-                    &larr; Back to Home
-                  </a>
-                </div>
-              </div>
-
-              {/* Horizontal Category Selector */}
-              <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-thin border-b border-teal/10">
-                {portfolioPage.categories.map((cat, idx) => (
-                  <button
-                    key={cat.title}
-                    onClick={() => setActiveCategoryIndex(idx)}
-                    className={`px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition ${
-                      activeCategoryIndex === idx
-                        ? 'bg-[#06B6D4]/10 border border-[#06B6D4] text-[#06B6D4]'
-                        : 'border border-transparent text-[#94A3B8] hover:bg-[#11151C]'
-                    }`}
-                  >
-                    {cat.title} ({cat.count || 0})
-                  </button>
+                    {section.id === 'contact' ? (
+                      <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                        {section.items.map((item: any) => (
+                          <ContactCard key={item.label} item={item} />
+                        ))}
+                      </div>
+                    ) : null}
+                  </motion.section>
                 ))}
-              </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </main>
 
-              {/* Render Selected Category Grid */}
-              {portfolioPage.categories[activeCategoryIndex] && (
-                <PortfolioCategory
-                  category={portfolioPage.categories[activeCategoryIndex]}
-                  onOpenMedia={setSelectedMedia}
-                />
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
+        <footer className="px-2 py-8 text-center text-base text-mist/65">
+          <p>&copy; {meta.copyright} &bull; Visual Design Portfolio</p>
+        </footer>
+      </div>
 
-      {/* FOOTER */}
-      <footer className="px-4 py-8 text-center text-sm text-mist/65 border-t border-teal/10 mt-16 relative z-10">
-        <p>&copy; {meta.copyright} &bull; Portfolio Website. Built with Next.js & Firebase.</p>
-      </footer>
-
-      {/* Lightbox Modal */}
       <PortfolioLightbox media={selectedMedia} onClose={() => setSelectedMedia(null)} />
     </div>
   );
