@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { portfolio } from './data/portfolio'
-import { db, isFirebaseConfigured } from './firebase'
-import { doc, getDoc } from 'firebase/firestore'
 
 const sectionShell =
   'liquid-glass liquid-glass-hover mt-6 rounded-[36px] px-6 py-10 shadow-glow sm:px-8 lg:px-12'
@@ -814,21 +812,6 @@ function PortfolioCategory({ category, onOpenMedia }) {
 export default function App() {
   const [portfolioData, setPortfolioData] = useState(portfolio)
   const { meta, navigation, hero, sections, portfolioPage } = portfolioData
-
-  useEffect(() => {
-    if (isFirebaseConfigured) {
-      const docRef = doc(db, 'configs', 'portfolio')
-      getDoc(docRef)
-        .then((docSnap) => {
-          if (docSnap.exists()) {
-            setPortfolioData(docSnap.data())
-          }
-        })
-        .catch((err) => {
-          console.error('Failed to load portfolio from Firebase, using fallback:', err)
-        })
-    }
-  }, [])
 
   const [currentHash, setCurrentHash] = useState(() =>
     typeof window !== 'undefined' ? window.location.hash : '',
