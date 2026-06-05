@@ -1,37 +1,97 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import portfolioRaw from './data/portfolio.js?raw';
 import { portfolio as initialPortfolio } from './data/portfolio';
+import { db, auth, isFirebaseConfigured } from './firebase';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 export default function Admin() {
   // Authentication state
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    if (isFirebaseConfigured) {
+      return false; // Will be set by onAuthStateChanged
+    }
     return sessionStorage.getItem('admin_auth') === 'true';
   });
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(isFirebaseConfigured);
 
   // Editor states
   const [activeTab, setActiveTab] = useState('visual'); // 'visual' or 'raw'
   const [visualSection, setVisualSection] = useState('hero'); // 'hero', 'about', 'experience', 'skills', 'contact'
+  const [publishStatus, setPublishStatus] = useState(''); // '', 'publishing', 'success', 'error'
   
   // Data states
   const [data, setData] = useState(initialPortfolio);
   const [rawCode, setRawCode] = useState(portfolioRaw);
   const [newSkillInput, setNewSkillInput] = useState('');
 
-  // Handle Login
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const envUsername = import.meta.env.VITE_ADMIN_USERNAME || 'admin';
-    const envPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'harish2026';
+  // Set up Firebase Auth listener
+  useEffect(() => {
+    if (isFirebaseConfigured) {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setIsLoggedIn(!!user);
+        setLoading(false);
+      });
+      return unsubscribe;
+    }
+  }, []);
 
-    if (username === envUsername && password === envPassword) {
-      setIsLoggedIn(true);
-      sessionStorage.setItem('admin_auth', 'true');
-      setError('');
+  // Fetch live Firestore configuration on login
+  useEffect(() => {
+    if (isFirebaseConfigured && isLoggedIn) {
+      const docRef = doc(db, 'configs', 'portfolio');
+      getDoc(docRef)
+        .then((docSnap) => {
+          if (docSnap.exists()) {
+            const fetchedData = docSnap.data();
+            setData(fetchedData);
+            setRawCode(generateCodeFromData(fetchedData));
+          }
+        })
+        .catch((err) => {
+          console.error("Failed to load live configurations from Firestore:", err);
+        });
+    }
+  }, [isLoggedIn]);
+
+  // Handle Login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    if (isFirebaseConfigured) {
+      try {
+        await signInWithEmailAndPassword(auth, username, password);
+      } catch (err) {
+        setError(err.message || 'Invalid email or password');
+      } finally {
+        setLoading(false);
+      }
     } else {
-      setError('Invalid username or password');
+      const envUsername = import.meta.env.VITE_ADMIN_USERNAME || 'admin';
+      const envPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'harish2026';
+
+      if (username === envUsername && password === envPassword) {
+        setIsLoggedIn(true);
+        sessionStorage.setItem('admin_auth', 'true');
+      } else {
+        setError('Invalid username or password');
+      }
+      setLoading(false);
+    }
+  };
+
+  // Handle Logout
+  const handleLogout = async () => {
+    if (isFirebaseConfigured) {
+      await signOut(auth);
+    } else {
+      sessionStorage.removeItem('admin_auth');
+      setIsLoggedIn(false);
     }
   };
 
@@ -54,6 +114,27 @@ export default function Admin() {
     );
 
     return `import { drivePortfolioCategories } from './drivePortfolio'\n\nexport const portfolio = ${jsonString}\n`;
+  };
+
+  // Handle Direct Publishing to Firestore
+  const handlePublishLive = async () => {
+    if (!isFirebaseConfigured) return;
+    setPublishStatus('publishing');
+    try {
+      const docRef = doc(db, 'configs', 'portfolio');
+      // If we are in visual tab, save visual data state. If we are in raw tab, we notify them to download or update visual state first.
+      if (activeTab === 'visual') {
+        await setDoc(docRef, data);
+        setPublishStatus('success');
+      } else {
+        // Direct publish from raw code is restricted to avoid schema issues, suggest using visual mode or downloading
+        alert("To publish raw code changes live, please apply the changes to the files locally, or use the Visual Form Editor to publish directly.");
+        setPublishStatus('');
+      }
+    } catch (err) {
+      console.error("Error publishing config to Firebase:", err);
+      setPublishStatus('error');
+    }
   };
 
   // Handle Download for Visual Form
@@ -285,6 +366,14 @@ export default function Admin() {
     });
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0B0E14] flex items-center justify-center p-6">
+        <div className="w-8 h-8 rounded-full border-2 border-t-transparent border-[#06B6D4] animate-spin"></div>
+      </div>
+    );
+  }
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-[#0B0E14] flex flex-col items-center justify-center p-6 font-sans relative overflow-hidden">
@@ -294,10 +383,14 @@ export default function Admin() {
         <div className="w-full max-w-md liquid-glass p-8 rounded-[32px] border border-[#06B6D4]/20 shadow-glow relative z-10">
           <div className="text-center mb-8">
             <span className="inline-block text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-[#06B6D4] mb-2">
-              Security Access
+              {isFirebaseConfigured ? 'Firebase Protected' : 'Security Access'}
             </span>
             <h1 className="text-3xl font-black text-[#F8FAFC] tracking-tight">Admin Console</h1>
-            <p className="mt-2 text-sm text-[#94A3B8]">Enter credentials to customize portfolio data.</p>
+            <p className="mt-2 text-sm text-[#94A3B8]">
+              {isFirebaseConfigured 
+                ? 'Enter email & password to publish live updates.' 
+                : 'Enter credentials to customize portfolio data.'}
+            </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5">
@@ -308,13 +401,15 @@ export default function Admin() {
             )}
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-[#94A3B8] mb-2">Username</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#94A3B8] mb-2">
+                {isFirebaseConfigured ? 'Admin Email' : 'Username'}
+              </label>
               <input
-                type="text"
+                type={isFirebaseConfigured ? 'email' : 'text'}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full bg-[#11151C]/60 border border-[#06B6D4]/20 rounded-xl px-4 py-3 text-sm text-[#F8FAFC] focus:outline-none focus:border-[#06B6D4] focus:ring-1 focus:ring-[#06B6D4] transition"
-                placeholder="Enter username"
+                placeholder={isFirebaseConfigured ? 'admin@example.com' : 'Enter username'}
                 required
               />
             </div>
@@ -353,32 +448,79 @@ export default function Admin() {
     <div className="min-h-screen bg-[#0B0E14] text-[#94A3B8] p-4 sm:p-8 font-sans">
       <div className="max-w-6xl mx-auto">
         
+        {/* Connection status banner (if local mode) */}
+        {!isFirebaseConfigured && (
+          <div className="mb-6 px-4 py-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-between text-xs text-amber-400 font-semibold shadow-md">
+            <span>⚠️ Firebase variables not configured. Operating in Local Download Mode. Add VITE_FIREBASE_* environment keys to unlock instant live publishing.</span>
+            <a href="https://console.firebase.google.com/" target="_blank" rel="noreferrer" className="underline hover:text-amber-200">Firebase Console →</a>
+          </div>
+        )}
+
         {/* Header Dashboard */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-[#06B6D4]/20 pb-6 gap-4">
           <div>
-            <h1 className="text-3xl font-black text-[#F8FAFC] tracking-tight">Portfolio Control Panel</h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-black text-[#F8FAFC] tracking-tight">Portfolio Control Panel</h1>
+              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                isFirebaseConfigured 
+                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
+                  : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+              }`}>
+                <span className={`w-1.5 h-1.5 rounded-full mr-1.5 animate-pulse ${
+                  isFirebaseConfigured ? 'bg-emerald-400' : 'bg-amber-400'
+                }`} />
+                {isFirebaseConfigured ? 'Firebase Active' : 'Local Mode'}
+              </span>
+            </div>
             <p className="mt-2 text-sm text-[#94A3B8]">
-              Easily update details of your site. Once customized, download the file and place it in <code>src/data/portfolio.js</code>.
+              {isFirebaseConfigured
+                ? 'Your site fetches data live from Firestore. Publish instantly or download files as backups.'
+                : 'Customize your site locally and download the portfolio.js file to overwrite your configurations.'}
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 items-center">
+            
+            {/* Display Publish Live button if Firebase is Active */}
+            {isFirebaseConfigured && activeTab === 'visual' && (
+              <button 
+                onClick={handlePublishLive}
+                disabled={publishStatus === 'publishing'}
+                className={`px-5 py-2.5 rounded-lg font-black text-xs uppercase tracking-widest transition shadow-[0_0_15px_rgba(16,185,129,0.3)] ${
+                  publishStatus === 'publishing'
+                    ? 'bg-emerald-600/30 text-emerald-500 cursor-not-allowed border border-emerald-500/30'
+                    : 'bg-emerald-500 text-[#0B0E14] hover:bg-emerald-400'
+                }`}
+              >
+                {publishStatus === 'publishing' ? 'Publishing...' : 'Publish Live'}
+              </button>
+            )}
+
+            <button 
+              onClick={activeTab === 'visual' ? handleDownloadVisual : handleDownloadRaw}
+              className="px-5 py-2.5 bg-[#06B6D4]/15 border border-[#06B6D4]/30 text-[#06B6D4] font-black text-xs uppercase tracking-widest rounded-lg hover:bg-[#06B6D4]/20 transition"
+            >
+              Download Backup
+            </button>
             <button
-              onClick={() => {
-                sessionStorage.removeItem('admin_auth');
-                setIsLoggedIn(false);
-              }}
+              onClick={handleLogout}
               className="px-4 py-2.5 border border-[#06B6D4]/20 hover:border-red-500/50 hover:text-red-400 text-[#06B6D4] font-bold text-xs uppercase tracking-wider rounded-lg transition"
             >
               Logout
             </button>
-            <button 
-              onClick={activeTab === 'visual' ? handleDownloadVisual : handleDownloadRaw}
-              className="px-6 py-2.5 bg-[#06B6D4] text-[#0B0E14] font-black text-xs uppercase tracking-widest rounded-lg hover:bg-[#22d3ee] transition shadow-[0_0_15px_rgba(6,182,212,0.4)]"
-            >
-              Download portfolio.js
-            </button>
           </div>
         </div>
+
+        {/* Publish toasts */}
+        {publishStatus === 'success' && (
+          <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-semibold rounded-2xl animate-fade-up">
+            🎉 Changes successfully published live! Your portfolio website has been updated instantly.
+          </div>
+        )}
+        {publishStatus === 'error' && (
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-semibold rounded-2xl animate-fade-up">
+            ❌ Failed to publish live. Check your Firebase connectivity and configuration security rules.
+          </div>
+        )}
 
         {/* Tab Toggle (Visual Form vs Raw Code Editor) */}
         <div className="flex gap-2 border-b border-[#1E293B] mb-6">

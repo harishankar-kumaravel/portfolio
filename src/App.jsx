@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { portfolio } from './data/portfolio'
+import { db, isFirebaseConfigured } from './firebase'
+import { doc, getDoc } from 'firebase/firestore'
 
 const sectionShell =
   'liquid-glass liquid-glass-hover mt-6 rounded-[36px] px-6 py-10 shadow-glow sm:px-8 lg:px-12'
@@ -135,8 +137,8 @@ function HeroFocusCard({ item }) {
   )
 }
 
-function RecruiterQuickCard() {
-  const profile = portfolio.quickProfile || {
+function RecruiterQuickCard({ profile }) {
+  const activeProfile = profile || {
     roleSought: 'Visual / Motion Designer',
     experience: '2+ Years (Agency & Brand)',
     location: 'India (Remote / Relocation)',
@@ -162,19 +164,19 @@ function RecruiterQuickCard() {
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-teal/10 pb-2">
             <span className="text-sm text-mist/75">Role sought</span>
-            <span className="text-sm font-bold text-foam">{profile.roleSought}</span>
+            <span className="text-sm font-bold text-foam">{activeProfile.roleSought}</span>
           </div>
           <div className="flex items-center justify-between border-b border-teal/10 pb-2">
             <span className="text-sm text-mist/75">Experience</span>
-            <span className="text-sm font-bold text-foam">{profile.experience}</span>
+            <span className="text-sm font-bold text-foam">{activeProfile.experience}</span>
           </div>
           <div className="flex items-center justify-between border-b border-teal/10 pb-2">
             <span className="text-sm text-mist/75">Location</span>
-            <span className="text-sm font-bold text-foam">{profile.location}</span>
+            <span className="text-sm font-bold text-foam">{activeProfile.location}</span>
           </div>
           <div className="flex items-center justify-between gap-4">
             <span className="text-sm text-mist/75 whitespace-nowrap">Key Software</span>
-            <span className="text-sm font-bold text-foam text-right">{profile.keySoftware}</span>
+            <span className="text-sm font-bold text-foam text-right">{activeProfile.keySoftware}</span>
           </div>
         </div>
       </div>
@@ -810,7 +812,24 @@ function PortfolioCategory({ category, onOpenMedia }) {
 }
 
 export default function App() {
-  const { meta, navigation, hero, sections, portfolioPage } = portfolio
+  const [portfolioData, setPortfolioData] = useState(portfolio)
+  const { meta, navigation, hero, sections, portfolioPage } = portfolioData
+
+  useEffect(() => {
+    if (isFirebaseConfigured) {
+      const docRef = doc(db, 'configs', 'portfolio')
+      getDoc(docRef)
+        .then((docSnap) => {
+          if (docSnap.exists()) {
+            setPortfolioData(docSnap.data())
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to load portfolio from Firebase, using fallback:', err)
+        })
+    }
+  }, [])
+
   const [currentHash, setCurrentHash] = useState(() =>
     typeof window !== 'undefined' ? window.location.hash : '',
   )
@@ -1058,7 +1077,7 @@ export default function App() {
                     {hero.highlights.map((item) => (
                       <HeroFocusCard key={item.title} item={item} />
                     ))}
-                    <RecruiterQuickCard />
+                    <RecruiterQuickCard profile={portfolioData.quickProfile} />
                   </motion.aside>
                 </section>
 
