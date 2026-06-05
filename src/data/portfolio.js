@@ -1,4 +1,7 @@
 import { drivePortfolioCategories } from './drivePortfolio'
+// To use Firebase Storage URLs instead of Google Drive, run "node scripts/transfer-drive-to-firebase.mjs"
+// and uncomment the line below (and comment out the drivePortfolioCategories import above):
+// import { firebasePortfolioCategories as drivePortfolioCategories } from './firebasePortfolio'
 
 export const portfolio = {
   meta: {
