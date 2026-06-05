@@ -908,13 +908,16 @@ export default function Home() {
 
   return (
     <div className="theme-page-bg min-h-screen relative font-sans transition-colors duration-500 selection:bg-teal selection:text-white dark:selection:text-abyss">
-      {/* Grid line overlay */}
-      <div className="theme-grid-bg absolute inset-0 pointer-events-none z-0" />
-      
-      {/* Background Orbs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] aspect-square rounded-full theme-orb-a pointer-events-none z-0" />
-      <div className="absolute top-[30%] right-[-10%] w-[45%] aspect-square rounded-full theme-orb-b pointer-events-none z-0" />
-      <div className="absolute bottom-[5%] left-[15%] w-[40%] aspect-square rounded-full theme-orb-c pointer-events-none z-0" />
+      {/* Background elements */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="theme-grid-bg absolute inset-0" />
+        <div className="theme-hero-glow absolute inset-x-0 top-0 h-[500px] blur-3xl" />
+        
+        {/* Animated Orbs */}
+        <div className="theme-orb-a absolute -left-24 top-24 h-96 w-96 rounded-full blur-[120px]" />
+        <div className="theme-orb-b absolute right-[-6rem] top-[15rem] h-[500px] w-[500px] rounded-full blur-[140px]" />
+        <div className="theme-orb-c absolute bottom-[-10rem] left-1/4 h-[600px] w-[600px] rounded-full blur-[160px]" />
+      </div>
 
       {/* HEADER NAVBAR */}
       <header className="sticky top-0 z-40 w-full bg-abyss/45 backdrop-blur-md border-b border-teal/10">
