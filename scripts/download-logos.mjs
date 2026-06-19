@@ -13,7 +13,7 @@ if (!fs.existsSync(logosDir)) {
 const brands = [
   {
     name: 'Tata BlueScope Steel',
-    logoUrl: 'https://media.licdn.com/dms/image/v2/D4D0BAQEVzvCoqTcHgw/company-logo_200_200/B4DZvaqiQPIAAM-/0/1768900142613/tatasteelcolors_logo?e=1778716800&v=beta&t=9p9Qg6cyqo-OHD3EDnh4a7u2XK6go1Mgi1jyoS810n0',
+    logoUrl: 'https://logo.clearbit.com/tatasteelcolors.com',
   },
   {
     name: 'Aranyakaa Farms',
@@ -101,10 +101,12 @@ async function downloadImage(url, filename) {
   try {
     const headers = {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
     };
     const response = await fetch(url, { headers });
     if (!response.ok) {
-      throw new Error(`Failed to fetch (${response.status} ${response.statusText})`);
+       console.log(`[FAILED] HTTP Error: ${response.status} for ${url}`);
+       return false;
     }
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -113,7 +115,7 @@ async function downloadImage(url, filename) {
     console.log(`[SUCCESS] Downloaded ${filename}`);
     return true;
   } catch (error) {
-    console.error(`[FAILED] ${filename} from ${url}:`, error.message);
+    console.error(`[FAILED] ${filename}: ${error.message}`);
     return false;
   }
 }
@@ -126,6 +128,9 @@ async function run() {
       const cleanName = brand.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
       const filename = `${cleanName}.${ext}`;
       await downloadImage(brand.logoUrl, filename);
+      
+      // Add a 1.5-second delay before the next download to prevent 429 errors
+      await new Promise(resolve => setTimeout(resolve, 1500)); 
     }
   }
   console.log('Finished logo downloading.');
