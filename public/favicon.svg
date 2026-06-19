@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad-left" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+    <linearGradient id="grad-right" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <linearGradient id="grad-cross" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+  </defs>
+  <!-- Background circle/shield for contrast -->
+  <rect width="512" height="512" rx="128" fill="#0B0E14" />
+  <!-- Left Pillar -->
+  <rect x="128" y="96" width="72" height="320" rx="36" fill="url(#grad-left)" />
+  <!-- Right Pillar -->
+  <rect x="312" y="96" width="72" height="320" rx="36" fill="url(#grad-right)" />
+  <!-- Floating Crossbar -->
+  <rect x="180" y="220" width="152" height="72" rx="36" fill="url(#grad-cross)" />
+  <!-- Accent Design Circle -->
+  <circle cx="256" cy="140" r="24" fill="#06B6D4" />
+</svg>

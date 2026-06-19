@@ -90,6 +90,7 @@ function HeroAction({ action }) {
       href={action.href}
       target={action.external ? '_blank' : undefined}
       rel={action.external ? 'noreferrer' : undefined}
+      download={action.download ? '' : undefined}
     >
       {action.label}
     </motion.a>
@@ -1029,6 +1030,20 @@ export default function App() {
                 </motion.a>
               ))}
             </nav>
+
+            <motion.a
+              whileHover={{ scale: 1.05, y: -1 }}
+              whileTap={{ scale: 0.98 }}
+              href="/resume.pdf"
+              download="Harishankar_K_Resume.pdf"
+              className="theme-card-soft inline-flex h-12 items-center gap-2 rounded-full border border-teal/20 px-5 text-sm font-bold text-foam backdrop-blur-md transition-colors hover:border-teal/50 hover:text-teal"
+              title="Download Resume"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-teal">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              <span>Resume</span>
+            </motion.a>
 
             <motion.button
               whileHover={{ scale: 1.1 }}

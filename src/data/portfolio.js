@@ -40,6 +40,13 @@ export const portfolio = {
         variant: 'primary',
       },
       {
+        label: 'Download Resume',
+        href: '/resume.pdf',
+        external: true,
+        download: true,
+        variant: 'secondary',
+      },
+      {
         label: 'Case Studies',
         href: '#case-studies',
         external: false,
