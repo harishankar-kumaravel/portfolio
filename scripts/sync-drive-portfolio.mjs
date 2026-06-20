@@ -1,184 +1,258 @@
-import { writeFile } from 'node:fs/promises'
+import { writeFile } from 'node:fs/promises';
 
-const rootFolderUrl =
-  'https://drive.google.com/drive/folders/1G53yAY_PcD7h1StCaPx6ask19Brky1C6'
+const driveFolderId = '1iYBoCITW1co3IX_A7kwyiz_xm-t7w6Lo';
+const driveFolderUrl = `https://drive.google.com/drive/folders/${driveFolderId}?usp=sharing`;
+const youtubePlaylistUrl = 'https://www.youtube.com/playlist?list=PLmwoqRo1iFaGdgv7C9ICliv8oW6XTVSkQ';
+const folderMimeType = 'application/vnd.google-apps.folder';
+const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-const folders = [
-  {
-    driveName: 'Social media',
-    title: 'Social Media Creatives',
-    id: '1cOoU_X568fmL8dss5YfB5tHlkIxU8TNe',
-    aspect: 'square',
-  },
-  {
-    driveName: 'brochure and pamplet',
-    title: 'Brochure and Pamphlets',
-    id: '1toi1DKtw4kXgOiKt0-rwMWxBRE5x2H6l',
-    aspect: 'portrait',
-  },
-  {
-    driveName: 'banner & mockup',
-    title: 'Banner and Mockups',
-    id: '1k3yTu16Np7ELKTI_9vXE4f9DBcqXjy72',
-    aspect: 'landscape',
-  },
-  {
-    driveName: 'banners and posters',
-    title: 'Banners and Posters',
-    id: '1HxjoakuWIsJS4jVhDfuVkqi2nwopViHD',
-    aspect: 'landscape',
-  },
-  {
-    driveName: 'Video and animation',
-    title: 'Motion Graphics',
-    id: '1gfJ1ikgER16boc9J5qhPFXGJCXttGk0k',
-    aspect: 'video',
-    include: (item) => item.type === 'video',
-  },
-  {
-    driveName: 'Video and animation',
-    title: 'Animation',
-    id: '1gfJ1ikgER16boc9J5qhPFXGJCXttGk0k',
-    aspect: 'video',
-    include: (item) => item.type === 'animation',
-  },
-]
-
-const imageExtensions = new Set([
-  '.jpg',
-  '.jpeg',
-  '.png',
-  '.webp',
-  '.bmp',
-  '.tif',
-  '.tiff',
-  '.avif',
-  '.heic',
-  '.heif',
-  '.jfif',
-])
-const animationExtensions = new Set(['.gif'])
-const videoExtensions = new Set(['.mp4', '.mov', '.webm', '.m4v', '.avi', '.mkv'])
-
-function decodeHtml(value) {
+function decodeHtml(value = '') {
   return value
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
     .replace(/&amp;/g, '&')
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&nbsp;/g, ' ')
     .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/\\u0026/g, '&')
+    .replace(/&gt;/g, '>');
 }
 
-function getExtension(name) {
-  const match = name.toLowerCase().match(/\.[a-z0-9]+$/)
-  return match?.[0] ?? ''
+function titleCase(value) {
+  return value
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, char => char.toUpperCase())
+    .replace(/\bAnd\b/g, 'and');
 }
 
-function getType(name, driveKind) {
-  const extension = getExtension(name)
-
-  if (driveKind === 'Video' || videoExtensions.has(extension)) {
-    return 'video'
-  }
-
-  if (animationExtensions.has(extension)) {
-    return 'animation'
-  }
-
-  if (driveKind === 'Image' || imageExtensions.has(extension)) {
-    return 'image'
-  }
-
-  return null
+function getAspect(name, type) {
+  const n = name.toLowerCase();
+  if (type === 'video' || type === 'animation') return 'video';
+  if (n.includes('banner') || n.includes('poster') || n.includes('hoarding') || n.includes('16x') || n.includes('60x')) return 'landscape';
+  if (n.includes('brochure') || n.includes('pamphlet') || n.includes('pamplet')) return 'portrait';
+  if (n.includes('social') || n.includes('post')) return 'square';
+  return 'landscape';
 }
 
-function cleanTooltip(rawTooltip) {
-  let tooltip = decodeHtml(rawTooltip).replace(/\s+/g, ' ').trim()
-  let driveKind = null
-
-  for (const kind of ['Shared folder', 'Image', 'Video']) {
-    if (tooltip.endsWith(kind)) {
-      driveKind = kind
-      tooltip = tooltip.slice(0, -kind.length).trim()
-      break
-    }
-  }
-
-  return { name: tooltip, driveKind }
+function getType(kind, name) {
+  const n = name.toLowerCase();
+  if (kind.toLowerCase() === 'video' || /\.(mp4|mov|m4v|webm|avi|mkv)$/i.test(name)) return 'video';
+  if (n.endsWith('.gif') || n.includes('animation')) return 'animation';
+  return 'image';
 }
 
-function parseDriveItems(html) {
-  const itemsById = new Map()
-  const entryPattern = /data-id="([A-Za-z0-9_-]{20,})"[^>]*data-tooltip="([^"]+)"/g
-
-  for (const match of html.matchAll(entryPattern)) {
-    const id = match[1]
-    const { name, driveKind } = cleanTooltip(match[2])
-    const type = getType(name, driveKind)
-
-    if (!type) {
-      continue
-    }
-
-    itemsById.set(id, {
-      id,
-      name,
-      type,
-      thumbnail: `https://lh3.googleusercontent.com/d/${id}=w1600`,
-      href: `https://drive.google.com/file/d/${id}/view`,
-    })
-  }
-
-  return [...itemsById.values()].sort((a, b) =>
-    a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }),
-  )
+function isVideoAndAnimationCategory(title) {
+  return title.toLowerCase().replace(/&/g, 'and').includes('video and animation');
 }
 
-async function fetchFolderItems(folder) {
-  const response = await fetch(`https://drive.google.com/drive/folders/${folder.id}`)
+function parseDriveRows(html) {
+  return [...html.matchAll(/<tr data-selectable data-id="([^"]+)"[\s\S]*?<\/tr>/g)]
+    .map(match => {
+      const row = match[0];
+      const text = [...row.matchAll(/>([^<>]{2,180})</g)]
+        .map(textMatch => decodeHtml(textMatch[1]).trim())
+        .filter(Boolean);
+
+      const kind = text[0] || '';
+      const isFolder = row.includes('Shared folder') || row.includes('Folder');
+      const name = isFolder ? (text[0] || 'Untitled') : (text[1] || text[0] || 'Untitled');
+
+      return {
+        id: match[1],
+        name,
+        kind,
+        isFolder,
+      };
+    });
+}
+
+async function fetchFolder(folderId) {
+  const response = await fetch(`https://drive.google.com/drive/folders/${folderId}?usp=sharing`, {
+    headers: { 'User-Agent': userAgent },
+  });
 
   if (!response.ok) {
-    throw new Error(`Could not read "${folder.title}" from Google Drive (${response.status})`)
+    throw new Error(`Failed to fetch Google Drive folder ${folderId}: HTTP ${response.status}`);
   }
 
-  return parseDriveItems(await response.text())
+  const html = await response.text();
+  const title = decodeHtml(html.match(/<title>(.*?)<\/title>/)?.[1] || 'Portfolio')
+    .replace(/\s+–\s+Google Drive$/, '')
+    .trim();
+
+  return {
+    title,
+    rows: parseDriveRows(html),
+  };
 }
 
-const uniqueFolders = new Map(folders.map((folder) => [folder.id, folder]))
-const itemsByFolderId = new Map()
-
-for (const folder of uniqueFolders.values()) {
-  itemsByFolderId.set(folder.id, await fetchFolderItems(folder))
+function obfuscateId(id) {
+  if (!id) return '';
+  const base64 = Buffer.from(id).toString('base64');
+  return base64.split('').reverse().join('');
 }
 
-const categories = folders
-  .map((folder) => {
-    const folderItems = itemsByFolderId.get(folder.id) ?? []
-    const items = folder.include ? folderItems.filter(folder.include) : folderItems
+function isSupportedMedia(row) {
+  if (row.isFolder) return false;
+  const name = (row.name || '').toLowerCase();
+  const kind = (row.kind || '').toLowerCase();
+  return (
+    ['image', 'video'].includes(kind) ||
+    /\.(jpg|jpeg|png|webp|svg|gif|mp4|mov|m4v|webm|avi|mkv)$/i.test(name)
+  );
+}
 
-    return {
-      title: folder.title,
-      sourceFolder: folder.driveName,
-      aspect: folder.aspect,
-      count: items.length,
-      items,
+function toPortfolioItem(row) {
+  const type = getType(row.kind, row.name);
+  const obfId = obfuscateId(row.id);
+
+  return {
+    id: obfId,
+    name: row.name,
+    type,
+    thumbnail: `https://drive.google.com/thumbnail?id=${obfId}&sz=w1600`,
+    href: `https://drive.google.com/file/d/${obfId}/view?usp=sharing`,
+  };
+}
+
+function parsePlaylistItems(html) {
+  const match = html.match(/var ytInitialData = ({.*?});<\/script>/);
+  if (!match) {
+    throw new Error('Could not find ytInitialData in YouTube page HTML');
+  }
+
+  const data = JSON.parse(match[1]);
+  const contents = data.contents?.twoColumnBrowseResultsRenderer?.tabs?.[0]?.tabRenderer?.content?.sectionListRenderer?.contents?.[0]?.itemSectionRenderer?.contents;
+
+  if (!contents || !Array.isArray(contents)) {
+    throw new Error('Could not parse playlist video list structure from YouTube JSON');
+  }
+
+  const items = [];
+  const seen = new Set();
+
+  for (const item of contents) {
+    const vm = item.lockupViewModel;
+    if (!vm) continue;
+
+    const watchEndpoint = vm.rendererContext?.commandContext?.onTap?.innertubeCommand?.watchEndpoint;
+    const videoId = watchEndpoint?.videoId;
+    if (!videoId || seen.has(videoId)) continue;
+
+    const title = vm.metadata?.lockupMetadataViewModel?.title?.content || 'Untitled';
+    const thumbnails = vm.contentImage?.thumbnailViewModel?.image?.sources || [];
+    const thumbnail = thumbnails[thumbnails.length - 1]?.url || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
+    seen.add(videoId);
+    items.push({
+      id: videoId,
+      name: title,
+      type: title.toLowerCase().includes('animation') || title.toLowerCase().includes('logo') ? 'animation' : 'video',
+      thumbnail,
+      href: `https://www.youtube.com/watch?v=${videoId}`,
+    });
+  }
+
+  return items;
+}
+
+async function buildYoutubeVideoCategory() {
+  const response = await fetch(youtubePlaylistUrl, {
+    headers: { 'User-Agent': userAgent },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch YouTube playlist: HTTP ${response.status}`);
+  }
+
+  const items = parsePlaylistItems(await response.text());
+
+  return {
+    title: 'Video and Animation',
+    sourceFolder: youtubePlaylistUrl,
+    aspect: 'video',
+    count: items.length,
+    items,
+  };
+}
+
+async function buildCategory(folderRow) {
+  const folder = await fetchFolder(folderRow.id);
+  const items = folder.rows
+    .filter(row => !row.isFolder && isSupportedMedia(row))
+    .map(toPortfolioItem);
+
+  const aspect = getAspect(folder.title || folderRow.name, items[0]?.type || 'image');
+
+  return {
+    title: titleCase(folder.title || folderRow.name),
+    sourceFolder: folderRow.id,
+    aspect,
+    count: items.length,
+    items,
+  };
+}
+
+async function collectCategories(folderId, fallbackTitle, isRoot = false) {
+  const folder = await fetchFolder(folderId);
+  const folders = folder.rows.filter(row => row.isFolder);
+  const looseItems = folder.rows.filter(row => !row.isFolder && isSupportedMedia(row)).map(toPortfolioItem);
+  const categories = [];
+
+  for (const row of folders) {
+    // Include all folders, including Video and Animation, directly from Google Drive
+
+    const child = await fetchFolder(row.id);
+    const childFolders = child.rows.filter(childRow => childRow.isFolder);
+
+    if (childFolders.length > 0) {
+      categories.push(...await collectCategories(row.id, row.name));
+    } else {
+      categories.push(await buildCategory(row));
     }
-  })
-  .filter((category) => category.items.length > 0)
+  }
 
-const generatedAt = new Date().toISOString()
-const contents = `// Generated by scripts/sync-drive-portfolio.mjs from ${rootFolderUrl}
-// Run "npm run sync:drive" after changing the Drive folder.
+  if (looseItems.length > 0 && (!isRoot || folders.length === 0)) {
+    categories.push({
+      title: titleCase(folder.title || fallbackTitle || 'Portfolio'),
+      sourceFolder: folderId,
+      aspect: getAspect(folder.title || fallbackTitle || 'Portfolio', looseItems[0]?.type || 'image'),
+      count: looseItems.length,
+      items: looseItems,
+    });
+  }
+
+  return categories;
+}
+
+async function run() {
+  console.log('Fetching Google Drive portfolio folder...');
+  console.log(`Source: ${driveFolderUrl}`);
+
+  const categories = await collectCategories(driveFolderId, 'Portfolio', true);
+  // No longer fetching from YouTube. Everything is fetched directly from Google Drive.
+
+  const filteredCategories = categories
+    .filter(category => category.items.length > 0 && category.title.toLowerCase() !== 'portfolio')
+    .sort((a, b) => b.items.length - a.items.length);
+  const generatedAt = new Date().toISOString();
+  const contents = `// Generated by scripts/sync-drive-portfolio.mjs from Google Drive folder
+// Source: ${driveFolderUrl}
+// Run "npm run sync:drive" after changing the Google Drive folder.
 
 export const drivePortfolioSyncedAt = ${JSON.stringify(generatedAt)}
 
-export const drivePortfolioCategories = ${JSON.stringify(categories, null, 2)}
-`
+export const drivePortfolioCategories = ${JSON.stringify(filteredCategories, null, 2)}
+`;
 
-await writeFile(new URL('../src/data/drivePortfolio.js', import.meta.url), contents)
+  await writeFile(new URL('../src/data/drivePortfolio.js', import.meta.url), contents);
 
-console.log(`Synced ${categories.reduce((total, category) => total + category.count, 0)} Drive media files.`)
-for (const category of categories) {
-  console.log(`- ${category.title}: ${category.count}`)
+  console.log(`Synced ${filteredCategories.reduce((total, category) => total + category.count, 0)} portfolio items.`);
+  for (const category of filteredCategories) {
+    console.log(`- ${category.title}: ${category.count}`);
+  }
 }
+
+run().catch(error => {
+  console.error('Sync failed:', error);
+  process.exit(1);
+});

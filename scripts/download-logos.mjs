@@ -9,129 +9,178 @@ if (!fs.existsSync(logosDir)) {
   fs.mkdirSync(logosDir, { recursive: true });
 }
 
-// Local copy of brands to avoid import issues
 const brands = [
   {
     name: 'Tata BlueScope Steel',
-    logoUrl: 'https://logo.clearbit.com/tatasteelcolors.com',
+    domain: 'tatabluescopesteel.com',
+    linkedin: 'tatabluescopesteel',
   },
   {
     name: 'Aranyakaa Farms',
-    logoUrl: 'https://logo.clearbit.com/aranyakaa.com',
+    domain: 'aranyakaa.com',
+    linkedin: 'aranyakaa-farms',
   },
   {
     name: 'Coromandel International',
-    logoUrl: 'https://logo.clearbit.com/coromandel.biz',
+    domain: 'coromandel.gromor.com',
+    linkedin: 'global-business-coromandel-international-limited',
   },
   {
     name: 'G Square',
-    logoUrl: 'https://logo.clearbit.com/gsquarehousing.com',
+    domain: 'gsquarehousing.com',
+    linkedin: 'gsquarehousing',
   },
   {
     name: 'Mizaj',
-    logoUrl: 'https://unavatar.io/linkedin/company/mizajofficial',
+    linkedin: 'mizajofficial',
   },
   {
     name: 'Elegance Enterprises',
-    logoUrl: 'https://unavatar.io/linkedin/company/elegance-enterprises1',
+    linkedin: 'elegance-enterprises1',
   },
   {
     name: 'Namma Markt',
-    logoUrl: 'https://logo.clearbit.com/nammamarkt.com',
+    domain: 'nammamarkt.com',
   },
   {
     name: 'SalesLeadIT',
-    logoUrl: 'https://logo.clearbit.com/salesleadit.com',
+    domain: 'salesleadit.com',
   },
   {
     name: 'Pondy Thanga Maaligai',
-    logoUrl: 'https://logo.clearbit.com/pondythangamaaligai.com',
+    domain: 'pondythangamaaligai.com',
   },
   {
     name: 'Darzee',
-    logoUrl: 'https://logo.clearbit.com/darzeeapp.com',
+    domain: 'darzeeapp.com',
+    linkedin: 'darzee-app',
   },
   {
     name: 'Baddies',
-    logoUrl: 'https://unavatar.io/instagram/baddies_style',
+    instagram: 'baddies_style',
   },
   {
     name: 'Dream Alliance',
-    logoUrl: 'https://logo.clearbit.com/dreamalliance.in',
+    domain: 'dreamalliance.in',
   },
   {
     name: 'ID Architects',
-    logoUrl: 'https://logo.clearbit.com/idarchitects.co.in',
+    domain: 'idarchitects.co.in',
   },
   {
     name: 'Nichi',
-    logoUrl: 'https://logo.clearbit.com/nichi.store',
+    domain: 'nichi.store',
   },
   {
     name: 'Vlykit Solutions',
-    logoUrl: 'https://logo.clearbit.com/vlykit.com',
+    domain: 'vlykitsolutions.com',
   },
   {
     name: 'SPDS',
-    logoUrl: 'https://unavatar.io/instagram/spds_india',
+    instagram: 'spds_india',
   },
   {
     name: 'Kerala Secrets',
-    logoUrl: 'https://logo.clearbit.com/keralasecrets.com',
+    domain: 'keralasecrets.com',
   },
   {
     name: 'Crafts by Elegance',
-    logoUrl: 'https://logo.clearbit.com/craftsbyelegance.com',
+    domain: 'craftsbyelegance.com',
   },
   {
     name: 'Nasagri',
-    logoUrl: 'https://logo.clearbit.com/nasagri.com',
+    domain: 'nasagri.com',
   },
   {
     name: 'Club Aranyakaa',
-    logoUrl: 'https://logo.clearbit.com/aranyakaa.com',
+    domain: 'aranyakaa.com',
   },
   {
     name: 'Elegance Prime Real Estate',
-    logoUrl: 'https://logo.clearbit.com/eleganceprimerealestate.ae',
+    domain: 'eleganceprimerealestate.ae',
   },
 ];
 
-async function downloadImage(url, filename) {
-  try {
-    const headers = {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
-    };
-    const response = await fetch(url, { headers });
-    if (!response.ok) {
-       console.log(`[FAILED] HTTP Error: ${response.status} for ${url}`);
-       return false;
-    }
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const dest = path.join(logosDir, filename);
-    fs.writeFileSync(dest, buffer);
-    console.log(`[SUCCESS] Downloaded ${filename}`);
-    return true;
-  } catch (error) {
-    console.error(`[FAILED] ${filename}: ${error.message}`);
-    return false;
+async function downloadLogo(brand, filename) {
+  const sources = [];
+
+  // 1. Hunter.io Logo API (High quality, no key)
+  if (brand.domain) {
+    sources.push({
+      url: `https://logos.hunter.io/${brand.domain}`,
+      name: 'Hunter.io',
+    });
   }
+
+  // 2. Unavatar LinkedIn Company Logo
+  if (brand.linkedin) {
+    sources.push({
+      url: `https://unavatar.io/linkedin/company:${brand.linkedin}`,
+      name: 'Unavatar LinkedIn',
+    });
+  }
+
+  // 3. Unavatar Domain Logo
+  if (brand.domain) {
+    sources.push({
+      url: `https://unavatar.io/${brand.domain}?fallback=false`,
+      name: 'Unavatar Domain',
+    });
+  }
+
+  // 4. Google Favicon API (Very reliable fallback for domains)
+  if (brand.domain) {
+    sources.push({
+      url: `https://www.google.com/s2/favicons?domain=${brand.domain}&sz=128`,
+      name: 'Google Favicon',
+    });
+  }
+
+  // 5. UI Avatars (Beautiful initials fallback, always works)
+  sources.push({
+    url: `https://ui-avatars.com/api/?name=${encodeURIComponent(brand.name)}&size=128&background=06B6D4&color=fff&format=png&bold=true`,
+    name: 'UI Avatars Fallback',
+  });
+
+  const headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+  };
+
+  for (const source of sources) {
+    try {
+      const response = await fetch(source.url, { headers });
+      if (response.ok) {
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        
+        // Ensure the buffer is not empty or tiny (like a 1x1 tracking pixel)
+        if (buffer.length > 100) {
+          const dest = path.join(logosDir, filename);
+          fs.writeFileSync(dest, buffer);
+          console.log(`[SUCCESS] Downloaded ${filename} using ${source.name}`);
+          return true;
+        }
+      }
+    } catch (error) {
+      // Silently try the next source
+    }
+  }
+
+  console.error(`[FAILED] Could not download any logo for ${brand.name}`);
+  return false;
 }
 
 async function run() {
   console.log('Starting logo downloader...');
   for (const brand of brands) {
-    if (brand.logoUrl) {
-      const ext = brand.logoUrl.includes('.svg') ? 'svg' : 'png';
-      const cleanName = brand.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
-      const filename = `${cleanName}.${ext}`;
-      await downloadImage(brand.logoUrl, filename);
-      
-      // Add a 1.5-second delay before the next download to prevent 429 errors
-      await new Promise(resolve => setTimeout(resolve, 1500)); 
-    }
+    const cleanName = brand.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const filename = `${cleanName}.png`;
+    
+    await downloadLogo(brand, filename);
+    
+    // Add a 1-second delay before the next download to prevent rate limits
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
   console.log('Finished logo downloading.');
 }

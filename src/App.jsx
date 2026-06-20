@@ -2,6 +2,76 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { portfolio } from './data/portfolio'
 
+function deobfuscateId(obfuscated) {
+  if (!obfuscated) return '';
+  try {
+    const reversed = obfuscated.split('').reverse().join('');
+    return atob(reversed);
+  } catch (e) {
+    return obfuscated;
+  }
+}
+
+function deobfuscateUrl(url) {
+  if (typeof url !== 'string') return url;
+  
+  const thumbMatch = url.match(/(https:\/\/drive\.google\.com\/thumbnail\?id=)([^&]+)(.*)/);
+  if (thumbMatch) {
+    return `${thumbMatch[1]}${deobfuscateId(thumbMatch[2])}${thumbMatch[3]}`;
+  }
+  
+  const fileMatch = url.match(/(https:\/\/drive\.google\.com\/file\/d\/)([^\/]+)(\/.*)/);
+  if (fileMatch) {
+    return `${fileMatch[1]}${deobfuscateId(fileMatch[2])}${fileMatch[3]}`;
+  }
+  
+  return url;
+}
+
+function deobfuscateMedia(media) {
+  if (!media) return media;
+  return {
+    ...media,
+    id: deobfuscateId(media.id),
+    thumbnail: deobfuscateUrl(media.thumbnail),
+    href: deobfuscateUrl(media.href)
+  };
+}
+
+function deobfuscatePortfolio(data) {
+  const copy = { ...data };
+  
+  if (copy.sections) {
+    copy.sections = { ...copy.sections };
+    
+    if (copy.sections['case-studies'] && Array.isArray(copy.sections['case-studies'].items)) {
+      copy.sections['case-studies'] = {
+        ...copy.sections['case-studies'],
+        items: copy.sections['case-studies'].items.map(deobfuscateMedia)
+      };
+    }
+    
+    if (copy.sections.motion && Array.isArray(copy.sections.motion.items)) {
+      copy.sections.motion = {
+        ...copy.sections.motion,
+        items: copy.sections.motion.items.map(deobfuscateMedia)
+      };
+    }
+  }
+  
+  if (copy.portfolioPage && Array.isArray(copy.portfolioPage.categories)) {
+    copy.portfolioPage = {
+      ...copy.portfolioPage,
+      categories: copy.portfolioPage.categories.map(category => ({
+        ...category,
+        items: Array.isArray(category.items) ? category.items.map(deobfuscateMedia) : []
+      }))
+    };
+  }
+  
+  return copy;
+}
+
 const sectionShell =
   'liquid-glass liquid-glass-hover mt-6 rounded-[36px] px-6 py-10 shadow-glow sm:px-8 lg:px-12'
 
@@ -452,14 +522,26 @@ function CaseStudyCard({ item }) {
 
       <div className="theme-image-panel relative overflow-hidden border-b border-teal/10 z-30">
         {isPlayable ? (
-          <iframe
-            className="aspect-video w-full border-0 bg-black"
-            src={getDrivePreviewUrl(item)}
-            title={`${item.title} video preview`}
-            loading="lazy"
-            allow="autoplay; fullscreen; encrypted-media"
-            allowFullScreen
-          />
+          item.name && item.name.toLowerCase().endsWith('.gif') ? (
+            <img
+              className="block h-auto w-full object-contain"
+              src={`https://drive.google.com/uc?id=${item.id}&export=download`}
+              alt={`${item.title} preview`}
+              loading="lazy"
+            />
+          ) : (
+            <div className="relative w-full h-full overflow-hidden">
+              <iframe
+                className="aspect-video w-full border-0 bg-black"
+                src={getDrivePreviewUrl(item)}
+                title={`${item.title} video preview`}
+                loading="lazy"
+                allow="autoplay; fullscreen; encrypted-media"
+                allowFullScreen
+              />
+              <div className="absolute top-0 left-0 w-full h-14 bg-transparent z-30 pointer-events-auto" />
+            </div>
+          )
         ) : (
           <>
             <img
@@ -511,25 +593,78 @@ function CaseStudyCard({ item }) {
   )
 }
 
-function MotionShowcase({ section }) {
+function MotionShowcaseItem({ item }) {
+  const [isPlaying, setIsPlaying] = useState(false)
+  const isYoutube = item.id && item.id.length === 11
+  const isGif = item.name && item.name.toLowerCase().endsWith('.gif')
+  const previewUrl = isYoutube
+    ? `https://www.youtube.com/embed/${item.id}?autoplay=1&mute=1&modestbranding=1&rel=0`
+    : `https://drive.google.com/file/d/${item.id}/preview`
+
   return (
-    <div className="mt-7 grid gap-4 lg:grid-cols-2">
-      {section.items.map((item) => (
-        <motion.article
-          key={item.id}
-          variants={fadeInVariants}
-          className="liquid-glass overflow-hidden rounded-[28px] p-3 shadow-glow border border-teal/20"
-        >
+    <motion.article
+      key={item.id}
+      variants={fadeInVariants}
+      className="liquid-glass overflow-hidden rounded-[28px] p-3 shadow-glow border border-teal/20"
+    >
+      {isYoutube ? (
+        isPlaying ? (
           <iframe
             className="aspect-video w-full rounded-[20px] border-0 bg-black"
-            src={`https://drive.google.com/file/d/${item.id}/preview`}
-            title={item.title}
+            src={previewUrl}
+            title={item.title || item.name}
+            loading="lazy"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <button
+            className="relative block aspect-video w-full overflow-hidden rounded-[20px] border border-teal/10 bg-black cursor-pointer text-left p-0"
+            onClick={() => setIsPlaying(true)}
+            aria-label={`Play ${item.title || item.name}`}
+          >
+            <img
+              className="h-full w-full object-contain"
+              src={getYoutubeThumbnailUrl(item.id)}
+              alt=""
+              loading="lazy"
+              referrerPolicy="no-referrer"
+            />
+            <span className="theme-card-soft absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-teal/30 text-2xl text-foam shadow-glow backdrop-blur-xl transition hover:scale-110">
+              <span className="ml-1" aria-hidden="true">&#9654;</span>
+            </span>
+          </button>
+        )
+      ) : isGif ? (
+        <img
+          className="aspect-video w-full rounded-[20px] bg-black object-contain"
+          src={`https://drive.google.com/uc?id=${item.id}&export=download`}
+          alt={item.title || item.name}
+          loading="lazy"
+        />
+      ) : (
+        <div className="relative w-full h-full overflow-hidden rounded-[20px]">
+          <iframe
+            className="aspect-video w-full rounded-[20px] border-0 bg-black"
+            src={previewUrl}
+            title={item.title || item.name}
             loading="lazy"
             allow="autoplay; fullscreen; encrypted-media"
             allowFullScreen
           />
-          <h3 className="px-3 pb-2 pt-4 text-lg font-bold text-foam">{item.title}</h3>
-        </motion.article>
+          <div className="absolute top-0 left-0 w-full h-14 bg-transparent z-30 pointer-events-auto" />
+        </div>
+      )}
+      <h3 className="px-3 pb-2 pt-4 text-lg font-bold text-foam">{item.title || item.name}</h3>
+    </motion.article>
+  )
+}
+
+function MotionShowcase({ section }) {
+  return (
+    <div className="mt-7 grid gap-4 lg:grid-cols-2">
+      {section.items.map((item) => (
+        <MotionShowcaseItem key={item.id} item={item} />
       ))}
     </div>
   )
@@ -661,8 +796,63 @@ function BrandsMarquee({ items }) {
   )
 }
 
+function isYoutubeMedia(media) {
+  return Boolean(
+    media?.href?.includes('youtube.com') ||
+    media?.href?.includes('youtu.be') ||
+    (media?.id && media.id.length === 11)
+  )
+}
+
+function isGifMedia(media) {
+  const name = media?.name || ''
+  return name.toLowerCase().endsWith('.gif')
+}
+
+function getYoutubeId(media) {
+  if (!media) return ''
+  if (media.id && media.id.length === 11) {
+    return media.id
+  }
+  const url = media.href || media.thumbnail
+  if (typeof url === 'string') {
+    const watchMatch = url.match(/[?&]v=([^&#?]+)/)
+    if (watchMatch && watchMatch[1].length === 11) {
+      return watchMatch[1]
+    }
+    const shortMatch = url.match(/youtu\.be\/([^&#?]+)/)
+    if (shortMatch && shortMatch[1].length === 11) {
+      return shortMatch[1]
+    }
+    const embedMatch = url.match(/embed\/([^&#?]+)/)
+    if (embedMatch && embedMatch[1].length === 11) {
+      return embedMatch[1]
+    }
+    const thumbMatch = url.match(/\/vi\/([^&#?\/]+)/)
+    if (thumbMatch && thumbMatch[1].length === 11) {
+      return thumbMatch[1]
+    }
+  }
+  return ''
+}
+
+function getYoutubeThumbnailUrl(videoId) {
+  return `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`
+}
+
+function getMediaExternalUrl(media) {
+  if (isYoutubeMedia(media)) {
+    return media.href || `https://www.youtube.com/watch?v=${getYoutubeId(media)}`
+  }
+  return getDrivePreviewUrl(media)
+}
+
 function getDriveThumbnailUrl(media, width = 1600) {
   if (!media) return ''
+  if (isYoutubeMedia(media)) {
+    const videoId = getYoutubeId(media)
+    return getYoutubeThumbnailUrl(videoId)
+  }
   const id = media.id || (typeof media.thumbnail === 'string' && media.thumbnail.match(/[?&]id=([A-Za-z0-9_-]{20,})/)?.[1])
   if (id) {
     return `https://lh3.googleusercontent.com/d/${id}=w${width}`
@@ -734,6 +924,12 @@ function getDrivePreviewUrl(media) {
 }
 
 function PortfolioLightbox({ media, onClose }) {
+  const [isPlaying, setIsPlaying] = useState(false)
+
+  useEffect(() => {
+    setIsPlaying(false)
+  }, [media])
+
   useEffect(() => {
     if (!media || typeof window === 'undefined') {
       return undefined
@@ -764,7 +960,8 @@ function PortfolioLightbox({ media, onClose }) {
   }
 
   const isPlayable = media.type === 'video' || media.type === 'animation'
-  const previewUrl = getDrivePreviewUrl(media)
+  const isYoutube = isYoutubeMedia(media)
+  const previewUrl = getMediaExternalUrl(media)
 
   return (
     <AnimatePresence>
@@ -796,16 +993,6 @@ function PortfolioLightbox({ media, onClose }) {
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              {isPlayable ? (
-                <a
-                  className="theme-card-soft inline-flex h-11 items-center justify-center rounded-full border border-teal/20 px-4 text-sm font-bold text-foam transition hover:border-teal/60 hover:text-teal"
-                  href={previewUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Open in new tab
-                </a>
-              ) : null}
               <button
                 className="theme-card-soft flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-teal/20 text-2xl leading-none text-foam transition hover:border-teal/60 hover:text-teal"
                 type="button"
@@ -819,14 +1006,57 @@ function PortfolioLightbox({ media, onClose }) {
 
           <div className="flex min-h-0 flex-1 items-center justify-center bg-abyss/55 p-3 sm:p-5">
             {isPlayable ? (
-              <iframe
-                className="h-full min-h-[62vh] w-full rounded-[18px] border-0 bg-black"
-                src={previewUrl}
-                title={media.name || 'Drive video preview'}
-                allow="autoplay; fullscreen; encrypted-media"
-                allowFullScreen
-                referrerPolicy="no-referrer"
-              />
+              isYoutube ? (
+                isPlaying ? (
+                  <iframe
+                    className="h-full min-h-[62vh] w-full rounded-[18px] border-0 bg-black"
+                    src={`https://www.youtube.com/embed/${getYoutubeId(media)}?autoplay=1&mute=1&modestbranding=1&rel=0`}
+                    title={media.name || 'Video preview'}
+                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <button
+                    className="relative block max-h-full max-w-full overflow-hidden rounded-[18px] border border-teal/10 bg-black cursor-pointer text-left p-0"
+                    onClick={() => setIsPlaying(true)}
+                    aria-label={`Play ${media.name || 'video'}`}
+                  >
+                    <img
+                      className="max-h-[76vh] w-full select-none object-contain"
+                      src={getDriveThumbnailUrl(media)}
+                      alt={media.name || 'Video preview'}
+                      draggable="false"
+                      referrerPolicy="no-referrer"
+                      onContextMenu={(event) => event.preventDefault()}
+                    />
+                    <span className="theme-card-soft absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-teal/30 text-2xl text-foam shadow-glow backdrop-blur-xl transition hover:scale-110">
+                      <span className="ml-1" aria-hidden="true">&#9654;</span>
+                    </span>
+                  </button>
+                )
+              ) : isGifMedia(media) ? (
+                <img
+                  className="max-h-full max-w-full select-none object-contain"
+                  src={`https://drive.google.com/uc?id=${media.id}&export=download`}
+                  alt={media.name || 'Animation preview'}
+                  draggable="false"
+                  referrerPolicy="no-referrer"
+                  onContextMenu={(event) => event.preventDefault()}
+                />
+              ) : (
+                <div className="relative w-full h-full min-h-[62vh] overflow-hidden rounded-[18px]">
+                  <iframe
+                    className="h-full w-full rounded-[18px] border-0 bg-black"
+                    src={previewUrl}
+                    title={media.name || 'Video preview'}
+                    allow="autoplay; fullscreen; encrypted-media"
+                    allowFullScreen
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute top-0 left-0 w-full h-14 bg-transparent z-30 pointer-events-auto" />
+                </div>
+              )
             ) : (
               <img
                 className="max-h-full max-w-full select-none object-contain"
@@ -942,7 +1172,7 @@ function PortfolioCategory({ category, onOpenMedia }) {
 }
 
 export default function App() {
-  const [portfolioData, setPortfolioData] = useState(portfolio)
+  const [portfolioData, setPortfolioData] = useState(() => deobfuscatePortfolio(portfolio))
   const { meta, navigation, hero, sections, portfolioPage } = portfolioData
 
   const [currentHash, setCurrentHash] = useState(() =>
@@ -1034,10 +1264,11 @@ export default function App() {
             <motion.a
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.98 }}
-              href="/resume.pdf"
-              download="Harishankar_K_Resume.pdf"
+              href="https://drive.google.com/file/d/1gYT0gGjeS0-VmiJIcGpjmvRVNnhz4O_S/view?usp=drive_link"
+              target="_blank"
+              rel="noreferrer"
               className="theme-card-soft inline-flex h-12 items-center gap-2 rounded-full border border-teal/20 px-5 text-sm font-bold text-foam backdrop-blur-md transition-colors hover:border-teal/50 hover:text-teal"
-              title="Download Resume"
+              title="View Resume"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-teal">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />

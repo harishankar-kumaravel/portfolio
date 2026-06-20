@@ -40,10 +40,10 @@ export const portfolio = {
         variant: 'primary',
       },
       {
-        label: 'Download Resume',
-        href: '/resume.pdf',
+        label: 'View Resume',
+        href: 'https://drive.google.com/file/d/1gYT0gGjeS0-VmiJIcGpjmvRVNnhz4O_S/view?usp=drive_link',
         external: true,
-        download: true,
+        download: false,
         variant: 'secondary',
       },
       {
@@ -148,7 +148,7 @@ export const portfolio = {
         {
          title: 'Durashine Supreme Tamil Campaign',
           category: 'Social Media & Regional Marketing Campaign',
-          thumbnail: 'https://drive.google.com/thumbnail?id=1TOnj7lGCJxTf8gkqtrg05ZYE1eqk7IYJ&sz=w1600',
+          thumbnail: 'https://drive.google.com/thumbnail?id=KlVS3sWclFTRZpVNwcmc0F3anhjZUhnSDdEb3ombPRVM&sz=w1600',
           challenge: 'Create a culturally relevant campaign that promotes Durashine Supreme roofing solutions while standing out in crowded social feeds. The communication needed to connect with Tamil-speaking audiences and showcase both product quality and aspirational home-building goals.',
   goal: 'Develop a visually engaging regional-language campaign that combines product credibility, emotional appeal, and clear messaging to increase brand awareness and audience engagement.',
   process: [
@@ -164,7 +164,7 @@ export const portfolio = {
         {
           title: 'Real Estate Campaign Visuals',
           category: 'Campaign and marketing',
-          thumbnail: 'https://drive.google.com/thumbnail?id=1D7SZ32EiSdsZo_tbVE4dxzC_p-_g2bs7&sz=w1600',
+          thumbnail: 'https://drive.google.com/thumbnail?id=3MnYyc2XtA3XDpHekRTRWJGdf9mWzR2UpVkMzo1U3QUM&sz=w1600',
           challenge: 'Translate a property-focused message into polished marketing visuals that quickly communicate value.',
           goal: 'Balance information, aspiration, and brand consistency across campaign touchpoints.',
           process: ['Content hierarchy', 'Layout development', 'Format rollout'],
@@ -174,10 +174,10 @@ export const portfolio = {
         {
   title: 'Gromor Nano DAP USP Animation',
   category: 'Motion Graphics & Product Marketing',
-  thumbnail: 'https://drive.google.com/thumbnail?id=1cZ89kVXQzrRvCjbm8i7cz_9gY9PAdRY1&sz=w1600',
+  thumbnail: 'https://drive.google.com/thumbnail?id=xklUkFEU5k1Z58lejdTa40mYqNkdSJneRhlVrlDOaNWM&sz=w1600',
   type: 'video',
-  id: '1cZ89kVXQzrRvCjbm8i7cz_9gY9PAdRY1',
-  href: 'https://drive.google.com/file/d/1cZ89kVXQzrRvCjbm8i7cz_9gY9PAdRY1/view?usp=drive_link',
+  id: 'xklUkFEU5k1Z58lejdTa40mYqNkdSJneRhlVrlDOaNWM',
+  href: 'https://drive.google.com/file/d/xklUkFEU5k1Z58lejdTa40mYqNkdSJneRhlVrlDOaNWM/view?usp=drive_link',
   challenge: 'Communicate the unique benefits of Gromor Nano DAP in a simple and engaging format that could quickly educate farmers while maintaining brand consistency across regional markets.',
   goal: 'Create a visually appealing animated explainer that demonstrates product effectiveness, highlights key USPs, and improves audience understanding through clear storytelling.',
   process: [
@@ -205,11 +205,11 @@ export const portfolio = {
       items: [
         {
           title: 'Dream Alliance Campaign',
-          id: '1WBrFDwCCQ0wJn0SG82FVWGGzPKLYv9eO',
+          id: 'VR1aYZHcLB1NIB1N4JkSzZnNThWe2QWSIBzS0l3YSBXM',
         },
         {
           title: 'Brand Motion Edit',
-          id: '1Hbo68sp-0UeDdg92qsmUw76sDqCsarTb',
+          id: 'zkUTwJjWr5WUJZjeq91R3gnMnJnUJRFT0MEWy5UO6pUM',
         },
       ],
     },
@@ -219,7 +219,7 @@ export const portfolio = {
       name: 'Harishankar K',
       title: 'I design visual systems that speak with clarity and purpose.',
       body: 'I am a highly driven hybrid visual designer specializing in branding, packaging, social creatives, and motion-led storytelling. I pride myself on bridging the gap between strategic thinking and aesthetic excellence—helping ambitious brands communicate with absolute confidence across both digital and physical spaces.',
-      portrait: '/profile-photo.png',
+      portrait: '',
       facts: [
         { value: '2+', label: 'Years Experience' },
         { value: '25+', label: 'Global Brands' },
