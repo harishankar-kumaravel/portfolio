@@ -161,6 +161,7 @@ function HeroAction({ action }) {
       target={action.external ? '_blank' : undefined}
       rel={action.external ? 'noreferrer' : undefined}
       download={action.download ? '' : undefined}
+      id={`hero-action-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
     >
       {action.label}
     </motion.a>
@@ -215,6 +216,7 @@ function HeroFocusCard({ item }) {
           href={item.linkedIn}
           target="_blank"
           rel="noreferrer"
+          id={`linkedin-focus-${item.company.toLowerCase().replace(/\s+/g, '-')}`}
         >
           View LinkedIn
         </motion.a>
@@ -290,6 +292,7 @@ function RecruiterQuickCard({ profile }) {
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center gap-1.5 text-sm font-bold text-teal hover:underline"
+          id="recruiter-linkedin-link"
         >
           LinkedIn Profile &rarr;
         </a>
@@ -1255,6 +1258,7 @@ export default function App() {
                   key={item.id}
                   className="transition hover:text-teal"
                   href={item.page === 'portfolio' ? '#portfolio' : item.page === 'home' ? '#' : `#${item.id}`}
+                  id={`nav-link-${item.id}`}
                 >
                   {item.label}
                 </motion.a>
@@ -1269,6 +1273,7 @@ export default function App() {
               rel="noreferrer"
               className="theme-card-soft inline-flex h-12 items-center gap-2 rounded-full border border-teal/20 px-5 text-sm font-bold text-foam backdrop-blur-md transition-colors hover:border-teal/50 hover:text-teal"
               title="View Resume"
+              id="header-resume-button"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-teal">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -1284,6 +1289,7 @@ export default function App() {
               aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               type="button"
+              id="dark-mode-toggle"
             >
               {isDarkMode ? (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -1331,6 +1337,7 @@ export default function App() {
                             ? 'bg-teal text-white dark:text-abyss shadow-glow-teal'
                             : 'theme-card-soft border border-teal/20 text-foam hover:border-teal/50 hover:text-teal'
                         }`}
+                        id={`portfolio-tab-${category.title.toLowerCase().replace(/\s+/g, '-')}`}
                       >
                         {category.title}
                         <span className="ml-2 text-xs opacity-75">
