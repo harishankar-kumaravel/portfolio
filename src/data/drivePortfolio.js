@@ -2,11 +2,11 @@
 // Source: https://drive.google.com/drive/folders/1iYBoCITW1co3IX_A7kwyiz_xm-t7w6Lo?usp=sharing
 // Run "npm run sync:drive" after changing the Google Drive folder.
 
-export const drivePortfolioSyncedAt = "2026-06-20T04:55:15.032Z"
+export const drivePortfolioSyncedAt = "2026-06-21T05:01:12.694Z"
 
 export const drivePortfolioCategories = [
   {
-    "title": "Social Media Post",
+    "title": "Social Media Post - Google Drive",
     "sourceFolder": "1WU-I1Q3sHRtVemm16bzBqf9b8-lSQ6XL",
     "aspect": "square",
     "count": 50,
@@ -364,7 +364,7 @@ export const drivePortfolioCategories = [
     ]
   },
   {
-    "title": "Banners and Posters",
+    "title": "Banners and Posters - Google Drive",
     "sourceFolder": "1yNmyouWMbfoiJ49V_TEZj6Bm1FzTZort",
     "aspect": "landscape",
     "count": 40,
@@ -652,7 +652,7 @@ export const drivePortfolioCategories = [
     ]
   },
   {
-    "title": "Video and Animation",
+    "title": "Video and Animation - Google Drive",
     "sourceFolder": "1kLz58DnjVs4QDlApSrVK7qe5YgUwinQU",
     "aspect": "video",
     "count": 19,
@@ -793,7 +793,7 @@ export const drivePortfolioCategories = [
     ]
   },
   {
-    "title": "Website Banners",
+    "title": "Website Banners - Google Drive",
     "sourceFolder": "1lVe1H3DxcaZJl-sX7-2GXmp7JhJ-rVm6",
     "aspect": "landscape",
     "count": 15,
@@ -906,7 +906,7 @@ export const drivePortfolioCategories = [
     ]
   },
   {
-    "title": "Banner & Mockup",
+    "title": "Banner & Mockup - Google Drive",
     "sourceFolder": "1kpznwzSLe0Dw2mXbuvht_scjpc7_I8C1",
     "aspect": "landscape",
     "count": 12,
@@ -998,7 +998,7 @@ export const drivePortfolioCategories = [
     ]
   },
   {
-    "title": "Brochure and Pamplet",
+    "title": "Brochure and Pamplet - Google Drive",
     "sourceFolder": "1sVBCWgU3gj8J9fjnRXC5RaqjTBgFNbol",
     "aspect": "portrait",
     "count": 1,
@@ -1009,6 +1009,21 @@ export const drivePortfolioCategories = [
         "type": "image",
         "thumbnail": "https://drive.google.com/thumbnail?id=3lnTrBVOElETYNDTjJ1XWhEWL9UMBd1aKlFealGSVVXM&sz=w1600",
         "href": "https://drive.google.com/file/d/3lnTrBVOElETYNDTjJ1XWhEWL9UMBd1aKlFealGSVVXM/view?usp=sharing"
+      }
+    ]
+  },
+  {
+    "title": "Portfolio - Google Drive",
+    "sourceFolder": "1s2N1LZsUCo-k_6NOd__B-7z_jzzq0T9n",
+    "aspect": "landscape",
+    "count": 1,
+    "items": [
+      {
+        "id": "RpVa3QDZPVGSihDcsFGU6xESFZXMChkUk10Q3hFRDpVM",
+        "name": "WhatsApp Image 2026-05-14 at 11.42.55.jpeg",
+        "type": "image",
+        "thumbnail": "https://drive.google.com/thumbnail?id=RpVa3QDZPVGSihDcsFGU6xESFZXMChkUk10Q3hFRDpVM&sz=w1600",
+        "href": "https://drive.google.com/file/d/RpVa3QDZPVGSihDcsFGU6xESFZXMChkUk10Q3hFRDpVM/view?usp=sharing"
       }
     ]
   }
