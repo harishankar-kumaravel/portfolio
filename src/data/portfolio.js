@@ -21,9 +21,11 @@ export const portfolio = {
     { id: 'portfolio', label: 'Portfolio', page: 'portfolio' },
     { id: 'services', label: 'Services' },
     { id: 'case-studies', label: 'Case Studies' },
+    { id: 'client-projects', label: 'Client Projects' },
     { id: 'motion', label: 'Motion' },
     { id: 'about', label: 'About' },
     { id: 'experience', label: 'Experience' },
+    { id: 'testimonials', label: 'Testimonials' },
     { id: 'brands', label: 'Brands' },
     { id: 'contact', label: 'Contact' },
   ],
@@ -197,6 +199,45 @@ export const portfolio = {
         href: '#portfolio',
       },
     },
+    'client-projects': {
+      id: 'client-projects',
+      eyebrow: 'Selected Client Work',
+      title: 'Key Client Projects',
+      items: [
+        {
+          client: 'Tata BlueScope Steel India',
+          bullets: [
+            'Designed event branding materials including banners, posters, standees, backdrops, and promotional collaterals for corporate events and exhibitions.',
+            'Created offline marketing and retail branding assets for dealer and channel partner promotions.',
+            'Developed wall painting artwork concepts and large-format branding creatives.',
+            'Designed storefront branding elements including fascia boards, shop signage, and in-store promotional materials.',
+            'Contributed to railway station advertising campaigns through large-format outdoor creative designs.',
+            'Produced marketing creatives aligned with Tata BlueScope\'s brand guidelines across multiple communication channels.',
+          ],
+        },
+        {
+          client: 'Mizaj (India & UAE)',
+          bullets: [
+            'Designed complete creative assets for new showroom launches and retail store branding initiatives.',
+            'Created in-store branding materials including room display graphics, stickers, promotional signage, and visual merchandising elements.',
+            'Developed event collaterals and print marketing materials for exhibitions and promotional campaigns.',
+            'Designed customer-facing brochures, product catalogues, and marketing literature.',
+            'Created internal catalogues and presentation materials for sales and business development teams.',
+            'Ensured premium visual communication aligned with the luxury furniture and interior design brand positioning.',
+          ],
+        },
+        {
+          client: 'Coromandel International',
+          bullets: [
+            'Designed advertising creatives for digital and print marketing campaigns.',
+            'Created campaign-based promotional materials supporting product marketing initiatives.',
+            'Developed motion graphics and animated creatives for marketing communications.',
+            'Designed exhibition booth graphics and event branding materials for trade shows and industry events.',
+            'Collaborated with marketing teams to deliver visually engaging communication assets while maintaining brand consistency.',
+          ],
+        },
+      ],
+    },
     motion: {
       id: 'motion',
       eyebrow: 'Motion Showcase',
@@ -280,19 +321,34 @@ export const portfolio = {
     },
     skills: {
       id: 'skills',
-      eyebrow: 'Skills',
+      eyebrow: 'Skills & Tools',
       title: 'Tools that support my visual workflow.',
-      items: [
-        'Adobe Photoshop',
-        'Adobe Illustrator',
-        'Adobe After Effects',
-        'Adobe Premiere Pro',
-        'Figma',
-        'Cinema 4D',
-        'Autodesk Maya',
-        'Silhouette (Roto/Paint)', 
-        'HTML & CSS',
-        'Web Design',
+      categories: [
+        {
+          name: 'Motion & 3D Production',
+          items: [
+            'Adobe After Effects',
+            'Adobe Premiere Pro',
+            'Cinema 4D',
+            'Autodesk Maya',
+            'Silhouette (Roto/Paint)',
+          ],
+        },
+        {
+          name: 'Vector & Graphic Design',
+          items: [
+            'Adobe Photoshop',
+            'Adobe Illustrator',
+            'Figma',
+          ],
+        },
+        {
+          name: 'Web & UI Design',
+          items: [
+            'HTML & CSS',
+            'Web Design',
+          ],
+        },
       ],
     },
     brands: {
@@ -456,6 +512,25 @@ export const portfolio = {
           type: 'Real Estate',
         },
       ],
+    },
+    testimonials: {
+      id: 'testimonials',
+      eyebrow: 'Client Feedback',
+      title: 'What clients and partners say.',
+      items: [
+        {
+          quote: "Harishankar's ability to seamlessly bridge static branding and motion graphics is rare. He delivered our campaign assets ahead of schedule and with exceptional design quality.",
+          author: "Rajesh Kumar",
+          role: "Creative Director",
+          company: "Rhino Creative Agency"
+        },
+        {
+          quote: "Working with Harish on our regional campaigns was a breeze. He brought fresh ideas, understood our brand rules, and translated complex agronomy messages into simple visuals.",
+          author: "Anjali Sharma",
+          role: "Marketing Manager",
+          company: "Coromandel International"
+        }
+      ]
     },
     contact: {
       id: 'contact',

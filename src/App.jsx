@@ -464,6 +464,150 @@ function ContactCard({ item }) {
   )
 }
 
+function ContactForm() {
+  const [formState, setFormState] = useState({ name: '', email: '', message: '' })
+  const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setTimeout(() => {
+      setIsSubmitting(false)
+      setSubmitted(true)
+      setFormState({ name: '', email: '', message: '' })
+    }, 1200)
+  }
+
+  return (
+    <div className="liquid-glass rounded-3xl p-6 md:p-8 shadow-glow border border-teal/20 relative overflow-hidden">
+      {submitted ? (
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center py-10 space-y-4"
+        >
+          <div className="w-16 h-16 bg-teal/10 border border-teal/30 rounded-full flex items-center justify-center mx-auto mb-4 text-teal text-3xl">
+            ✓
+          </div>
+          <h3 className="text-2xl font-bold text-foam">Message Sent!</h3>
+          <p className="text-mist/80 text-sm max-w-sm mx-auto leading-6">
+            Thank you for reaching out. I will review your message and get back to you shortly.
+          </p>
+          <button 
+            type="button" 
+            onClick={() => setSubmitted(false)}
+            className="mt-6 inline-flex items-center justify-center rounded-full border border-teal/25 theme-card-soft px-5 py-2 text-xs font-bold text-foam hover:border-teal/60 hover:text-teal transition-all"
+          >
+            Send another message
+          </button>
+        </motion.div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <h3 className="text-xl font-bold text-foam mb-6">Send a Message</h3>
+          
+          <div className="space-y-2">
+            <label htmlFor="form-name" className="text-xs font-extrabold uppercase tracking-wider text-teal">Your Name</label>
+            <input 
+              type="text" 
+              id="form-name"
+              required
+              placeholder="John Doe"
+              value={formState.name}
+              onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+              className="w-full bg-abyss/40 border border-teal/20 rounded-2xl px-4 py-3 text-foam placeholder-mist/40 focus:outline-none focus:border-teal/60 focus:ring-1 focus:ring-teal/60 transition-all text-sm backdrop-blur-md"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="form-email" className="text-xs font-extrabold uppercase tracking-wider text-teal">Your Email</label>
+            <input 
+              type="email" 
+              id="form-email"
+              required
+              placeholder="john@example.com"
+              value={formState.email}
+              onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+              className="w-full bg-abyss/40 border border-teal/20 rounded-2xl px-4 py-3 text-foam placeholder-mist/40 focus:outline-none focus:border-teal/60 focus:ring-1 focus:ring-teal/60 transition-all text-sm backdrop-blur-md"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="form-message" className="text-xs font-extrabold uppercase tracking-wider text-teal">Project Brief / Message</label>
+            <textarea 
+              id="form-message"
+              required
+              rows={4}
+              placeholder="Tell me about your project, timeline, and goals..."
+              value={formState.message}
+              onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+              className="w-full bg-abyss/40 border border-teal/20 rounded-2xl px-4 py-3 text-foam placeholder-mist/40 focus:outline-none focus:border-teal/60 focus:ring-1 focus:ring-teal/60 transition-all text-sm backdrop-blur-md resize-none"
+            />
+          </div>
+
+          <motion.button 
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type="submit" 
+            disabled={isSubmitting}
+            className="w-full inline-flex items-center justify-center rounded-full bg-teal px-6 py-3.5 font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg dark:text-abyss text-sm cursor-pointer disabled:opacity-50"
+          >
+            {isSubmitting ? 'Sending...' : 'Send Message'}
+          </motion.button>
+        </form>
+      )}
+    </div>
+  )
+}
+
+function TestimonialCard({ item }) {
+  const { hoverProps, glowStyle, borderStyle, isHovered } = useMouseGlow()
+
+  return (
+    <motion.article
+      variants={fadeInVariants}
+      whileHover={{ y: -5 }}
+      {...hoverProps}
+      className="relative liquid-glass liquid-glass-hover rounded-3xl p-6 shadow-glow border border-teal/20 flex flex-col justify-between"
+    >
+      {/* Premium cursor follow glow effect */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300"
+          style={glowStyle}
+        />
+      )}
+      
+      {/* Animated glowing border */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-20 rounded-3xl border border-teal/40 transition-opacity duration-300"
+          style={borderStyle}
+        />
+      )}
+
+      <div className="relative z-30">
+        <svg className="w-8 h-8 text-teal/30 mb-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+        </svg>
+        <p className="text-base md:text-lg leading-8 text-foam/90 italic font-medium">
+          "{item.quote}"
+        </p>
+      </div>
+
+      <div className="mt-6 flex items-center gap-4 relative z-30 border-t border-teal/10 pt-4">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal/10 font-display font-black text-sm text-teal">
+          {item.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+        </div>
+        <div>
+          <h4 className="font-bold text-foam text-base leading-none">{item.author}</h4>
+          <p className="text-xs text-mist/60 mt-1">{item.role}, <span className="text-teal font-semibold">{item.company}</span></p>
+        </div>
+      </div>
+    </motion.article>
+  )
+}
+
 function ServiceCard({ item }) {
   const { hoverProps, glowStyle, borderStyle, isHovered } = useMouseGlow()
 
@@ -590,6 +734,95 @@ function CaseStudyCard({ item }) {
               {step}
             </span>
           ))}
+        </div>
+      </div>
+    </motion.article>
+  )
+}
+
+function ClientProjectCard({ item }) {
+  const { hoverProps, glowStyle, borderStyle, isHovered } = useMouseGlow()
+
+  const getClientTheme = (clientName) => {
+    if (clientName.includes('Tata')) {
+      return {
+        bg: 'bg-blue-500/10 dark:bg-blue-400/10 border-blue-500/20 dark:border-blue-400/20 text-blue-600 dark:text-blue-400',
+        bulletBg: 'bg-blue-500 dark:bg-blue-400',
+        logoText: 'TS',
+        sub: 'Steel & Industrial Branding'
+      }
+    }
+    if (clientName.includes('Mizaj')) {
+      return {
+        bg: 'bg-amber-500/10 dark:bg-amber-400/10 border-amber-500/20 dark:border-amber-400/20 text-amber-600 dark:text-amber-400',
+        bulletBg: 'bg-amber-500 dark:bg-amber-400',
+        logoText: 'MZ',
+        sub: 'Luxury Retail & Furniture'
+      }
+    }
+    if (clientName.includes('Coromandel')) {
+      return {
+        bg: 'bg-emerald-500/10 dark:bg-emerald-400/10 border-emerald-500/20 dark:border-emerald-400/20 text-emerald-600 dark:text-emerald-400',
+        bulletBg: 'bg-emerald-500 dark:bg-emerald-400',
+        logoText: 'CF',
+        sub: 'Agri-Solutions & Campaigns'
+      }
+    }
+    return {
+      bg: 'bg-teal/10 border-teal/20 text-teal',
+      bulletBg: 'bg-teal',
+      logoText: 'CP',
+      sub: 'Visual Design'
+    }
+  }
+
+  const theme = getClientTheme(item.client)
+
+  return (
+    <motion.article
+      variants={fadeInVariants}
+      whileHover={{ y: -6 }}
+      {...hoverProps}
+      className="relative flex flex-col justify-between overflow-hidden rounded-[30px] border border-teal/20 p-6 shadow-glow liquid-glass liquid-glass-hover"
+    >
+      {/* Premium cursor follow glow effect */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300"
+          style={glowStyle}
+        />
+      )}
+      
+      {/* Animated glowing border */}
+      {isHovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-20 rounded-[30px] border border-teal/40 transition-opacity duration-300"
+          style={borderStyle}
+        />
+      )}
+
+      <div className="relative z-30 flex flex-col h-full justify-between">
+        <div>
+          {/* Header */}
+          <div className="mb-5 flex items-center gap-4 border-b border-teal/10 pb-4">
+            <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl font-display font-extrabold text-lg border ${theme.bg}`}>
+              {theme.logoText}
+            </div>
+            <div>
+              <h3 className="text-xl font-bold leading-tight text-foam">{item.client}</h3>
+              <p className="mt-1 text-xs font-semibold text-mist/60">{theme.sub}</p>
+            </div>
+          </div>
+
+          {/* Bullet points */}
+          <ul className="space-y-3.5 text-sm leading-relaxed text-mist/80">
+            {item.bullets.map((bullet, idx) => (
+              <li key={idx} className="flex items-start gap-3">
+                <span className={`mt-2 flex h-1.5 w-1.5 shrink-0 rounded-full ${theme.bulletBg}`} />
+                <span className="text-mist/85 dark:text-mist/95">{bullet}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </motion.article>
@@ -902,7 +1135,7 @@ function MediaThumbnail({ media, categoryTitle, index }) {
           isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         src={getDriveThumbnailUrl(media, 900)}
-        alt={media.name || `${categoryTitle} sample ${index}`}
+        alt={(media.name || '').replace(/\.[a-z0-9]+$/i, '').replace(/[_-]+/g, ' ').trim() || `${categoryTitle} sample ${index}`}
         loading="lazy"
         draggable="false"
         referrerPolicy="no-referrer"
@@ -1509,12 +1742,37 @@ export default function App() {
                       </>
                     ) : null}
 
+                    {section.id === 'client-projects' ? (
+                      <div className="mt-7 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {section.items.map((item) => (
+                          <ClientProjectCard key={item.client} item={item} />
+                        ))}
+                      </div>
+                    ) : null}
+
                     {section.id === 'motion' ? <MotionShowcase section={section} /> : null}
 
                     {section.id === 'skills' ? (
-                      <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-                        {section.items.map((item) => (
-                          <SkillBadge key={item} name={item} />
+                      <div className="mt-8 space-y-10">
+                        {section.categories.map((category) => (
+                          <div key={category.name} className="space-y-4">
+                            <h3 className="text-lg font-extrabold uppercase tracking-[0.16em] text-teal border-b border-teal/10 pb-2">
+                              {category.name}
+                            </h3>
+                            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+                              {category.items.map((item) => (
+                                <SkillBadge key={item} name={item} />
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {section.id === 'testimonials' ? (
+                      <div className="mt-8 grid gap-6 md:grid-cols-2">
+                        {section.items.map((item, index) => (
+                          <TestimonialCard key={index} item={item} />
                         ))}
                       </div>
                     ) : null}
@@ -1526,10 +1784,15 @@ export default function App() {
                     ) : null}
 
                     {section.id === 'contact' ? (
-                      <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                        {section.items.map((item) => (
-                          <ContactCard key={item.label} item={item} />
-                        ))}
+                      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          {section.items.map((item) => (
+                            <ContactCard key={item.label} item={item} />
+                          ))}
+                        </div>
+                        <motion.div variants={fadeInVariants}>
+                          <ContactForm />
+                        </motion.div>
                       </div>
                     ) : null}
                   </motion.section>
