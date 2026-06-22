@@ -173,7 +173,7 @@ function HeroFocusCard({ item }) {
     <motion.div 
       variants={fadeInVariants}
       whileHover={{ y: -5, scale: 1.01 }}
-      className="liquid-glass liquid-glass-hover flex flex-col justify-between overflow-hidden rounded-[32px] p-6 shadow-glow lg:p-8 border border-teal/20"
+      className="liquid-glass liquid-glass-hover flex flex-col justify-between overflow-hidden rounded-[32px] p-4 sm:p-6 shadow-glow lg:p-8 border border-teal/20"
     >
       <div>
         <span className="inline-block text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-teal">
@@ -253,7 +253,7 @@ function RecruiterQuickCard({ profile }) {
     <motion.div
       variants={fadeInVariants}
       whileHover={{ y: -5, scale: 1.01 }}
-      className="liquid-glass liquid-glass-hover flex flex-col justify-between rounded-[32px] p-6 shadow-glow border border-teal/20"
+      className="liquid-glass liquid-glass-hover flex flex-col justify-between rounded-[32px] p-4 sm:p-6 shadow-glow border border-teal/20"
     >
       <div className="flex flex-col gap-6">
         <div>
@@ -266,19 +266,19 @@ function RecruiterQuickCard({ profile }) {
         </div>
         
         <div className="space-y-4">
-          <div className="flex items-center justify-between border-b border-teal/10 pb-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-teal/10 pb-2">
             <span className="text-sm text-mist/75">Role sought</span>
             <span className="text-sm font-bold text-foam">{activeProfile.roleSought}</span>
           </div>
-          <div className="flex items-center justify-between border-b border-teal/10 pb-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-teal/10 pb-2">
             <span className="text-sm text-mist/75">Experience</span>
             <span className="text-sm font-bold text-foam">{activeProfile.experience}</span>
           </div>
-          <div className="flex items-center justify-between border-b border-teal/10 pb-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-teal/10 pb-2">
             <span className="text-sm text-mist/75">Location</span>
             <span className="text-sm font-bold text-foam">{activeProfile.location}</span>
           </div>
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-teal/10 pb-2">
             <span className="text-sm text-mist/75 whitespace-nowrap">Key Software</span>
             <span className="text-sm font-bold text-foam text-right">{activeProfile.keySoftware}</span>
           </div>
@@ -1465,8 +1465,8 @@ export default function App() {
         <div className="theme-orb-c absolute bottom-[-10rem] left-1/4 h-[600px] w-[600px] rounded-full blur-[160px]" />
       </div>
 
-      <div className="relative z-10 w-full px-3 py-3 sm:px-5 lg:px-8">
-        <header className="liquid-glass relative md:sticky top-3 z-30 flex min-h-[92px] w-full flex-col gap-6 rounded-[32px] px-6 py-6 shadow-glow md:flex-row md:items-center md:justify-between lg:px-10 border border-teal/20">
+      <div className="relative z-10 w-full max-w-[1800px] mx-auto px-4 py-4 sm:px-6 lg:px-8 xl:px-12">
+        <header className="liquid-glass relative md:sticky top-3 z-30 flex min-h-[92px] w-full flex-col gap-6 rounded-[32px] px-4 py-5 sm:px-6 sm:py-6 lg:px-10 shadow-glow md:flex-row md:items-center md:justify-between border border-teal/20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -1475,7 +1475,7 @@ export default function App() {
             <p className="mb-2 text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-teal">
               {meta.label}
             </p>
-            <h1 className="font-display text-5xl leading-tight tracking-[-0.02em] text-foam sm:text-6xl font-black">
+            <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl leading-tight tracking-[-0.02em] text-foam font-black">
               {meta.title}
             </h1>
             <p className="mt-2 text-base font-semibold text-mist">{meta.role}</p>
@@ -1606,12 +1606,12 @@ export default function App() {
                 exit={{ opacity: 0 }}
               >
                 {/* Hero Section */}
-                <section className="grid min-h-[calc(100vh-8rem)] gap-6 py-8 lg:grid-cols-[1.45fr_0.9fr] lg:items-stretch lg:py-10">
+                <section className="grid gap-6 py-8 lg:grid-cols-[1.45fr_0.9fr] lg:items-start lg:py-10">
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8 }}
-                    className="liquid-glass flex flex-col justify-between rounded-[40px] px-6 py-10 shadow-glow sm:px-8 lg:px-12 border border-teal/20"
+                    className="liquid-glass flex flex-col justify-between lg:justify-start lg:gap-12 rounded-[40px] px-4 py-8 sm:px-8 sm:py-10 lg:px-12 border border-teal/20"
                   >
                     <div>
                       {/* Immediate Joiner & Availability Indicator */}
@@ -1641,7 +1641,7 @@ export default function App() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3, duration: 0.8 }}
-                        className="font-display text-5xl leading-snug tracking-[-0.02em] text-foam sm:text-6xl sm:leading-snug lg:max-w-[12ch] lg:text-[5.8rem] lg:leading-[1.2] xl:text-[6.5rem] xl:leading-[1.2] font-black"
+                        className="font-display text-4xl sm:text-6xl lg:max-w-[12ch] lg:text-[5.8rem] xl:text-[6.5rem] leading-[1.1] sm:leading-snug lg:leading-[1.2] xl:leading-[1.2] tracking-[-0.02em] text-foam font-black"
                       >
                         {hero.heading}
                       </motion.h2>
@@ -1672,7 +1672,7 @@ export default function App() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className="grid gap-6 lg:grid-rows-2"
+                    className="flex flex-col gap-6"
                   >
                     {hero.highlights.map((item) => (
                       <HeroFocusCard key={item.title} item={item} />
