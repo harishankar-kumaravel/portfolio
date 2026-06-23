@@ -76,7 +76,7 @@ async function fetchFolder(folderId) {
 
   const html = await response.text();
   const title = decodeHtml(html.match(/<title>(.*?)<\/title>/)?.[1] || 'Portfolio')
-    .replace(/\s+–\s+Google Drive$/, '')
+    .replace(/\s+[-–—]\s+Google Drive$/i, '')
     .trim();
 
   return {
