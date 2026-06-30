@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "sync:drive": "node scripts/sync-drive-portfolio.mjs",
-    "predev": "npm run sync:drive",
     "dev": "vite",
-    "prebuild": "npm run sync:drive",
     "build": "vite build",
     "preview": "vite preview"
   },
