@@ -17,7 +17,6 @@ import HeroVisualShowcase from './components/HeroVisualShowcase'
 import SectionHeader from './components/SectionHeader'
 import Timeline from './components/Timeline'
 import BrandsMarquee from './components/Brands'
-import ContactForm from './components/ContactForm'
 import PortfolioLightbox from './components/PortfolioLightbox'
 import { PortfolioCategory } from './components/PortfolioComponents'
 import AboutSection from './components/AboutSection'
@@ -367,16 +366,13 @@ export default function App() {
                     ) : null}
 
                     {section.id === 'contact' ? (
-                      <DeferredSection height="500px">
-                        <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+                      <DeferredSection height="250px">
+                        <div className="mt-8 max-w-3xl mx-auto">
                           <div className="grid gap-4 sm:grid-cols-2">
                             {section.items.map((item) => (
                               <ContactCard key={item.label} item={item} />
                             ))}
                           </div>
-                          <motion.div variants={fadeInVariants}>
-                            <ContactForm />
-                          </motion.div>
                         </div>
                       </DeferredSection>
                     ) : null}

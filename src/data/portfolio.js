@@ -511,6 +511,13 @@ export const portfolio = {
           location: 'India',
           type: 'Real Estate',
         },
+        {
+          name: 'Insync',
+          logo: 'IS',
+          logoUrl: '/logos/insync.png',
+          location: 'Bangalore',
+          type: 'Realty Services',
+        },
       ],
     },
     testimonials: {
