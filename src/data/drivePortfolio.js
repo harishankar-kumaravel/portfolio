@@ -2,7 +2,7 @@
 // Source: https://drive.google.com/drive/folders/1iYBoCITW1co3IX_A7kwyiz_xm-t7w6Lo?usp=sharing
 // Run "npm run sync:drive" after changing the Google Drive folder.
 
-export const drivePortfolioSyncedAt = "2026-07-06T04:11:32.604Z"
+export const drivePortfolioSyncedAt = "2026-07-07T04:02:06.848Z"
 
 export const drivePortfolioCategories = [
   {
