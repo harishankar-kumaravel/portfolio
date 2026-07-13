@@ -35,8 +35,7 @@ export function PortfolioPlaceholder({ categoryTitle, index, item, onOpen }) {
         type="button"
         onClick={() => onOpen(media)}
         onContextMenu={(event) => event.preventDefault()}
-        title={media.name}
-        aria-label={isPlayable ? `Play ${media.name}` : `Preview ${media.name}`}
+        aria-label={isPlayable ? `Play ${categoryTitle} sample ${index}` : `Preview ${categoryTitle} sample ${index}`}
       >
         <MediaThumbnail media={media} categoryTitle={categoryTitle} index={index} />
         <div className="theme-overlay-fade pointer-events-none absolute inset-0" />

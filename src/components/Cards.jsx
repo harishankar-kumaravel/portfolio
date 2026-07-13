@@ -241,7 +241,7 @@ export function CaseStudyCard({ item }) {
                 allow="autoplay; fullscreen; encrypted-media"
                 allowFullScreen
               />
-              <div className="absolute top-0 left-0 w-full h-14 bg-transparent z-30 pointer-events-auto" />
+              <div className="absolute top-0 left-0 w-full h-14 bg-black z-30 pointer-events-auto" />
             </div>
           )
         ) : (

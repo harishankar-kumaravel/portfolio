@@ -48,7 +48,7 @@ export function MediaThumbnail({ media, categoryTitle, index }) {
           isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         src={getDriveThumbnailUrl(media, 900)}
-        alt={(media.name || '').replace(/\.[a-z0-9]+$/i, '').replace(/[_-]+/g, ' ').trim() || `${categoryTitle} sample ${index}`}
+        alt={`${categoryTitle || 'Portfolio'} sample ${index || ''}`}
         loading="lazy"
         draggable="false"
         referrerPolicy="no-referrer"
@@ -112,7 +112,7 @@ export default function PortfolioLightbox({ media, onClose }) {
         onContextMenu={(event) => event.preventDefault()}
         role="dialog"
         aria-modal="true"
-        aria-label={media.name || 'Portfolio preview'}
+        aria-label="Portfolio preview"
       >
         <motion.div
           className="relative flex h-full max-h-[94vh] w-full max-w-7xl flex-col overflow-hidden rounded-[28px] border border-teal/20 bg-panel shadow-glow"
@@ -148,7 +148,7 @@ export default function PortfolioLightbox({ media, onClose }) {
                   <iframe
                     className="h-full min-h-[62vh] w-full rounded-[18px] border-0 bg-black"
                     src={`https://www.youtube.com/embed/${getYoutubeId(media)}?autoplay=1&mute=1&modestbranding=1&rel=0`}
-                    title={media.name || 'Video preview'}
+                    title="Video preview"
                     allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
                     allowFullScreen
                     referrerPolicy="no-referrer"
@@ -157,12 +157,12 @@ export default function PortfolioLightbox({ media, onClose }) {
                   <button
                     className="relative block max-h-full max-w-full overflow-hidden rounded-[18px] border border-teal/10 bg-black cursor-pointer text-left p-0"
                     onClick={() => setIsPlaying(true)}
-                    aria-label={`Play ${media.name || 'video'}`}
+                    aria-label="Play video"
                   >
                     <img
                       className="max-h-[76vh] w-full select-none object-contain"
                       src={getDriveThumbnailUrl(media)}
-                      alt={media.name || 'Video preview'}
+                      alt="Video preview"
                       draggable="false"
                       referrerPolicy="no-referrer"
                       onContextMenu={(event) => event.preventDefault()}
@@ -176,7 +176,7 @@ export default function PortfolioLightbox({ media, onClose }) {
                 <img
                   className="max-h-full max-w-full select-none object-contain"
                   src={`https://drive.google.com/uc?id=${media.id}&export=download`}
-                  alt={media.name || 'Animation preview'}
+                  alt="Animation preview"
                   draggable="false"
                   referrerPolicy="no-referrer"
                   onContextMenu={(event) => event.preventDefault()}
@@ -186,19 +186,19 @@ export default function PortfolioLightbox({ media, onClose }) {
                   <iframe
                     className="h-full w-full rounded-[18px] border-0 bg-black"
                     src={previewUrl}
-                    title={media.name || 'Video preview'}
+                    title="Video preview"
                     allow="autoplay; fullscreen; encrypted-media"
                     allowFullScreen
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute top-0 left-0 w-full h-14 bg-transparent z-30 pointer-events-auto" />
+                  <div className="absolute top-0 left-0 w-full h-14 bg-black z-30 pointer-events-auto" />
                 </div>
               )
             ) : (
               <img
                 className="max-h-full max-w-full select-none object-contain"
                 src={getDriveThumbnailUrl(media)}
-                alt={media.name || 'Portfolio work'}
+                alt="Portfolio work"
                 draggable="false"
                 referrerPolicy="no-referrer"
                 onContextMenu={(event) => event.preventDefault()}

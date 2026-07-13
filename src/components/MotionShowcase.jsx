@@ -21,7 +21,7 @@ export function MotionShowcaseItem({ item }) {
           <iframe
             className="aspect-video w-full rounded-[20px] border-0 bg-black"
             src={previewUrl}
-            title={item.title || item.name}
+            title={item.title || "Video preview"}
             loading="lazy"
             allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
             allowFullScreen
@@ -30,7 +30,7 @@ export function MotionShowcaseItem({ item }) {
           <button
             className="relative block aspect-video w-full overflow-hidden rounded-[20px] border border-teal/10 bg-black cursor-pointer text-left p-0 w-full"
             onClick={() => setIsPlaying(true)}
-            aria-label={`Play ${item.title || item.name}`}
+            aria-label={item.title ? `Play ${item.title}` : "Play video"}
           >
             <img
               className="h-full w-full object-contain"
@@ -48,7 +48,7 @@ export function MotionShowcaseItem({ item }) {
         <img
           className="aspect-video w-full rounded-[20px] bg-black object-contain"
           src={`https://drive.google.com/uc?id=${item.id}&export=download`}
-          alt={item.title || item.name}
+          alt={item.title || "Animation preview"}
           loading="lazy"
         />
       ) : (
@@ -56,15 +56,15 @@ export function MotionShowcaseItem({ item }) {
           <iframe
             className="aspect-video w-full rounded-[20px] border-0 bg-black"
             src={previewUrl}
-            title={item.title || item.name}
+            title={item.title || "Video preview"}
             loading="lazy"
             allow="autoplay; fullscreen; encrypted-media"
             allowFullScreen
           />
-          <div className="absolute top-0 left-0 w-full h-14 bg-transparent z-30 pointer-events-auto" />
+          <div className="absolute top-0 left-0 w-full h-14 bg-black z-30 pointer-events-auto" />
         </div>
       )}
-      <h3 className="px-3 pb-2 pt-4 text-lg font-bold text-foam">{item.title || item.name}</h3>
+      {item.title && <h3 className="px-3 pb-2 pt-4 text-lg font-bold text-foam">{item.title}</h3>}
     </motion.article>
   )
 }
