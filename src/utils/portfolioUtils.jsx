@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from 'react'
 
 // Section visual layout helper classes
 export const sectionShell =
-  'liquid-glass liquid-glass-hover mt-6 rounded-[36px] px-6 py-8 shadow-glow sm:px-8 lg:px-10'
+  'liquid-glass liquid-glass-hover mt-5 rounded-[28px] px-4 py-6 shadow-glow sm:mt-6 sm:rounded-[36px] sm:px-8 sm:py-8 lg:px-10'
 
 export const sectionTitleClass =
-  'font-display text-4xl leading-none tracking-[-0.02em] text-foam sm:text-5xl sm:leading-[1.0] md:text-6xl md:leading-[0.98] font-black'
+  'font-display text-3xl leading-[0.98] tracking-[-0.02em] text-foam xs:text-4xl sm:text-5xl sm:leading-[1.0] md:text-6xl md:leading-[0.98] font-black'
 
 // Framer Motion shared animations
 export const fadeInVariants = {
@@ -27,12 +27,38 @@ export const staggerContainer = {
   }
 }
 
+// Enhancements that add motion only where a pointer/large display can support it.
+export function useDesktopMotion() {
+  const [isDesktopMotion, setIsDesktopMotion] = useState(false)
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia('(min-width: 1024px)')
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const updateMotionPreference = () => setIsDesktopMotion(desktopQuery.matches && !reducedMotionQuery.matches)
+
+    updateMotionPreference()
+    desktopQuery.addEventListener('change', updateMotionPreference)
+    reducedMotionQuery.addEventListener('change', updateMotionPreference)
+
+    return () => {
+      desktopQuery.removeEventListener('change', updateMotionPreference)
+      reducedMotionQuery.removeEventListener('change', updateMotionPreference)
+    }
+  }, [])
+
+  return isDesktopMotion
+}
+
 // Deobfuscation helpers for Google Drive folder sync
 export function deobfuscateId(obfuscated) {
   if (!obfuscated) return '';
+  // Synced media IDs are base64-encoded (44 characters). Manually supplied
+  // Google Drive IDs are already usable and must not be decoded again.
+  if (obfuscated.length % 4 !== 0) return obfuscated;
   try {
     const reversed = obfuscated.split('').reverse().join('');
-    return atob(reversed);
+    const decoded = atob(reversed);
+    return /^[A-Za-z0-9_-]{20,}$/.test(decoded) ? decoded : obfuscated;
   } catch (e) {
     return obfuscated;
   }
@@ -211,11 +237,12 @@ export function useMouseGlow() {
 
 // Deferred rendering wrapper using IntersectionObserver
 export function DeferredSection({ children, height = '300px' }) {
-  const [isRendered, setIsRendered] = useState(false)
+  const shouldDefer = typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches
+  const [isRendered, setIsRendered] = useState(() => !shouldDefer)
   const containerRef = useRef(null)
 
   useEffect(() => {
-    if (isRendered) return
+    if (!shouldDefer || isRendered) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -232,7 +259,11 @@ export function DeferredSection({ children, height = '300px' }) {
     }
 
     return () => observer.disconnect()
-  }, [isRendered])
+  }, [isRendered, shouldDefer])
+
+  if (!shouldDefer) {
+    return children
+  }
 
   return (
     <div ref={containerRef} style={{ minHeight: isRendered ? 'auto' : height }}>

@@ -150,7 +150,9 @@ export const portfolio = {
         {
          title: 'Durashine Supreme Tamil Campaign',
           category: 'Social Media & Regional Marketing Campaign',
-          thumbnail: 'https://drive.google.com/thumbnail?id=KlVS3sWclFTRZpVNwcmc0F3anhjZUhnSDdEb3ombPRVM&sz=w1600',
+          id: '1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j',
+          thumbnail: 'https://drive.google.com/thumbnail?id=1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j&sz=w1600',
+          href: 'https://drive.google.com/file/d/1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j/view?usp=sharing',
           challenge: 'Create a culturally relevant campaign that promotes Durashine Supreme roofing solutions while standing out in crowded social feeds. The communication needed to connect with Tamil-speaking audiences and showcase both product quality and aspirational home-building goals.',
   goal: 'Develop a visually engaging regional-language campaign that combines product credibility, emotional appeal, and clear messaging to increase brand awareness and audience engagement.',
   process: [
@@ -166,7 +168,9 @@ export const portfolio = {
         {
           title: 'Real Estate Campaign Visuals',
           category: 'Campaign and marketing',
-          thumbnail: 'https://drive.google.com/thumbnail?id=3MnYyc2XtA3XDpHekRTRWJGdf9mWzR2UpVkMzo1U3QUM&sz=w1600',
+          id: '1ptQzrgsl_lJfSfzEXYLQQlnlh11tUd3M',
+          thumbnail: 'https://drive.google.com/thumbnail?id=1ptQzrgsl_lJfSfzEXYLQQlnlh11tUd3M&sz=w1600',
+          href: 'https://drive.google.com/file/d/1ptQzrgsl_lJfSfzEXYLQQlnlh11tUd3M/view?usp=sharing',
           challenge: 'Translate a property-focused message into polished marketing visuals that quickly communicate value.',
           goal: 'Balance information, aspiration, and brand consistency across campaign touchpoints.',
           process: ['Content hierarchy', 'Layout development', 'Format rollout'],
@@ -176,10 +180,10 @@ export const portfolio = {
         {
   title: 'Gromor Nano DAP USP Animation',
   category: 'Motion Graphics & Product Marketing',
-  thumbnail: 'https://drive.google.com/thumbnail?id=xklUkFEU5k1Z58lejdTa40mYqNkdSJneRhlVrlDOaNWM&sz=w1600',
+  thumbnail: 'https://drive.google.com/thumbnail?id=1LIeYQ58uh5JrgM6zrKMlAKlBoNH1-Frc&sz=w1600',
   type: 'video',
-  id: 'xklUkFEU5k1Z58lejdTa40mYqNkdSJneRhlVrlDOaNWM',
-  href: 'https://drive.google.com/file/d/xklUkFEU5k1Z58lejdTa40mYqNkdSJneRhlVrlDOaNWM/view?usp=drive_link',
+  id: '1LIeYQ58uh5JrgM6zrKMlAKlBoNH1-Frc',
+  href: 'https://drive.google.com/file/d/1LIeYQ58uh5JrgM6zrKMlAKlBoNH1-Frc/view?usp=drive_link',
   challenge: 'Communicate the unique benefits of Gromor Nano DAP in a simple and engaging format that could quickly educate farmers while maintaining brand consistency across regional markets.',
   goal: 'Create a visually appealing animated explainer that demonstrates product effectiveness, highlights key USPs, and improves audience understanding through clear storytelling.',
   process: [

@@ -239,6 +239,33 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
+  @media (max-width: 639px) {
+    .liquid-glass,
+    .liquid-glass-hover {
+      backdrop-filter: blur(14px) saturate(120%);
+    }
+
+    .liquid-glass-hover:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .theme-orb-a,
+    .theme-orb-b,
+    .theme-orb-c {
+      animation: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-orb-a,
+    .theme-orb-b,
+    .theme-orb-c {
+      animation: none;
+    }
+  }
+
   /* Keyframe Animations for background orbs */
   @keyframes orb-float-a {
     0% {
@@ -291,8 +318,29 @@
     animation: marquee 85s linear infinite;
   }
 
-  .animate-marquee:hover {
+  .brand-marquee {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  }
+
+  .brand-marquee:hover .animate-marquee,
+  .brand-marquee:focus-within .animate-marquee {
     animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-marquee {
+      display: none !important;
+    }
+
+    .brand-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .animate-marquee {
+      animation: none;
+    }
   }
 
   @keyframes shimmer {

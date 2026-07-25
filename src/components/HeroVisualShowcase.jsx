@@ -1,16 +1,36 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useMouseGlow, getDriveThumbnailUrl, deobfuscateMedia } from '../utils/portfolioUtils'
+import { useDesktopMotion, useMouseGlow, getDriveThumbnailUrl, deobfuscateMedia } from '../utils/portfolioUtils'
 
 export default function HeroVisualShowcase({ onOpenMedia }) {
   const { hoverProps, glowStyle, borderStyle, isHovered } = useMouseGlow()
+  const [imageFailed, setImageFailed] = useState(false)
+  const [parallax, setParallax] = useState({ x: 0, y: 0 })
+  const desktopMotion = useDesktopMotion()
+
+  const handleMouseMove = (event) => {
+    hoverProps.onMouseMove(event)
+
+    if (!desktopMotion) return
+    const rect = event.currentTarget.getBoundingClientRect()
+    setParallax({
+      x: ((event.clientX - rect.left) / rect.width - 0.5) * 10,
+      y: ((event.clientY - rect.top) / rect.height - 0.5) * 8,
+    })
+  }
+
+  const handleMouseLeave = (event) => {
+    hoverProps.onMouseLeave(event)
+    setParallax({ x: 0, y: 0 })
+  }
 
   // Featured campaign project details (Durashine Supreme)
   const rawFeaturedItem = {
-    id: 'KlVS3sWclFTRZpVNwcmc0F3anhjZUhnSDdEb3ombPRVM',
+    id: '1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j',
     name: 'Durashine Supreme Campaign',
     type: 'image',
-    thumbnail: 'https://drive.google.com/thumbnail?id=KlVS3sWclFTRZpVNwcmc0F3anhjZUhnSDdEb3ombPRVM&sz=w1600',
-    href: 'https://drive.google.com/file/d/KlVS3sWclFTRZpVNwcmc0F3anhjZUhnSDdEb3ombPRVM/view?usp=sharing'
+    thumbnail: 'https://drive.google.com/thumbnail?id=1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j&sz=w1600',
+    href: 'https://drive.google.com/file/d/1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j/view?usp=sharing'
   }
 
   const featuredItem = deobfuscateMedia(rawFeaturedItem)
@@ -21,6 +41,8 @@ export default function HeroVisualShowcase({ onOpenMedia }) {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1, delay: 0.3 }}
       {...hoverProps}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       onClick={() => onOpenMedia(featuredItem)}
       className="relative cursor-pointer overflow-hidden rounded-[36px] border border-teal/20 p-4 shadow-glow liquid-glass liquid-glass-hover flex flex-col group justify-between"
     >
@@ -42,13 +64,21 @@ export default function HeroVisualShowcase({ onOpenMedia }) {
 
       {/* Image Panel wrapper */}
       <div className="relative overflow-hidden aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3] rounded-[28px] border border-teal/10 bg-abyss/40 z-30">
-        <img
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          src={getDriveThumbnailUrl(featuredItem, 1000)}
-          alt="Durashine Supreme Campaign Preview"
-          loading="eager"
-          referrerPolicy="no-referrer"
-        />
+        {imageFailed ? (
+          <div className="flex h-full items-center justify-center bg-gradient-to-br from-teal/20 to-panel px-8 text-center">
+            <span className="text-sm font-extrabold uppercase tracking-[0.14em] text-teal">Featured campaign work</span>
+          </div>
+        ) : (
+          <img
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            src={getDriveThumbnailUrl(featuredItem, 1000)}
+            alt="Durashine Supreme Campaign Preview"
+            loading="eager"
+            referrerPolicy="no-referrer"
+            onError={() => setImageFailed(true)}
+            style={desktopMotion ? { transform: `translate3d(${parallax.x}px, ${parallax.y}px, 0) scale(1.04)` } : undefined}
+          />
+        )}
         
         {/* Floating pill badge */}
         <div className="absolute top-4 left-4 z-40 theme-card-soft rounded-full border border-teal/20 px-3.5 py-1.5 text-[0.68rem] font-extrabold uppercase tracking-widest text-teal shadow-md backdrop-blur-xl">

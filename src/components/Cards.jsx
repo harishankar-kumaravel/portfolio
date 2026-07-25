@@ -3,9 +3,7 @@ import { motion } from 'framer-motion'
 import { 
   fadeInVariants, 
   useMouseGlow, 
-  getDrivePreviewUrl, 
-  getDriveThumbnailUrl,
-  getYoutubeThumbnailUrl
+  getDriveThumbnailUrl
 } from '../utils/portfolioUtils'
 
 export function HeroAction({ action }) {
@@ -198,6 +196,7 @@ export function ServiceCard({ item }) {
 
 export function CaseStudyCard({ item }) {
   const isPlayable = item.type === 'video' || item.type === 'animation'
+  const [mediaFailed, setMediaFailed] = useState(false)
   const { hoverProps, glowStyle, borderStyle, isHovered } = useMouseGlow()
 
   return (
@@ -224,49 +223,69 @@ export function CaseStudyCard({ item }) {
 
       <div className="theme-image-panel relative overflow-hidden border-b border-teal/10 z-30">
         {isPlayable ? (
-          item.name && item.name.toLowerCase().endsWith('.gif') ? (
-            <img
-              className="block h-auto w-full object-contain"
-              src={`https://drive.google.com/uc?id=${item.id}&export=download`}
-              alt={`${item.title} preview`}
-              loading="lazy"
-            />
-          ) : (
-            <div className="relative w-full h-full overflow-hidden">
-              <iframe
-                className="aspect-video w-full border-0 bg-black"
-                src={getDrivePreviewUrl(item)}
-                title={`${item.title} video preview`}
+          <a
+            className="group relative block aspect-video overflow-hidden bg-abyss"
+            href={item.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Play ${item.title}`}
+          >
+            {mediaFailed ? (
+              <div className="flex h-full items-center justify-center bg-gradient-to-br from-teal/20 to-panel px-6 text-center">
+                <span className="text-sm font-extrabold uppercase tracking-[0.14em] text-teal">Watch animation</span>
+              </div>
+            ) : (
+              <img
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                src={getDriveThumbnailUrl(item, 1200)}
+                alt={`${item.title} preview`}
                 loading="lazy"
-                allow="autoplay; fullscreen; encrypted-media"
-                allowFullScreen
+                referrerPolicy="no-referrer"
+                onError={() => setMediaFailed(true)}
               />
-              <div className="absolute top-0 left-0 w-full h-14 bg-black z-30 pointer-events-auto" />
-            </div>
-          )
+            )}
+            <span className="theme-card-soft absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-teal/30 text-xl text-foam shadow-glow backdrop-blur-xl transition group-hover:scale-110" aria-hidden="true">
+              <span className="ml-0.5">&#9654;</span>
+            </span>
+            <span className="absolute bottom-3 left-3 rounded-full bg-abyss/80 px-3 py-1.5 text-xs font-bold text-foam backdrop-blur">Open video</span>
+          </a>
         ) : (
           <>
-            <img
-              className="block h-auto w-full object-contain transition-transform duration-700 hover:scale-105"
-              src={getDriveThumbnailUrl(item)}
-              alt={`${item.title} preview`}
-              loading="lazy"
-              referrerPolicy="no-referrer"
-            />
+            {mediaFailed ? (
+              <div className="flex min-h-[220px] items-center justify-center bg-gradient-to-br from-teal/20 to-panel px-6 text-center">
+                <span className="text-sm font-extrabold uppercase tracking-[0.14em] text-teal">Campaign preview</span>
+              </div>
+            ) : (
+              <img
+                className="block h-auto w-full object-contain transition-transform duration-700 hover:scale-105"
+                src={getDriveThumbnailUrl(item)}
+                alt={`${item.title} preview`}
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                onError={() => setMediaFailed(true)}
+              />
+            )}
             <div className="theme-overlay-fade pointer-events-none absolute inset-0" />
           </>
         )}
       </div>
-      <div className="p-6 relative z-30">
+      <div className="relative z-30 p-5 sm:p-6">
         <p className="text-[0.7rem] font-extrabold uppercase tracking-[0.18em] text-teal">
           {item.category}
         </p>
         <h3 className="mt-3 text-2xl font-bold leading-tight text-foam">{item.title}</h3>
-        <dl className="mt-6 space-y-4 text-sm leading-7 text-mist/80">
+        <dl className="mt-5 text-sm leading-7 text-mist/80">
           <div>
             <dt className="font-extrabold uppercase tracking-[0.12em] text-teal">Challenge</dt>
             <dd className="mt-1">{item.challenge}</dd>
           </div>
+        </dl>
+        <details className="group mt-5 border-t border-teal/10 pt-4 text-sm leading-7 text-mist/80">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-extrabold uppercase tracking-[0.12em] text-teal marker:hidden">
+            Read full case study
+            <span className="text-lg transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+          </summary>
+          <dl className="mt-4 space-y-4">
           <div>
             <dt className="font-extrabold uppercase tracking-[0.12em] text-teal">Goal</dt>
             <dd className="mt-1">{item.goal}</dd>
@@ -279,17 +298,15 @@ export function CaseStudyCard({ item }) {
             <dt className="font-extrabold uppercase tracking-[0.12em] text-teal">Result</dt>
             <dd className="mt-1">{item.result}</dd>
           </div>
-        </dl>
-        <div className="mt-5 flex flex-wrap gap-2">
-          {item.process.map((step) => (
-            <span
-              key={step}
-              className="theme-chip rounded-full border border-teal/10 px-3 py-1.5 text-xs font-bold text-mist/80"
-            >
-              {step}
-            </span>
-          ))}
-        </div>
+          </dl>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {item.process.map((step) => (
+              <span key={step} className="theme-chip rounded-full border border-teal/10 px-3 py-1.5 text-xs font-bold text-mist/80">
+                {step}
+              </span>
+            ))}
+          </div>
+        </details>
       </div>
     </motion.article>
   )
@@ -509,7 +526,7 @@ export function ContactCard({ item }) {
       variants={fadeInVariants}
       whileHover={{ y: -4 }}
       {...hoverProps}
-      className="relative liquid-glass liquid-glass-hover min-w-[220px] flex-1 rounded-3xl p-6 shadow-glow flex items-start gap-4"
+      className="relative flex min-w-[220px] flex-1 items-start gap-3 rounded-3xl p-4 shadow-glow liquid-glass liquid-glass-hover sm:gap-4 sm:p-6"
     >
       {/* Premium cursor follow glow effect */}
       {isHovered && (

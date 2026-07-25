@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion'
-import { fadeInVariants, sectionTitleClass } from '../utils/portfolioUtils'
+import { fadeInVariants, sectionTitleClass, useDesktopMotion } from '../utils/portfolioUtils'
 
 export default function SectionHeader({ eyebrow, title }) {
+  const desktopMotion = useDesktopMotion()
+
   return (
     <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
+      initial={desktopMotion ? 'hidden' : false}
+      whileInView={desktopMotion ? 'visible' : undefined}
+      viewport={desktopMotion ? { once: true, margin: "-100px" } : undefined}
       variants={fadeInVariants}
     >
       <p className="mb-2.5 text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-teal">

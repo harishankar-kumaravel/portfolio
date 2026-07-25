@@ -4,10 +4,19 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function Header({ meta, isDarkMode, setIsDarkMode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // Minimal set of visible nav links
-  const minimalNav = [
+  const desktopNav = [
     { id: 'portfolio', label: 'Portfolio', href: '#portfolio' },
     { id: 'about', label: 'About', href: '#about' },
+    { id: 'contact', label: 'Contact', href: '#contact' },
+  ]
+
+  const mobileNav = [
+    { id: 'portfolio', label: 'Portfolio', href: '#portfolio' },
+    { id: 'services', label: 'Services', href: '#services' },
+    { id: 'case-studies', label: 'Case Studies', href: '#case-studies' },
+    { id: 'motion', label: 'Motion', href: '#motion' },
+    { id: 'about', label: 'About', href: '#about' },
+    { id: 'brands', label: 'Brands', href: '#brands' },
     { id: 'contact', label: 'Contact', href: '#contact' },
   ]
 
@@ -36,7 +45,7 @@ export default function Header({ meta, isDarkMode, setIsDarkMode }) {
         <div className="flex items-center gap-4 sm:gap-6">
           {/* Desktop Navigation: Minimal Links Only */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-bold text-mist">
-            {minimalNav.map((item, index) => (
+            {desktopNav.map((item, index) => (
               <motion.a
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -53,6 +62,16 @@ export default function Header({ meta, isDarkMode, setIsDarkMode }) {
 
           {/* Action buttons always visible */}
           <div className="flex items-center gap-2.5">
+            {/* Primary mobile route keeps portfolio access visible without opening the menu. */}
+            <motion.a
+              whileTap={{ scale: 0.98 }}
+              href="#portfolio"
+              className="inline-flex h-10 items-center justify-center rounded-full bg-teal px-3.5 text-xs font-extrabold text-white shadow-glow-teal dark:text-abyss md:hidden"
+              id="header-mobile-portfolio-button"
+            >
+              Portfolio
+            </motion.a>
+
             {/* Resume button */}
             <motion.a
               whileHover={{ scale: 1.05, y: -1 }}
@@ -60,14 +79,14 @@ export default function Header({ meta, isDarkMode, setIsDarkMode }) {
               href="https://drive.google.com/file/d/1gYT0gGjeS0-VmiJIcGpjmvRVNnhz4O_S/view?usp=drive_link"
               target="_blank"
               rel="noreferrer"
-              className="theme-card-soft inline-flex h-10 items-center gap-2 rounded-full border border-teal/20 px-4 text-xs sm:text-sm font-bold text-foam backdrop-blur-md transition-colors hover:border-teal/50 hover:text-teal"
+              className="theme-card-soft hidden h-10 items-center gap-2 rounded-full border border-teal/20 px-4 text-xs font-bold text-foam backdrop-blur-md transition-colors hover:border-teal/50 hover:text-teal md:inline-flex md:text-sm"
               title="View Resume"
               id="header-resume-button"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-teal">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
               </svg>
-              <span className="hidden xs:inline">Resume</span>
+              <span>Resume</span>
             </motion.a>
 
             {/* Dark Mode toggle */}
@@ -127,7 +146,7 @@ export default function Header({ meta, isDarkMode, setIsDarkMode }) {
             className="md:hidden overflow-hidden border-t border-teal/10 mt-2 pt-2"
           >
             <nav className="flex flex-col gap-2 py-2 text-base font-bold text-mist/90 pl-2">
-              {minimalNav.map((item, index) => (
+              {mobileNav.map((item, index) => (
                 <motion.a
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}

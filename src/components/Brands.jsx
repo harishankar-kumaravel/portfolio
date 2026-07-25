@@ -54,18 +54,23 @@ export function BrandCard({ item }) {
 }
 
 export default function BrandsMarquee({ items }) {
-  const marqueeItems = [...items, ...items, ...items]
+  const marqueeItems = [...items, ...items]
   
   return (
-    <div className="relative mt-8 w-full overflow-hidden py-4">
-      <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-abyss to-transparent" />
-      <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-abyss to-transparent" />
-      
-      <div className="animate-marquee flex gap-6">
-        {marqueeItems.map((item, index) => (
-          <BrandCard key={`${item.name}-${index}`} item={item} />
+    <>
+      <div className="brand-grid mt-8 grid grid-cols-1 gap-4 sm:hidden">
+        {items.map((item) => (
+          <BrandCard key={item.name} item={item} />
         ))}
       </div>
-    </div>
+
+      <div className="brand-marquee relative mt-8 w-full overflow-hidden py-4">
+        <div className="brand-marquee-track animate-marquee flex gap-6">
+          {marqueeItems.map((item, index) => (
+            <BrandCard key={`${item.name}-${index}`} item={item} />
+          ))}
+        </div>
+      </div>
+    </>
   )
 }

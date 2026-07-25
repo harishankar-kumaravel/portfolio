@@ -8,7 +8,8 @@ import {
   fadeInVariants,
   staggerContainer,
   sectionShell,
-  DeferredSection
+  DeferredSection,
+  useDesktopMotion
 } from './utils/portfolioUtils'
 
 // Import split components
@@ -50,6 +51,7 @@ export default function App() {
   })
   const [selectedMedia, setSelectedMedia] = useState(null)
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0)
+  const desktopMotion = useDesktopMotion()
 
   const isPortfolioPage = currentHash === '#portfolio'
   const homeNavigation = navigation.filter((item) => !item.page)
@@ -97,7 +99,7 @@ export default function App() {
         <div className="theme-orb-c absolute bottom-[-10rem] left-1/4 h-[600px] w-[600px] rounded-full blur-[160px]" />
       </div>
 
-      <div className="relative z-10 w-full max-w-[1800px] mx-auto px-4 py-4 sm:px-6 lg:px-8 xl:px-12">
+      <div className="relative z-10 mx-auto w-full max-w-[1800px] px-3 py-3 sm:px-6 sm:py-4 lg:px-8 xl:px-12">
         <Header 
           meta={meta} 
           isDarkMode={isDarkMode} 
@@ -115,6 +117,13 @@ export default function App() {
                 className="py-8 md:py-12"
               >
                 <div className="liquid-glass rounded-[36px] px-6 py-10 shadow-glow sm:px-8 lg:px-12 border border-teal/20">
+                  <a
+                    className="inline-flex items-center gap-2 text-sm font-bold text-teal transition hover:text-foam"
+                    href="#"
+                  >
+                    <span aria-hidden="true">&larr;</span>
+                    Back to home
+                  </a>
                   <SectionHeader eyebrow={portfolioPage.eyebrow} title={portfolioPage.title} />
                   <motion.p 
                     initial={{ opacity: 0 }}
@@ -164,6 +173,17 @@ export default function App() {
                     </motion.div>
                   </AnimatePresence>
                 </div>
+
+                <div className="liquid-glass mt-6 flex flex-col gap-4 rounded-[28px] p-6 shadow-glow sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-extrabold uppercase tracking-[0.14em] text-teal">Have a project in mind?</p>
+                    <p className="mt-1 text-base font-semibold text-foam">Let&apos;s make the next visual system together.</p>
+                  </div>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <a className="inline-flex items-center justify-center rounded-full bg-teal px-5 py-3 text-sm font-bold text-white dark:text-abyss" href="mailto:k.harish2323@gmail.com">Email me</a>
+                    <a className="inline-flex items-center justify-center rounded-full border border-teal/30 px-5 py-3 text-sm font-bold text-foam" href="https://wa.me/919952455048?text=Hi%20Harishankar%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noreferrer">WhatsApp</a>
+                  </div>
+                </div>
               </motion.section>
             ) : (
               <motion.div
@@ -205,12 +225,22 @@ export default function App() {
                       </motion.p>
                       
                       <motion.h2 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.8 }}
-                        className="font-display text-4xl sm:text-6xl lg:max-w-[12ch] lg:text-[5.8rem] xl:text-[6.5rem] leading-[0.95] tracking-[-0.02em] text-foam font-black"
+                        initial={desktopMotion ? { opacity: 0, y: 20 } : false}
+                        animate={desktopMotion ? { opacity: 1, y: 0 } : undefined}
+                        transition={{ delay: 0.2, duration: 0.7 }}
+                        className="font-display text-[2.15rem] leading-[0.95] tracking-[-0.02em] text-foam font-black xs:text-4xl sm:text-6xl lg:max-w-[12ch] lg:text-[5.8rem] xl:text-[6.5rem]"
                       >
-                        {hero.heading}
+                        {hero.heading.split(' ').map((word, index) => (
+                          <motion.span
+                            key={`${word}-${index}`}
+                            className="mr-[0.24em] inline-block last:mr-0"
+                            initial={desktopMotion ? { opacity: 0, y: 28 } : false}
+                            animate={desktopMotion ? { opacity: 1, y: 0 } : undefined}
+                            transition={{ delay: 0.28 + index * 0.045, duration: 0.55, ease: [0.21, 0.45, 0.32, 0.9] }}
+                          >
+                            {word}
+                          </motion.span>
+                        ))}
                       </motion.h2>
                       
                       <motion.p 
@@ -237,12 +267,14 @@ export default function App() {
                   {/* Right Column: Hero Visual Showcase + Portfolio Teaser */}
                   <div className="flex flex-col gap-6">
                     <HeroVisualShowcase onOpenMedia={setSelectedMedia} />
-                    <PortfolioTeaserCard categories={portfolioPage.categories} />
+                    <div className="hidden lg:block">
+                      <PortfolioTeaserCard categories={portfolioPage.categories} />
+                    </div>
                   </div>
                 </section>
 
                 {/* Highlights and Quick Profile Row (Widgets) */}
-                <section className="grid gap-6 py-2 md:grid-cols-2">
+                <section className="hidden gap-6 py-2 lg:grid lg:grid-cols-2">
                   {hero.highlights.map((item) => (
                     <HeroFocusCard key={item.title} item={item} />
                   ))}
@@ -292,13 +324,13 @@ export default function App() {
                     ) : null}
 
                     {section.id === 'case-studies' ? (
-                      <DeferredSection height="600px">
+                      <>
                         <div className="mt-7 grid gap-5 xl:grid-cols-3">
                           {section.items.map((item) => (
                             <CaseStudyCard key={item.title} item={item} />
                           ))}
                         </div>
-                        <div className="mt-8 flex justify-start">
+                        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                           <motion.a
                             variants={fadeInVariants}
                             whileHover={{ y: -2 }}
@@ -308,8 +340,28 @@ export default function App() {
                           >
                             {section.action.label}
                           </motion.a>
+                          <motion.a
+                            variants={fadeInVariants}
+                            whileHover={{ y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="inline-flex items-center justify-center rounded-full border border-teal/25 theme-card-soft px-6 py-4 text-base font-bold text-foam shadow-sm transition hover:border-teal/60 hover:text-teal"
+                            href="mailto:k.harish2323@gmail.com"
+                          >
+                            Start a project
+                          </motion.a>
+                          <motion.a
+                            variants={fadeInVariants}
+                            whileHover={{ y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="inline-flex items-center justify-center rounded-full border border-teal/25 theme-card-soft px-6 py-4 text-base font-bold text-foam shadow-sm transition hover:border-teal/60 hover:text-teal"
+                            href="https://wa.me/919952455048?text=Hi%20Harishankar%2C%20I%27d%20like%20to%20discuss%20a%20project."
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            WhatsApp
+                          </motion.a>
                         </div>
-                      </DeferredSection>
+                      </>
                     ) : null}
 
                     {section.id === 'client-projects' ? (
@@ -367,8 +419,8 @@ export default function App() {
 
                     {section.id === 'contact' ? (
                       <DeferredSection height="250px">
-                        <div className="mt-8 max-w-3xl mx-auto">
-                          <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="mt-8 w-full">
+                          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                             {section.items.map((item) => (
                               <ContactCard key={item.label} item={item} />
                             ))}
