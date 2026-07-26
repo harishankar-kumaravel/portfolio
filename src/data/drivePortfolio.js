@@ -2,7 +2,7 @@
 // Source: https://drive.google.com/drive/folders/1iYBoCITW1co3IX_A7kwyiz_xm-t7w6Lo?usp=sharing
 // Run "npm run sync:drive" after changing the Google Drive folder.
 
-export const drivePortfolioSyncedAt = "2026-07-25T03:22:02.813Z"
+export const drivePortfolioSyncedAt = "2026-07-26T03:35:53.158Z"
 
 export const drivePortfolioCategories = [
   {
@@ -655,7 +655,7 @@ export const drivePortfolioCategories = [
     "title": "Video and Animation",
     "sourceFolder": "1kLz58DnjVs4QDlApSrVK7qe5YgUwinQU",
     "aspect": "video",
-    "count": 19,
+    "count": 20,
     "items": [
       {
         "id": "i10awMWdOl1UlhWbkBVaKNkYo5Ud1onVUJWSnFlV3EUM",
@@ -691,6 +691,13 @@ export const drivePortfolioCategories = [
         "type": "animation",
         "thumbnail": "https://drive.google.com/thumbnail?id=0t0RKBzNtE0QFpVYrJVZf50XrlFdCdVS3ADa2gWRn1WM&sz=w1600",
         "href": "https://drive.google.com/file/d/0t0RKBzNtE0QFpVYrJVZf50XrlFdCdVS3ADa2gWRn1WM/view?usp=sharing"
+      },
+      {
+        "id": "fNHNjdESrZTdiRUZo9mdGRURxQjT2IFcTFXSLdGdFxUM",
+        "name": "Copy of Comp 1.5.mp4",
+        "type": "video",
+        "thumbnail": "https://drive.google.com/thumbnail?id=fNHNjdESrZTdiRUZo9mdGRURxQjT2IFcTFXSLdGdFxUM&sz=w1600",
+        "href": "https://drive.google.com/file/d/fNHNjdESrZTdiRUZo9mdGRURxQjT2IFcTFXSLdGdFxUM/view?usp=sharing"
       },
       {
         "id": "iVVT5pHbYVmd2NXVEREcE1yTkJjZ0l3SfRkWOV1cRhWM",
