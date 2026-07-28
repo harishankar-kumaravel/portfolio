@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { fadeInVariants, staggerContainer, useMouseGlow } from '../utils/portfolioUtils'
 import { MediaThumbnail } from './PortfolioLightbox'
@@ -56,18 +55,10 @@ export function PortfolioPlaceholder({ categoryTitle, index, item, onOpen }) {
 
 export function PortfolioCategory({ category, onOpenMedia }) {
   const items = category.items || (category.images || []).map((image) => ({ thumbnail: image }))
-  const [limit, setLimit] = useState(12)
-
-  // Reset pagination limit when category changes
-  useEffect(() => {
-    setLimit(12)
-  }, [category.title])
 
   if (!items.length) {
     return null
   }
-
-  const paginatedItems = items.slice(0, limit)
 
   return (
     <motion.section 
@@ -93,7 +84,7 @@ export function PortfolioCategory({ category, onOpenMedia }) {
       </div>
 
       <div className="mt-8 columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5">
-        {paginatedItems.map((item, index) => (
+        {items.map((item, index) => (
           <PortfolioPlaceholder
             key={item.id || `${category.title}-${index}`}
             categoryTitle={category.title}
@@ -103,20 +94,6 @@ export function PortfolioCategory({ category, onOpenMedia }) {
           />
         ))}
       </div>
-
-      {items.length > limit && (
-        <div className="mt-8 flex justify-center">
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            type="button"
-            onClick={() => setLimit(prev => prev + 12)}
-            className="inline-flex items-center justify-center rounded-full bg-teal px-6 py-3.5 font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg dark:text-abyss text-sm cursor-pointer"
-          >
-            Load More Work ({items.length - limit} remaining)
-          </motion.button>
-        </div>
-      )}
     </motion.section>
   )
 }
