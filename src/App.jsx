@@ -1,445 +1,478 @@
-import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useMemo, useState } from 'react'
+import { motion } from 'framer-motion'
 import { portfolio } from './data/portfolio'
-
-// Import utilities
-import {
-  deobfuscatePortfolio,
-  fadeInVariants,
-  staggerContainer,
-  sectionShell,
-  DeferredSection,
-  useDesktopMotion
-} from './utils/portfolioUtils'
-
-// Import split components
-import Header from './components/Header'
-import HeroVisualShowcase from './components/HeroVisualShowcase'
-import SectionHeader from './components/SectionHeader'
-import Timeline from './components/Timeline'
-import BrandsMarquee from './components/Brands'
+import { siteContent } from './data/siteContent'
+import { deobfuscatePortfolio, getDriveThumbnailUrl } from './utils/portfolioUtils'
 import PortfolioLightbox from './components/PortfolioLightbox'
-import { PortfolioCategory } from './components/PortfolioComponents'
-import AboutSection from './components/AboutSection'
-import MotionShowcase from './components/MotionShowcase'
-import PortfolioTeaserCard from './components/PortfolioTeaserCard'
-import {
-  HeroAction,
-  HeroFocusCard,
-  RecruiterQuickCard,
-  ServiceCard,
-  CaseStudyCard,
-  ClientProjectCard,
-  TestimonialCard,
-  SkillBadge,
-  ContactCard
-} from './components/Cards'
 
-export default function App() {
-  const [portfolioData, setPortfolioData] = useState(() => deobfuscatePortfolio(portfolio))
-  const { meta, navigation, hero, sections, portfolioPage } = portfolioData
+const reveal = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '-80px' },
+  transition: { duration: 0.65, ease: [0.2, 0.7, 0.2, 1] },
+}
 
-  const [currentHash, setCurrentHash] = useState(() =>
-    typeof window !== 'undefined' ? window.location.hash : '',
+function ArrowIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 19 19 5m0 0H8m11 0v11" />
+    </svg>
   )
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme')
-      return saved !== 'light'
-    }
-    return true
-  })
-  const [selectedMedia, setSelectedMedia] = useState(null)
-  const [activeCategoryIndex, setActiveCategoryIndex] = useState(0)
-  const desktopMotion = useDesktopMotion()
+}
 
-  const isPortfolioPage = currentHash === '#portfolio'
-  const homeNavigation = navigation.filter((item) => !item.page)
-  const orderedSections = homeNavigation.map((item) => sections[item.id]).filter(Boolean)
+function DownloadIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 20h14" />
+    </svg>
+  )
+}
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-    }
-  }, [isDarkMode])
+function ThemeIcon({ dark }) {
+  return dark ? (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <circle cx="12" cy="12" r="4" />
+      <path strokeLinecap="round" d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4m0-14.2-1.4 1.4M6.3 17.7l-1.4 1.4" />
+    </svg>
+  ) : (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z" />
+    </svg>
+  )
+}
 
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return undefined
-    }
+function Header({ dark, onThemeChange, portfolioView }) {
+  return (
+    <header className="site-header">
+      <a className="brand-lockup" href={portfolioView ? '#' : '#top'} aria-label="Harishankar K, home">
+        <span className="brand-mark">HK</span>
+        <span className="brand-copy">
+          <strong>Harishankar K</strong>
+          <small>Visual designer</small>
+        </span>
+      </a>
 
-    const syncHash = () => setCurrentHash(window.location.hash)
-    window.addEventListener('hashchange', syncHash)
+      <nav className="primary-nav" aria-label="Primary navigation">
+        {portfolioView ? (
+          <a href="#selected-work">Back to home</a>
+        ) : (
+          <>
+            <a href="#selected-work">Work</a>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+          </>
+        )}
+      </nav>
 
-    return () => {
-      window.removeEventListener('hashchange', syncHash)
-    }
-  }, [])
+      <div className="header-actions">
+        <a
+          className={`header-portfolio-button${portfolioView ? ' is-active' : ''}`}
+          href="#portfolio"
+          aria-current={portfolioView ? 'page' : undefined}
+        >
+          <span /> Portfolio
+        </a>
+        <a className="header-resume-button" href="/resume.pdf" download aria-label="Download Resume">
+          <DownloadIcon />
+          <span>Resume</span>
+        </a>
+        <a className="availability-link" href="mailto:k.harish2323@gmail.com">
+          <span /> Available
+        </a>
+        <button
+          className="theme-toggle"
+          type="button"
+          onClick={() => onThemeChange(!dark)}
+          aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          <ThemeIcon dark={dark} />
+        </button>
+      </div>
+    </header>
+  )
+}
 
-  // Only display two primary actions in the hero to keep it clean and premium
-  const cleanHeroActions = [
-    hero.actions[0], // Explore Portfolio (Primary)
-    hero.actions[5]  // Let's Work Together (Secondary)
-  ].filter(Boolean)
+function SectionHeading({ eyebrow, title, intro, inverse = false }) {
+  return (
+    <motion.div className={`section-heading${inverse ? ' section-heading--inverse' : ''}`} {...reveal}>
+      <p className="section-label">{eyebrow}</p>
+      <h2>{title}</h2>
+      {intro ? <p className="section-intro">{intro}</p> : null}
+    </motion.div>
+  )
+}
+
+function WorkImage({ media, eager = false }) {
+  const [failed, setFailed] = useState(false)
+
+  if (!media || failed) {
+    return <div className="image-fallback">HK / Selected work</div>
+  }
 
   return (
-    <div className="theme-page-bg min-h-screen overflow-x-hidden text-mist transition-colors duration-300">
-      {/* Background elements */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="theme-grid-bg absolute inset-0" />
-        <div className="theme-hero-glow absolute inset-x-0 top-0 h-[500px] blur-3xl" />
-        
-        {/* Animated Orbs */}
-        <div className="theme-orb-a absolute -left-24 top-24 h-96 w-96 rounded-full blur-[120px]" />
-        <div className="theme-orb-b absolute right-[-6rem] top-[15rem] h-[500px] w-[500px] rounded-full blur-[140px]" />
-        <div className="theme-orb-c absolute bottom-[-10rem] left-1/4 h-[600px] w-[600px] rounded-full blur-[160px]" />
+    <img
+      src={getDriveThumbnailUrl(media, 1600)}
+      alt={media.name || 'Selected portfolio work'}
+      loading={eager ? 'eager' : 'lazy'}
+      referrerPolicy="no-referrer"
+      onError={() => setFailed(true)}
+    />
+  )
+}
+
+function SelectedWork({ projects, media, onOpen }) {
+  return (
+    <section className="page-section work-section" id="selected-work">
+      <SectionHeading
+        eyebrow={siteContent.work.eyebrow}
+        title={siteContent.work.title}
+        intro={siteContent.work.intro}
+      />
+
+      <div className="project-list">
+        {projects.map((project, index) => (
+          <motion.article className={`project project--${index + 1}`} key={project.title} {...reveal}>
+            <button className="project-image" type="button" onClick={() => onOpen(media[index])}>
+              <WorkImage media={media[index]} />
+              <span className="project-open">
+                View project <ArrowIcon />
+              </span>
+            </button>
+            <div className="project-copy">
+              <p className="project-number">{project.number}</p>
+              <div>
+                <p className="project-discipline">{project.discipline}</p>
+                <h3>{project.title}</h3>
+                <p className="project-client">For {project.client}</p>
+              </div>
+              <p className="project-summary">{project.summary}</p>
+            </div>
+          </motion.article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function ArchivePreview({ categories, onOpen }) {
+  const previews = categories.map((category) => ({ category, media: category.items?.[0] })).filter((item) => item.media)
+
+  return (
+    <section className="archive-preview">
+      <div className="archive-preview__head">
+        <div>
+          <p className="section-label">Work archive</p>
+          <h2>More formats.<br />More experiments.</h2>
+        </div>
+        <div className="archive-preview__intro">
+          <p>Browse the wider collection of social posts, posters, banners, motion and printed work.</p>
+          <a className="text-link" href="#portfolio">Open the full archive <ArrowIcon /></a>
+        </div>
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1800px] px-3 py-3 sm:px-6 sm:py-4 lg:px-8 xl:px-12">
-        <Header 
-          meta={meta} 
-          isDarkMode={isDarkMode} 
-          setIsDarkMode={setIsDarkMode} 
+      <div className="archive-preview__grid">
+        {previews.map(({ category, media }, index) => (
+          <button key={category.title} type="button" className={`archive-tile archive-tile--${index + 1}`} onClick={() => onOpen(media)}>
+            <WorkImage media={media} />
+            <span><b>{String(index + 1).padStart(2, '0')}</b>{category.title}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function Services() {
+  const { services } = siteContent
+
+  return (
+    <section className="services-section" id="services">
+      <SectionHeading eyebrow={services.eyebrow} title={services.title} intro={services.intro} inverse />
+      <div className="service-list">
+        {services.items.map((service) => (
+          <motion.article key={service.number} className="service-row" {...reveal}>
+            <span>{service.number}</span>
+            <h3>{service.title}</h3>
+            <p>{service.text}</p>
+          </motion.article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function About() {
+  const { about, stats } = siteContent
+
+  return (
+    <section className="page-section about-section" id="about">
+      <SectionHeading eyebrow={about.eyebrow} title={about.title} />
+      <div className="about-layout">
+        <motion.figure className="portrait-frame" {...reveal}>
+          <img src="/profile-photo.png" alt="Harishankar K" />
+          <figcaption>Harishankar K · Visual designer</figcaption>
+        </motion.figure>
+        <motion.div className="about-copy" {...reveal}>
+          {about.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+          <div className="about-stats">
+            {stats.map((stat) => (
+              <div key={stat.label}><strong>{stat.value}</strong><span>{stat.label}</span></div>
+            ))}
+          </div>
+          <div className="capabilities">
+            <p>Working toolkit</p>
+            <ul>{about.capabilities.map((item) => <li key={item}>{item}</li>)}</ul>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+function Experience() {
+  const { experience } = siteContent
+
+  return (
+    <section className="page-section experience-section">
+      <SectionHeading eyebrow={experience.eyebrow} title={experience.title} />
+      <div className="experience-list">
+        {experience.items.map((item) => (
+          <motion.article className="experience-row" key={`${item.company}-${item.period}`} {...reveal}>
+            <p>{item.period}</p>
+            <div><h3>{item.company}</h3><span>{item.role}</span></div>
+            <p>{item.note}</p>
+          </motion.article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function Testimonials({ items }) {
+  return (
+    <section className="testimonials-section">
+      <SectionHeading
+        eyebrow="Client feedback"
+        title="A few words from people I’ve worked with."
+        intro="Feedback on collaboration, clarity and the quality of the final work."
+      />
+      <div className="testimonial-grid">
+        {items.map((item) => (
+          <motion.blockquote className="testimonial-card" key={`${item.author}-${item.company}`} {...reveal}>
+            <span className="testimonial-mark" aria-hidden="true">“</span>
+            <p>{item.quote}</p>
+            <footer>
+              <span>{item.author.slice(0, 1)}</span>
+              <div>
+                <strong>{item.author}</strong>
+                <small>{item.role} · {item.company}</small>
+              </div>
+            </footer>
+          </motion.blockquote>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function ClientWall({ clients }) {
+  return (
+    <section className="client-section">
+      <div className="client-section__heading">
+        <p className="section-label">Selected clients</p>
+        <p>Work created independently and through agency collaborations.</p>
+      </div>
+      <div className="client-wall">
+        {clients.slice(0, 12).map((client) => (
+          <div className="client-logo" key={client.name}>
+            <img src={client.logoUrl} alt={`${client.name} logo`} loading="lazy" />
+            <span>{client.name}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function Contact() {
+  const { contact } = siteContent
+
+  return (
+    <section className="contact-section" id="contact">
+      <p className="section-label">{contact.eyebrow}</p>
+      <h2>{contact.title}</h2>
+      <div className="contact-bottom">
+        <p>{contact.note}</p>
+        <a className="contact-email" href={`mailto:${contact.email}`}>{contact.email}<ArrowIcon /></a>
+        <div className="contact-links">
+          <a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a>
+          <a href="https://www.behance.net/Harishankar_K" target="_blank" rel="noreferrer">Behance</a>
+          <a href="https://www.linkedin.com/in/harishankar-k-1072b5232/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="/resume.pdf" target="_blank" rel="noreferrer">Resume</a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function HomePage({ data, onOpen }) {
+  const caseStudies = data.sections['case-studies'].items
+
+  return (
+    <main>
+      <section className="hero" id="top">
+        <div className="hero-title">
+          <p>{siteContent.hero.eyebrow}</p>
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            I make brands easier to <em>notice</em>—and harder to forget.
+          </motion.h1>
+        </div>
+        <motion.aside className="hero-aside" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35, duration: 0.7 }}>
+          <div className="hero-portrait"><img src="/profile-photo.png" alt="Harishankar K" /></div>
+          <p>{siteContent.hero.intro}</p>
+          <div className="hero-actions">
+            <a className="button button--primary" href="#selected-work">See selected work <ArrowIcon /></a>
+            <a className="button button--plain" href="mailto:k.harish2323@gmail.com">Start a conversation</a>
+          </div>
+        </motion.aside>
+        <div className="hero-rail">
+          <p><span /> {siteContent.hero.availability}</p>
+          <div>{siteContent.stats.map((stat) => <p key={stat.label}><strong>{stat.value}</strong>{stat.label}</p>)}</div>
+        </div>
+      </section>
+
+      <SelectedWork projects={siteContent.work.projects} media={caseStudies} onOpen={onOpen} />
+      <ArchivePreview categories={data.portfolioPage.categories} onOpen={onOpen} />
+      <Services />
+      <About />
+      <Experience />
+      <Testimonials items={data.sections.testimonials.items} />
+      <ClientWall clients={data.sections.brands.items} />
+      <Contact />
+    </main>
+  )
+}
+
+function ArchiveItem({ media, category, index, onOpen }) {
+  return (
+    <button className="archive-item" type="button" onClick={() => onOpen(media)}>
+      <WorkImage media={media} />
+      <span>{String(index + 1).padStart(2, '0')} / {category}</span>
+      {(media.type === 'video' || media.type === 'animation') ? <b>Play</b> : null}
+    </button>
+  )
+}
+
+function PortfolioPage({ categories, activeIndex, onCategoryChange, onOpen }) {
+  const active = categories[activeIndex]
+  const total = categories.reduce((sum, category) => sum + (category.items?.length || 0), 0)
+
+  return (
+    <main className="portfolio-page">
+      <section className="portfolio-intro">
+        <p className="section-label">Portfolio · Harishankar K</p>
+        <h1>Selected work<br />portfolio.</h1>
+        <div className="portfolio-intro__details">
+          <p>This is my complete portfolio: {total} pieces across campaigns, social, print, display and motion. Choose a format below and open any project for a closer look.</p>
+          <div className="portfolio-actions">
+            <a className="resume-download" href="/resume.pdf" download>
+              Download Resume <DownloadIcon />
+            </a>
+            <a className="portfolio-back-link" href="#selected-work">Back to home <ArrowIcon /></a>
+          </div>
+        </div>
+      </section>
+
+      <section className="portfolio-browser">
+        <aside className="category-nav">
+          <div className="category-nav__heading">
+            <p>Choose a category</p>
+            <span>Swipe to browse →</span>
+          </div>
+          <div className="category-nav__buttons">
+            {categories.map((category, index) => (
+              <button
+                type="button"
+                key={category.title}
+                className={activeIndex === index ? 'is-active' : ''}
+                onClick={() => onCategoryChange(index)}
+              >
+                <span>{category.title}</span>
+                <b>{category.items?.length || 0}</b>
+              </button>
+            ))}
+          </div>
+        </aside>
+
+        <div className="archive-results">
+          <div className="archive-results__head">
+            <p>{active.title}</p>
+            <span>{active.items?.length || 0} pieces</span>
+          </div>
+          <div className="archive-masonry">
+            {active.items?.map((media, index) => (
+              <ArchiveItem key={media.id || index} media={media} category={active.title} index={index} onOpen={onOpen} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+  )
+}
+
+export default function App() {
+  const data = useMemo(() => deobfuscatePortfolio(portfolio), [])
+  const [currentHash, setCurrentHash] = useState(() => window.location.hash)
+  const [selectedMedia, setSelectedMedia] = useState(null)
+  const [activeCategoryIndex, setActiveCategoryIndex] = useState(0)
+  const [dark, setDark] = useState(() => {
+    const savedTheme = localStorage.getItem('theme')
+    return savedTheme ? savedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
+  })
+  const portfolioView = currentHash === '#portfolio'
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark)
+    localStorage.setItem('theme', dark ? 'dark' : 'light')
+  }, [dark])
+
+  useEffect(() => {
+    const syncHash = () => {
+      const nextHash = window.location.hash
+      setCurrentHash(nextHash)
+      window.setTimeout(() => {
+        if (nextHash === '#portfolio' || !nextHash) {
+          window.scrollTo({ top: 0, behavior: 'instant' })
+        } else {
+          document.querySelector(nextHash)?.scrollIntoView({ behavior: 'instant' })
+        }
+      }, 0)
+    }
+
+    window.addEventListener('hashchange', syncHash)
+    syncHash()
+    return () => window.removeEventListener('hashchange', syncHash)
+  }, [])
+
+  return (
+    <div className="site-frame">
+      <Header dark={dark} onThemeChange={setDark} portfolioView={portfolioView} />
+      {portfolioView ? (
+        <PortfolioPage
+          categories={data.portfolioPage.categories}
+          activeIndex={activeCategoryIndex}
+          onCategoryChange={setActiveCategoryIndex}
+          onOpen={setSelectedMedia}
         />
-
-        <main className="w-full">
-          <AnimatePresence mode="wait">
-            {isPortfolioPage ? (
-              <motion.section 
-                key="portfolio-page"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="py-8 md:py-12"
-              >
-                <div className="liquid-glass rounded-[36px] px-6 py-10 shadow-glow sm:px-8 lg:px-12 border border-teal/20">
-                  <a
-                    className="inline-flex items-center gap-2 text-sm font-bold text-teal transition hover:text-foam"
-                    href="#"
-                  >
-                    <span aria-hidden="true">&larr;</span>
-                    Back to home
-                  </a>
-                  <SectionHeader eyebrow={portfolioPage.eyebrow} title={portfolioPage.title} />
-                  <motion.p 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className="mt-5 max-w-3xl text-base leading-8 text-mist/85 font-medium"
-                  >
-                    {portfolioPage.intro}
-                  </motion.p>
-                  
-                  {/* Category Filter Tabs with active count */}
-                  <div className="mt-8 flex flex-wrap gap-2.5 border-t border-teal/10 pt-8">
-                    {portfolioPage.categories.map((category, index) => (
-                      <button
-                        key={category.title}
-                        type="button"
-                        onClick={() => setActiveCategoryIndex(index)}
-                        className={`relative rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-300 cursor-pointer ${
-                          activeCategoryIndex === index
-                            ? 'bg-teal text-white dark:text-abyss shadow-glow-teal'
-                            : 'theme-card-soft border border-teal/20 text-foam hover:border-teal/50 hover:text-teal'
-                        }`}
-                        id={`portfolio-tab-${category.title.toLowerCase().replace(/\s+/g, '-')}`}
-                      >
-                        {category.title}
-                        <span className="ml-2 text-xs opacity-75">
-                          ({category.items?.length || category.images?.length || 0})
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={portfolioPage.categories[activeCategoryIndex].title}
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -15 }}
-                      transition={{ duration: 0.35 }}
-                    >
-                      <PortfolioCategory
-                        category={portfolioPage.categories[activeCategoryIndex]}
-                        onOpenMedia={setSelectedMedia}
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-
-                <div className="liquid-glass mt-6 flex flex-col gap-4 rounded-[28px] p-6 shadow-glow sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-sm font-extrabold uppercase tracking-[0.14em] text-teal">Have a project in mind?</p>
-                    <p className="mt-1 text-base font-semibold text-foam">Let&apos;s make the next visual system together.</p>
-                  </div>
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <a className="inline-flex items-center justify-center rounded-full bg-teal px-5 py-3 text-sm font-bold text-white dark:text-abyss" href="mailto:k.harish2323@gmail.com">Email me</a>
-                    <a className="inline-flex items-center justify-center rounded-full border border-teal/30 px-5 py-3 text-sm font-bold text-foam" href="https://wa.me/919952455048?text=Hi%20Harishankar%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noreferrer">WhatsApp</a>
-                  </div>
-                </div>
-              </motion.section>
-            ) : (
-              <motion.div
-                key="home-page"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                {/* Hero Section */}
-                <section className="grid gap-6 pt-4 pb-2 lg:grid-cols-[1.45fr_0.9fr] lg:items-stretch lg:pt-6 lg:pb-3">
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8 }}
-                    className="liquid-glass flex flex-col justify-between rounded-[40px] px-5 py-6 sm:px-8 sm:py-8 lg:px-10 border border-teal/20 h-full"
-                  >
-                    <div>
-                      {/* Immediate Joiner & Availability Indicator */}
-                      <motion.div
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.15 }}
-                        className="mb-5 inline-flex items-center gap-2 rounded-full border border-teal/20 bg-teal/5 px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wider text-teal"
-                      >
-                        <span className="relative flex h-2.5 w-2.5">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal"></span>
-                        </span>
-                        Available for Freelance & Full-time Roles
-                      </motion.div>
-
-                      <motion.p 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="mb-2 text-[0.72rem] font-extrabold uppercase tracking-[0.25em] text-teal"
-                      >
-                        {hero.eyebrow}
-                      </motion.p>
-                      
-                      <motion.h2 
-                        initial={desktopMotion ? { opacity: 0, y: 20 } : false}
-                        animate={desktopMotion ? { opacity: 1, y: 0 } : undefined}
-                        transition={{ delay: 0.2, duration: 0.7 }}
-                        className="font-display text-[2.15rem] leading-[0.95] tracking-[-0.02em] text-foam font-black xs:text-4xl sm:text-6xl lg:max-w-[12ch] lg:text-[5.8rem] xl:text-[6.5rem]"
-                      >
-                        {hero.heading.split(' ').map((word, index) => (
-                          <motion.span
-                            key={`${word}-${index}`}
-                            className="mr-[0.24em] inline-block last:mr-0"
-                            initial={desktopMotion ? { opacity: 0, y: 28 } : false}
-                            animate={desktopMotion ? { opacity: 1, y: 0 } : undefined}
-                            transition={{ delay: 0.28 + index * 0.045, duration: 0.55, ease: [0.21, 0.45, 0.32, 0.9] }}
-                          >
-                            {word}
-                          </motion.span>
-                        ))}
-                      </motion.h2>
-                      
-                      <motion.p 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5, duration: 0.8 }}
-                        className="mt-4 max-w-3xl text-base font-semibold leading-7 text-mist lg:text-lg"
-                      >
-                        {hero.description}
-                      </motion.p>
-                    </div>
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.7 }}
-                      className="mt-6 flex flex-col flex-wrap gap-3.5 sm:flex-row"
-                    >
-                      {cleanHeroActions.map((action) => (
-                        <HeroAction key={action.label} action={action} />
-                      ))}
-                    </motion.div>
-                  </motion.div>
-
-                  {/* Right Column: Hero Visual Showcase + Portfolio Teaser */}
-                  <div className="flex flex-col gap-6">
-                    <HeroVisualShowcase onOpenMedia={setSelectedMedia} />
-                    <div className="hidden lg:block">
-                      <PortfolioTeaserCard categories={portfolioPage.categories} />
-                    </div>
-                  </div>
-                </section>
-
-                {/* Highlights and Quick Profile Row (Widgets) */}
-                <section className="hidden gap-6 py-2 lg:grid lg:grid-cols-2">
-                  {hero.highlights.map((item) => (
-                    <HeroFocusCard key={item.title} item={item} />
-                  ))}
-                  <RecruiterQuickCard profile={portfolioData.quickProfile} />
-                </section>
-
-                {/* Subsections */}
-                {orderedSections.map((section) => (
-                  <motion.section
-                    key={section.id}
-                    id={section.id}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                    variants={staggerContainer}
-                    className={`${sectionShell}${section.id === 'contact' ? ' mb-6' : ''}`}
-                  >
-                    {section.id === 'about' ? (
-                      <AboutSection section={section} />
-                    ) : (
-                      <>
-                        <SectionHeader eyebrow={section.eyebrow} title={section.title} />
-
-                        {section.body ? (
-                          <motion.p 
-                            variants={fadeInVariants}
-                            className="mt-5 max-w-3xl text-base leading-8 text-mist/85 font-medium"
-                          >
-                            {section.body}
-                          </motion.p>
-                        ) : null}
-                      </>
-                    )}
-
-                    {section.id === 'experience' ? (
-                      <DeferredSection height="500px">
-                        <Timeline items={section.items} />
-                      </DeferredSection>
-                    ) : null}
-
-                    {section.id === 'services' ? (
-                      <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {section.items.map((item) => (
-                          <ServiceCard key={item.title} item={item} />
-                        ))}
-                      </div>
-                    ) : null}
-
-                    {section.id === 'case-studies' ? (
-                      <>
-                        <div className="mt-7 grid gap-5 xl:grid-cols-3">
-                          {section.items.map((item) => (
-                            <CaseStudyCard key={item.title} item={item} />
-                          ))}
-                        </div>
-                        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                          <motion.a
-                            variants={fadeInVariants}
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="inline-flex items-center justify-center rounded-full bg-teal px-6 py-4 font-bold text-white shadow-md transition hover:shadow-lg dark:text-abyss text-base"
-                            href={section.action.href}
-                          >
-                            {section.action.label}
-                          </motion.a>
-                          <motion.a
-                            variants={fadeInVariants}
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="inline-flex items-center justify-center rounded-full border border-teal/25 theme-card-soft px-6 py-4 text-base font-bold text-foam shadow-sm transition hover:border-teal/60 hover:text-teal"
-                            href="mailto:k.harish2323@gmail.com"
-                          >
-                            Start a project
-                          </motion.a>
-                          <motion.a
-                            variants={fadeInVariants}
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="inline-flex items-center justify-center rounded-full border border-teal/25 theme-card-soft px-6 py-4 text-base font-bold text-foam shadow-sm transition hover:border-teal/60 hover:text-teal"
-                            href="https://wa.me/919952455048?text=Hi%20Harishankar%2C%20I%27d%20like%20to%20discuss%20a%20project."
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            WhatsApp
-                          </motion.a>
-                        </div>
-                      </>
-                    ) : null}
-
-                    {section.id === 'client-projects' ? (
-                      <DeferredSection height="400px">
-                        <div className="mt-7 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                          {section.items.map((item) => (
-                            <ClientProjectCard key={item.client} item={item} />
-                          ))}
-                        </div>
-                      </DeferredSection>
-                    ) : null}
-
-                    {section.id === 'motion' ? (
-                      <DeferredSection height="500px">
-                        <MotionShowcase section={section} />
-                      </DeferredSection>
-                    ) : null}
-
-                    {section.id === 'skills' ? (
-                      <DeferredSection height="400px">
-                        <div className="mt-8 space-y-10">
-                          {section.categories.map((category) => (
-                            <div key={category.name} className="space-y-4">
-                              <h3 className="text-lg font-extrabold uppercase tracking-[0.16em] text-teal border-b border-teal/10 pb-2">
-                                {category.name}
-                              </h3>
-                              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-                                {category.items.map((item) => (
-                                  <SkillBadge key={item} name={item} />
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </DeferredSection>
-                    ) : null}
-
-                    {section.id === 'testimonials' ? (
-                      <DeferredSection height="350px">
-                        <div className="mt-8 grid gap-6 md:grid-cols-2">
-                          {section.items.map((item, index) => (
-                            <TestimonialCard key={index} item={item} />
-                          ))}
-                        </div>
-                      </DeferredSection>
-                    ) : null}
-
-                    {section.id === 'brands' ? (
-                      <DeferredSection height="180px">
-                        <motion.div variants={fadeInVariants}>
-                          <BrandsMarquee items={section.items} />
-                        </motion.div>
-                      </DeferredSection>
-                    ) : null}
-
-                    {section.id === 'contact' ? (
-                      <DeferredSection height="250px">
-                        <div className="mt-8 w-full">
-                          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                            {section.items.map((item) => (
-                              <ContactCard key={item.label} item={item} />
-                            ))}
-                          </div>
-                        </div>
-                      </DeferredSection>
-                    ) : null}
-                  </motion.section>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </main>
-
-        <footer className="px-2 py-8 text-center text-base text-mist/65">
-          <p>&copy; {meta.copyright} &bull; Visual Design Portfolio</p>
-        </footer>
-      </div>
-
+      ) : (
+        <HomePage data={data} onOpen={setSelectedMedia} />
+      )}
+      <footer className={`site-footer${portfolioView ? ' site-footer--portfolio' : ''}`}>
+        <p>© 2026 Harishankar K</p>
+        <p>{portfolioView ? 'Portfolio archive · 138 selected pieces' : 'Visual design · Campaigns · Motion'}</p>
+        <a href="#top">Back to top ↑</a>
+      </footer>
       <PortfolioLightbox media={selectedMedia} onClose={() => setSelectedMedia(null)} />
     </div>
   )

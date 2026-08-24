@@ -35,7 +35,7 @@ export default function Header({ meta, isDarkMode, setIsDarkMode }) {
           <p className="mb-1 text-[0.65rem] font-extrabold uppercase tracking-[0.25em] text-teal">
             {meta.label}
           </p>
-          <h1 className="font-display text-2xl sm:text-3xl leading-none tracking-[-0.02em] text-foam font-black">
+          <h1 className="font-display text-lg sm:text-3xl leading-none tracking-[-0.02em] text-foam font-black">
             <a href="#" className="hover:text-teal transition-colors">{meta.title}</a>
           </h1>
           <p className="mt-1 text-xs font-semibold text-mist hidden sm:block">{meta.role}</p>

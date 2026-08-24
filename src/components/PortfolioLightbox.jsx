@@ -104,7 +104,7 @@ export default function PortfolioLightbox({ media, onClose }) {
     <AnimatePresence>
       <motion.div
         key="portfolio-lightbox"
-        className="fixed inset-0 z-50 flex items-center justify-center bg-abyss/90 px-3 py-4 backdrop-blur-2xl sm:px-6"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 px-3 py-4 backdrop-blur-sm sm:px-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -115,7 +115,7 @@ export default function PortfolioLightbox({ media, onClose }) {
         aria-label="Portfolio preview"
       >
         <motion.div
-          className="relative flex h-full max-h-[94vh] w-full max-w-7xl flex-col overflow-hidden rounded-[28px] border border-teal/20 bg-panel shadow-glow"
+          className="relative flex h-full max-h-[94vh] w-full max-w-7xl flex-col overflow-hidden rounded-[28px] border border-white/20 bg-panel"
           initial={{ opacity: 0, scale: 0.96, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 16 }}
@@ -131,7 +131,7 @@ export default function PortfolioLightbox({ media, onClose }) {
 
             <div className="flex flex-wrap items-center gap-3">
               <button
-                className="theme-card-soft flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-teal/20 text-2xl leading-none text-foam transition hover:border-teal/60 hover:text-teal cursor-pointer"
+                className="theme-card-soft flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-teal/20 text-2xl leading-none text-foam transition hover:border-teal/60 hover:text-teal"
                 type="button"
                 onClick={onClose}
                 aria-label="Close preview"
@@ -146,7 +146,7 @@ export default function PortfolioLightbox({ media, onClose }) {
               isYoutube ? (
                 isPlaying ? (
                   <iframe
-                    className="h-full min-h-[62vh] w-full rounded-[18px] border-0 bg-black"
+                    className="h-full min-h-[62vh] w-full border-0 bg-black"
                     src={`https://www.youtube.com/embed/${getYoutubeId(media)}?autoplay=1&mute=1&modestbranding=1&rel=0`}
                     title="Video preview"
                     allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
@@ -155,7 +155,7 @@ export default function PortfolioLightbox({ media, onClose }) {
                   />
                 ) : (
                   <button
-                    className="relative block max-h-full max-w-full overflow-hidden rounded-[18px] border border-teal/10 bg-black cursor-pointer text-left p-0"
+                    className="relative block max-h-full max-w-full cursor-pointer overflow-hidden border border-teal/10 bg-black p-0 text-left"
                     onClick={() => setIsPlaying(true)}
                     aria-label="Play video"
                   >
@@ -182,9 +182,9 @@ export default function PortfolioLightbox({ media, onClose }) {
                   onContextMenu={(event) => event.preventDefault()}
                 />
               ) : (
-                <div className="relative w-full h-full min-h-[62vh] overflow-hidden rounded-[18px]">
+                <div className="relative h-full min-h-[62vh] w-full overflow-hidden">
                   <iframe
-                    className="h-full w-full rounded-[18px] border-0 bg-black"
+                    className="h-full w-full border-0 bg-black"
                     src={previewUrl}
                     title="Video preview"
                     allow="autoplay; fullscreen; encrypted-media"

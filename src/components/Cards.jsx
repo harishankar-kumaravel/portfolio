@@ -497,24 +497,33 @@ export function SkillBadge({ name }) {
 }
 
 export function ContactCard({ item }) {
-  let icon = null
-  
-  if (item.label.toLowerCase() === 'email') {
+  const iconType = item.label.toLowerCase()
+  let icon
+
+  if (iconType === 'email') {
     icon = (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5 text-teal">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+      <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" strokeWidth="1.9" stroke="currentColor" className="h-6 w-6">
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="m4 7 8 6 8-6" />
       </svg>
     )
-  } else if (item.label.toLowerCase() === 'phone') {
+  } else if (iconType === 'phone') {
     icon = (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5 text-teal">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.622c0-1.137.705-2.14 1.773-2.511 1.025-.36 2.062.099 2.52 1.077l1.584 3.327c.4-.077.01.906-.277 1.18-.363.363-.429.9-.13 1.396l2.388 4.419a1.6 1.6 0 0 0 1.58.888c.456-.053.905-.316 1.247-.659l1.414-1.414a1.125 1.125 0 0 1 1.59 0l3.327 3.327c.977.458 1.437 1.495 1.078 2.52-.372 1.067-1.375 1.773-2.511 1.773-5.28 0-9.75-4.47-9.75-9.75 0-1.137.705-2.14 1.773-2.511z" />
+      <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" strokeWidth="1.9" stroke="currentColor" className="h-6 w-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5.2 4.6 8 4l2 5-2 1.4a14 14 0 0 0 5.6 5.6l1.4-2 5 2-.6 2.8a2 2 0 0 1-2 1.6A15.8 15.8 0 0 1 3.6 7a2 2 0 0 1 1.6-2.4Z" />
+      </svg>
+    )
+  } else if (iconType === 'portfolio') {
+    icon = (
+      <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" strokeWidth="1.9" stroke="currentColor" className="h-6 w-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M4 7h16a1 1 0 0 1 1 1v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a1 1 0 0 1 1-1Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 11.5 12 15l9-3.5M10 13.8v2.4h4v-2.4" />
       </svg>
     )
   } else {
     icon = (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5 text-teal">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+        <path d="M5.1 3.5A2.1 2.1 0 1 1 5.1 7.7a2.1 2.1 0 0 1 0-4.2ZM3.3 9h3.6v11.5H3.3V9Zm5.7 0h3.4v1.6h.1c.5-.9 1.7-2 3.5-2 3.8 0 4.5 2.5 4.5 5.7v6.2H17v-5.6c0-1.3 0-3.1-1.9-3.1s-2.2 1.5-2.2 3v5.7H9V9Z" />
       </svg>
     )
   }
@@ -544,7 +553,7 @@ export function ContactCard({ item }) {
         />
       )}
 
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal/10 relative z-30">
+      <div className="relative z-30 flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-teal text-white dark:text-abyss">
         {icon}
       </div>
       <div className="min-w-0 relative z-30">
@@ -552,7 +561,7 @@ export function ContactCard({ item }) {
           {item.label}
         </span>
         <a
-          className="mt-1 block break-words text-base font-bold text-foam no-underline hover:text-teal hover:underline transition-colors"
+          className="mt-1 block break-words text-sm font-bold text-foam no-underline transition-colors hover:text-teal hover:underline xl:text-base"
           href={item.href}
           target={item.external ? '_blank' : undefined}
           rel={item.external ? 'noreferrer' : undefined}

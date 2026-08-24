@@ -30,10 +30,10 @@ export const portfolio = {
     { id: 'contact', label: 'Contact' },
   ],
   hero: {
-    eyebrow: 'Branding | Graphic Design | Motion Graphics',
-    heading: 'Crafting bold visual identities and motion-driven experiences.',
+    eyebrow: 'Brand identities · Campaigns · Motion',
+    heading: 'Design that earns a second look.',
     description:
-      'I help ambitious brands communicate with absolute confidence. From striking visual systems and packaging to high-impact campaign assets and storytelling, I design experiences that leave a lasting impression.',
+      'I’m Harishankar, a visual designer working across identity, packaging, campaigns and motion. Here is a selection of work made for real brands and real audiences.',
     actions: [
       {
         label: 'Explore Portfolio',
@@ -560,13 +560,13 @@ export const portfolio = {
         },
         {
           label: 'Portfolio',
-          value: 'behance.net/Harishankar_K',
+          value: 'Harishankar_K on Behance',
           href: 'https://www.behance.net/Harishankar_K',
           external: true,
         },
         {
           label: 'LinkedIn',
-          value: 'linkedin.com/in/harishankar-k-1072b5232',
+          value: 'Harishankar K on LinkedIn',
           href: 'https://www.linkedin.com/in/harishankar-k-1072b5232/',
           external: true,
         },
