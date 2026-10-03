@@ -5,6 +5,8 @@ import { siteContent } from './data/siteContent'
 import { deobfuscatePortfolio, getDriveThumbnailUrl } from './utils/portfolioUtils'
 import PortfolioLightbox from './components/PortfolioLightbox'
 
+const RESUME_URL = 'https://drive.google.com/file/d/1gYT0gGjeS0-VmiJIcGpjmvRVNnhz4O_S/view?usp=drive_link'
+
 const reveal = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -73,7 +75,13 @@ function Header({ dark, onThemeChange, portfolioView }) {
         >
           <span /> Portfolio
         </a>
-        <a className="header-resume-button" href="/resume.pdf" download aria-label="Download Resume">
+        <a
+          className="header-resume-button"
+          href={RESUME_URL}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="View Resume"
+        >
           <DownloadIcon />
           <span>Resume</span>
         </a>
@@ -163,11 +171,11 @@ function ArchivePreview({ categories, onOpen }) {
       <div className="archive-preview__head">
         <div>
           <p className="section-label">Work archive</p>
-          <h2>More formats.<br />More experiments.</h2>
+          <h2>More of<br />my work.</h2>
         </div>
         <div className="archive-preview__intro">
-          <p>Browse the wider collection of social posts, posters, banners, motion and printed work.</p>
-          <a className="text-link" href="#portfolio">Open the full archive <ArrowIcon /></a>
+          <p>The full archive includes social posts, posters, banners, motion pieces and print work.</p>
+          <a className="text-link" href="#portfolio">Browse all work <ArrowIcon /></a>
         </div>
       </div>
 
@@ -254,8 +262,8 @@ function Testimonials({ items }) {
     <section className="testimonials-section">
       <SectionHeading
         eyebrow="Client feedback"
-        title="A few words from people I’ve worked with."
-        intro="Feedback on collaboration, clarity and the quality of the final work."
+        title="What it’s like to work with me."
+        intro="A few notes from people I’ve worked with on recent projects."
       />
       <div className="testimonial-grid">
         {items.map((item) => (
@@ -281,7 +289,7 @@ function ClientWall({ clients }) {
     <section className="client-section">
       <div className="client-section__heading">
         <p className="section-label">Selected clients</p>
-        <p>Work created independently and through agency collaborations.</p>
+        <p>Some of the brands I’ve designed for, both directly and through agency teams.</p>
       </div>
       <div className="client-wall">
         {clients.slice(0, 12).map((client) => (
@@ -309,7 +317,7 @@ function Contact() {
           <a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a>
           <a href="https://www.behance.net/Harishankar_K" target="_blank" rel="noreferrer">Behance</a>
           <a href="https://www.linkedin.com/in/harishankar-k-1072b5232/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <a href="/resume.pdf" target="_blank" rel="noreferrer">Resume</a>
+          <a href={RESUME_URL} target="_blank" rel="noreferrer">Resume</a>
         </div>
       </div>
     </section>
@@ -325,7 +333,7 @@ function HomePage({ data, onOpen }) {
         <div className="hero-title">
           <p>{siteContent.hero.eyebrow}</p>
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            I make brands easier to <em>notice</em>—and harder to forget.
+            I help brands get <em>noticed</em> and remembered.
           </motion.h1>
         </div>
         <motion.aside className="hero-aside" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35, duration: 0.7 }}>
@@ -372,12 +380,12 @@ function PortfolioPage({ categories, activeIndex, onCategoryChange, onOpen }) {
     <main className="portfolio-page">
       <section className="portfolio-intro">
         <p className="section-label">Portfolio · Harishankar K</p>
-        <h1>Selected work<br />portfolio.</h1>
+        <h1>Design and motion<br />portfolio.</h1>
         <div className="portfolio-intro__details">
-          <p>This is my complete portfolio: {total} pieces across campaigns, social, print, display and motion. Choose a format below and open any project for a closer look.</p>
+          <p>You’ll find {total} pieces here, including campaigns, social posts, print work, banners and motion. Pick a category and open any item to see it larger.</p>
           <div className="portfolio-actions">
-            <a className="resume-download" href="/resume.pdf" download>
-              Download Resume <DownloadIcon />
+            <a className="resume-download" href={RESUME_URL} target="_blank" rel="noreferrer">
+              View Resume <DownloadIcon />
             </a>
             <a className="portfolio-back-link" href="#selected-work">Back to home <ArrowIcon /></a>
           </div>

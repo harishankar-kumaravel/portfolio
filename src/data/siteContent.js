@@ -1,9 +1,9 @@
 export const siteContent = {
   hero: {
     eyebrow: 'Independent visual designer · India',
-    title: 'I make brands easier to notice—and harder to forget.',
+    title: 'I help brands get noticed and remembered.',
     intro:
-      'I’m Harishankar K. I design identities, campaigns, packaging and motion for brands that need clear ideas expressed with character.',
+      'I’m Harishankar K, a visual designer based in India. I work on brand identities, campaigns, packaging and motion, turning each brief into design that feels clear and useful.',
     availability: 'Available for freelance and full-time roles',
   },
   stats: [
@@ -13,9 +13,9 @@ export const siteContent = {
   ],
   work: {
     eyebrow: 'Selected work',
-    title: 'Different industries. Different audiences. One clear idea at a time.',
+    title: 'A few projects I’m proud to share.',
     intro:
-      'A small selection of campaign and motion projects. Each one began with a communication problem, not a visual trend.',
+      'These projects show how I approach different briefs, audiences and formats. Each one started with a practical communication problem.',
     projects: [
       {
         number: '01',
@@ -23,7 +23,7 @@ export const siteContent = {
         client: 'Tata BlueScope Steel',
         discipline: 'Regional campaign · Art direction',
         summary:
-          'A Tamil-language campaign that balanced product information with the aspiration of building a better home.',
+          'A Tamil campaign that explained the product clearly while keeping the idea of a better home at its heart.',
       },
       {
         number: '02',
@@ -31,7 +31,7 @@ export const siteContent = {
         client: 'Real estate',
         discipline: 'Campaign design · Multi-format rollout',
         summary:
-          'A flexible visual system that made property information easier to scan across social, display and print formats.',
+          'A set of flexible layouts that made property information easy to scan on social media, displays and print.',
       },
       {
         number: '03',
@@ -39,44 +39,44 @@ export const siteContent = {
         client: 'Coromandel International',
         discipline: 'Storyboard · Motion graphics',
         summary:
-          'A concise product animation that translated technical benefits into a visual story for farmers and dealers.',
+          'A short product animation that explained technical benefits in a way farmers and dealers could follow.',
       },
     ],
   },
   services: {
     eyebrow: 'What I do',
-    title: 'From the first visual idea to the final export.',
+    title: 'How I can help.',
     intro:
-      'I can join for one focused deliverable or help build an adaptable visual system across a full campaign.',
+      'Whether you need one design or a full campaign, I can take the work from the first idea through to the final files.',
     items: [
       {
         number: '01',
         title: 'Identity & art direction',
-        text: 'Logos, visual languages, brand guidelines and the core idea that holds everything together.',
+        text: 'Logos, visual styles and brand guidelines that give your team a clear direction to work with.',
       },
       {
         number: '02',
         title: 'Campaign design',
-        text: 'Key visuals and thoughtful adaptations for social, print, retail, events and outdoor media.',
+        text: 'Campaign ideas and layouts adapted for social media, print, retail, events and outdoor use.',
       },
       {
         number: '03',
         title: 'Packaging & collateral',
-        text: 'Packaging, brochures, catalogues and sales material designed for clarity in the real world.',
+        text: 'Packaging, brochures, catalogues and sales material that are clear, practical and ready to use.',
       },
       {
         number: '04',
         title: 'Motion & video',
-        text: 'Storyboards, explainers, social edits and branded motion that make information easier to follow.',
+        text: 'Storyboards, explainers and social edits that make a product or message easier to understand.',
       },
     ],
   },
   about: {
     eyebrow: 'About',
-    title: 'A graphic designer who thinks in systems—and moves comfortably between static and motion.',
+    title: 'I work across brand design, campaigns and motion.',
     paragraphs: [
-      'My work sits between brand design and everyday communication. I enjoy taking a complex brief, finding the useful idea inside it, and building a visual language that can survive more than one format.',
-      'Agency experience taught me speed and range. In-house work taught me continuity. Together, they shaped a practical process: understand the audience, establish hierarchy, make it memorable, then make it usable.',
+      'I like solving messy design problems. I start by working out what the audience needs to understand, then shape the idea, layout and visual style around that.',
+      'Agency work taught me to move quickly and handle many formats. In-house work taught me how a brand needs to stay consistent over time. I bring both ways of working to every project.',
     ],
     capabilities: [
       'Adobe Photoshop',
@@ -92,35 +92,35 @@ export const siteContent = {
     title: 'Working across agencies, brands and independent projects.',
     items: [
       {
-        period: '2025 — now',
+        period: '2025 to present',
         company: 'Aranyakaa Farms / Elegance Enterprises',
         role: 'Graphic Designer',
-        note: 'Brand systems, packaging, property marketing and ongoing campaign design.',
+        note: 'Designing brand systems, packaging, property marketing and day-to-day campaign work.',
       },
       {
-        period: '2024 — 2025',
+        period: '2024 to 2025',
         company: 'Rhino Creative Agency',
         role: 'Graphic Designer',
-        note: 'High-volume campaign production for industrial, retail, agriculture and lifestyle clients.',
+        note: 'Created campaign work for industrial, retail, agriculture and lifestyle clients across many formats.',
       },
       {
-        period: '2023 — 2024',
+        period: '2023 to 2024',
         company: 'F Gears / Uber Fashion',
         role: 'Motion Graphics Designer',
-        note: 'Product-led social edits, motion templates and lifestyle content.',
+        note: 'Made product videos, social edits, motion templates and lifestyle content.',
       },
       {
         period: '2023',
         company: 'Talentship',
         role: 'UI/UX Design Intern',
-        note: 'Responsive interface design, prototyping and front-end collaboration.',
+        note: 'Worked on responsive interface design, prototypes and front-end implementation.',
       },
     ],
   },
   contact: {
     eyebrow: 'Have a brief?',
-    title: 'Let’s make something people will actually remember.',
-    note: 'Tell me what you are building, who it is for, and where the design needs to live. I’ll reply with the right next step.',
+    title: 'Have a project in mind? Let’s talk.',
+    note: 'Send me a quick note about what you need, who it is for and when you need it. I’ll get back to you with a clear next step.',
     email: 'k.harish2323@gmail.com',
     phone: '+91 99524 55048',
   },
