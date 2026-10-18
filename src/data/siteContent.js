@@ -122,6 +122,5 @@ export const siteContent = {
     title: 'Have a project in mind? Let’s talk.',
     note: 'Send me a quick note about what you need, who it is for and when you need it. I’ll get back to you with a clear next step.',
     email: 'k.harish2323@gmail.com',
-    phone: '+91 99524 55048',
   },
 }

@@ -314,7 +314,6 @@ function Contact() {
         <p>{contact.note}</p>
         <a className="contact-email" href={`mailto:${contact.email}`}>{contact.email}<ArrowIcon /></a>
         <div className="contact-links">
-          <a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a>
           <a href="https://www.behance.net/Harishankar_K" target="_blank" rel="noreferrer">Behance</a>
           <a href="https://www.linkedin.com/in/harishankar-k-1072b5232/" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href={RESUME_URL} target="_blank" rel="noreferrer">Resume</a>

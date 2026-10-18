@@ -554,11 +554,6 @@ export const portfolio = {
           href: 'mailto:k.harish2323@gmail.com',
         },
         {
-          label: 'Phone',
-          value: '+91 99524 55048',
-          href: 'tel:+919952455048',
-        },
-        {
           label: 'Portfolio',
           value: 'Harishankar_K on Behance',
           href: 'https://www.behance.net/Harishankar_K',
