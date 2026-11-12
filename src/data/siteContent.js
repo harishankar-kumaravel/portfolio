@@ -92,7 +92,13 @@ export const siteContent = {
     title: 'Working across agencies, brands and independent projects.',
     items: [
       {
-        period: '2025 to present',
+        period: 'Sep 2026 to present',
+        company: 'Elegance Enterprises',
+        role: 'Sr. Motion Graphics Designer',
+        note: 'Promoted to lead motion graphics, campaign edits and visual storytelling across Elegance Enterprises.',
+      },
+      {
+        period: 'Sep 2025 to Aug 2026',
         company: 'Aranyakaa Farms / Elegance Enterprises',
         role: 'Graphic Designer',
         note: 'Designing brand systems, packaging, property marketing and day-to-day campaign work.',

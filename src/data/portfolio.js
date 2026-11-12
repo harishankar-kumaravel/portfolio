@@ -278,21 +278,21 @@ export const portfolio = {
       title: 'Experience across agencies, brands and independent work.',
       items: [
         {
+          company: 'Elegance Enterprises',
+          role: 'Sr. Motion Graphics Designer',
+          period: 'Sep 2026 - Present',
+          points: [
+            'Promoted to lead motion graphics, campaign edits and visual storytelling across property and retail initiatives.',
+            'Setting visual direction and marketing campaign assets for regional audiences (previously Graphic Designer, Sep 2025 - Aug 2026).',
+          ],
+        },
+        {
           company: 'Aranyakaa Farms',
           role: 'Graphic Designer',
           period: 'Sep 2025 - Present',
           points: [
             'Built brand identity systems and packaging for new and growing product lines.',
             'Created social media campaigns and day-to-day marketing content.',
-          ],
-        },
-        {
-          company: 'Elegance Enterprises',
-          role: 'Graphic Designer',
-          period: 'Sep 2025 - Present',
-          points: [
-            'Set the visual direction for property and retail work across several ongoing projects.',
-            'Designed marketing material and campaign assets for regional audiences.',
           ],
         },
         {
