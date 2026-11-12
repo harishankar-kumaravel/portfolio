@@ -85,6 +85,8 @@ export function deobfuscateMedia(media) {
   return {
     ...media,
     id: deobfuscateId(media.id),
+    posterId: deobfuscateId(media.posterId),
+    webmId: deobfuscateId(media.webmId),
     thumbnail: deobfuscateUrl(media.thumbnail),
     href: deobfuscateUrl(media.href)
   };
@@ -182,7 +184,7 @@ export function getDriveThumbnailUrl(media, width = 1600) {
     const videoId = getYoutubeId(media)
     return getYoutubeThumbnailUrl(videoId)
   }
-  const id = media.id || (typeof media.thumbnail === 'string' && media.thumbnail.match(/[?&]id=([A-Za-z0-9_-]{20,})/)?.[1])
+  const id = media.posterId || media.id || (typeof media.thumbnail === 'string' && media.thumbnail.match(/[?&]id=([A-Za-z0-9_-]{20,})/)?.[1])
   if (id) {
     return `https://lh3.googleusercontent.com/d/${id}=w${width}`
   }

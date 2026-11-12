@@ -430,6 +430,10 @@ function PortfolioPage({ categories, activeIndex, onCategoryChange, onOpen }) {
 
 export default function App() {
   const data = useMemo(() => deobfuscatePortfolio(portfolio), [])
+  const totalPieces = data.portfolioPage.categories.reduce(
+    (sum, category) => sum + (category.items?.length || 0),
+    0
+  )
   const [currentHash, setCurrentHash] = useState(() => window.location.hash)
   const [selectedMedia, setSelectedMedia] = useState(null)
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0)
@@ -477,7 +481,7 @@ export default function App() {
       )}
       <footer className={`site-footer${portfolioView ? ' site-footer--portfolio' : ''}`}>
         <p>© 2026 Harishankar K</p>
-        <p>{portfolioView ? 'Portfolio archive · 138 selected pieces' : 'Visual design · Campaigns · Motion'}</p>
+        <p>{portfolioView ? `Portfolio archive · ${totalPieces} selected pieces` : 'Visual design · Campaigns · Motion'}</p>
         <a href="#top">Back to top ↑</a>
       </footer>
       <PortfolioLightbox media={selectedMedia} onClose={() => setSelectedMedia(null)} />

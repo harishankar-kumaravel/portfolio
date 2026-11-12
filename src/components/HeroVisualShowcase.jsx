@@ -26,11 +26,11 @@ export default function HeroVisualShowcase({ onOpenMedia }) {
 
   // Featured campaign project details (Durashine Supreme)
   const rawFeaturedItem = {
-    id: '1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j',
+    id: '12KyQWEmI3T5EgbUT3Dz6o1xE9nrLeEJU',
     name: 'Durashine Supreme Campaign',
     type: 'image',
-    thumbnail: 'https://drive.google.com/thumbnail?id=1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j&sz=w1600',
-    href: 'https://drive.google.com/file/d/1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j/view?usp=sharing'
+    thumbnail: 'https://drive.google.com/thumbnail?id=12KyQWEmI3T5EgbUT3Dz6o1xE9nrLeEJU&sz=w1600',
+    href: 'https://drive.google.com/file/d/12KyQWEmI3T5EgbUT3Dz6o1xE9nrLeEJU/view?usp=sharing'
   }
 
   const featuredItem = deobfuscateMedia(rawFeaturedItem)

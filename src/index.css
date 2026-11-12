@@ -700,19 +700,25 @@ a:focus-visible {
   border-radius: 20px;
 }
 
-.archive-tile--1,
-.archive-tile--4 {
+.archive-tile--1 {
   grid-column: span 5;
 }
 
-.archive-tile--2,
+.archive-tile--2 {
+  grid-column: span 4;
+}
+
 .archive-tile--3 {
   grid-column: span 3;
 }
 
+.archive-tile--4 {
+  grid-column: span 7;
+}
+
 .archive-tile--5,
 .archive-tile--6 {
-  grid-column: span 2;
+  grid-column: span 5;
 }
 
 .archive-tile span {

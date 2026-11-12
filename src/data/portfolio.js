@@ -150,9 +150,9 @@ export const portfolio = {
         {
          title: 'Durashine Supreme Tamil Campaign',
           category: 'Social Media & Regional Marketing Campaign',
-          id: '1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j',
-          thumbnail: 'https://drive.google.com/thumbnail?id=1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j&sz=w1600',
-          href: 'https://drive.google.com/file/d/1X_n10t-vNcCTmmj8Tl6iKrtDfgTKM49j/view?usp=sharing',
+          id: '12KyQWEmI3T5EgbUT3Dz6o1xE9nrLeEJU',
+          thumbnail: 'https://drive.google.com/thumbnail?id=12KyQWEmI3T5EgbUT3Dz6o1xE9nrLeEJU&sz=w1600',
+          href: 'https://drive.google.com/file/d/12KyQWEmI3T5EgbUT3Dz6o1xE9nrLeEJU/view?usp=sharing',
           challenge: 'Create a Tamil campaign for Durashine Supreme that could stand out on social media, explain the roofing product clearly and connect with people planning a better home.',
   goal: 'Build a regional campaign that felt trustworthy, easy to understand and relevant to Tamil-speaking audiences.',
   process: [
@@ -180,10 +180,11 @@ export const portfolio = {
         {
   title: 'Gromor Nano DAP USP Animation',
   category: 'Motion Graphics & Product Marketing',
-  thumbnail: 'https://drive.google.com/thumbnail?id=1LIeYQ58uh5JrgM6zrKMlAKlBoNH1-Frc&sz=w1600',
+  posterId: '1X4wjmqVbupkMTv8MP9Y5DUM5FFv_nkND',
+  thumbnail: 'https://drive.google.com/thumbnail?id=1X4wjmqVbupkMTv8MP9Y5DUM5FFv_nkND&sz=w1600',
   type: 'video',
-  id: '1LIeYQ58uh5JrgM6zrKMlAKlBoNH1-Frc',
-  href: 'https://drive.google.com/file/d/1LIeYQ58uh5JrgM6zrKMlAKlBoNH1-Frc/view?usp=drive_link',
+  id: '1Bw3JaivI8K8x1lfjiEVLk-0CzASxn1nq',
+  href: 'https://drive.google.com/file/d/1Bw3JaivI8K8x1lfjiEVLk-0CzASxn1nq/view?usp=sharing',
   challenge: 'Explain the benefits of Gromor Nano DAP to farmers in a short format while staying within the brand’s visual style.',
   goal: 'Make an animated explainer that showed how the product works and made its main benefits easy to follow.',
   process: [
@@ -250,11 +251,11 @@ export const portfolio = {
       items: [
         {
           title: 'Dream Alliance Campaign',
-          id: 'VR1aYZHcLB1NIB1N4JkSzZnNThWe2QWSIBzS0l3YSBXM',
+          id: '1MTD66kZKpuLX8y188_Llwuvel3aUNYd7',
         },
         {
           title: 'Brand Motion Edit',
-          id: 'zkUTwJjWr5WUJZjeq91R3gnMnJnUJRFT0MEWy5UO6pUM',
+          id: '1N8rseoXAyMWtWaWYFaFVGc30cAB_vEFv',
         },
       ],
     },
